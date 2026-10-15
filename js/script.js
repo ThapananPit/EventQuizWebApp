@@ -1,6 +1,19 @@
 ﻿/* ============================================================
    ENGINE — ไม่แตะ DOM ทดสอบได้แยก
    ============================================================ */
+let NODES={},ENDINGS={},AXES=[],START_USERS=1000,DEAD=200,MAXU=1200;
+const NODE_ENTER={
+ repeat:S=>S.rulesFixed
+  ?{u:[[-90,'สินค้าถูกซื้อในราคาถูกอีกครั้ง ลูกค้าเสียความเชื่อมั่น']],trust:-10,damage:10}
+  :{u:[[-180,'ออเดอร์ปลอมและข้อมูลลูกค้าถูกอ่าน ลูกค้าจำนวนมากเลิกใช้']],trust:-15,damage:30}
+};
+const NODE_TEXT={
+ repeat:S=>S.rulesFixed
+  ?'เช้าวันถัดมา ผู้โจมตีส่งคำขอชำระเงินตรงเข้า API ข้ามการตรวจฝั่งเบราว์เซอร์ที่คุณเพิ่ม และได้สินค้าในราคาถูกอีกครั้ง'
+  :(S.wrongDx
+   ?'สองวันต่อมา ผู้โจมตีกลับมา การเปลี่ยนรหัสผ่านไม่ช่วยอะไรเพราะเขาไม่เคยใช้รหัสผ่านใครเลย ครั้งนี้เขาไม่เพียงแก้ราคา แต่ยังเปิดอ่านข้อมูลลูกค้าผ่านช่องเดิมด้วย'
+   :'สองวันต่อมา ผู้โจมตีกลับมาผ่านช่องเดิมที่คุณยังไม่ได้อุด ครั้งนี้เขาไม่เพียงแก้ราคาออเดอร์ แต่ยังเปิดอ่านข้อมูลลูกค้าด้วย ร้านเสียทั้งสต็อกและความเชื่อมั่น')
+};
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 function newState(){
   return {users:START_USERS,trust:50,damage:0,rulesFixed:false,serverMoney:false,mfa:false,
@@ -19,7 +32,7 @@ function applyFx(S,fx){
 }
 function enterNode(S,id){
   const n=NODES[id];S.nodeId=id;
-  const fx=n.enter?n.enter(S):null;
+  const fx=NODE_ENTER[id]?NODE_ENTER[id](S):(n.enter||null);
   S.enterFx=fx;S.enterTotal=fx?applyFx(S,fx):0;
   S.series.push(S.users);S.dead=S.users<DEAD;
   return n;
@@ -168,7 +181,7 @@ function renderPlay(){
   $('#live').textContent='ผู้ใช้ '+fmtN(S.users)+' คน';
 }
 function renderChoose(n){
-  const text=typeof n.text==='function'?n.text(S):n.text;
+  const text=NODE_TEXT[S.nodeId]?NODE_TEXT[S.nodeId](S):n.text;
   const ev=S.enterFx?`<div class="sub">ผลจากเหตุการณ์นี้</div>${chips(S.enterFx.u)}`:'';
   let body;
   if(S.dead){
@@ -344,4 +357,6 @@ function resetIdle(){
 ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,()=>{if(KIOSK)resetIdle();},{passive:true}));
 $('#idleBtn').onclick=resetIdle;
 
-toStart();
+fetch('js/data.b64')
+  .then(r=>r.text())
+  .then(t=>{const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t),c=>c.charCodeAt(0))));NODES=d.NODES;ENDINGS=d.ENDINGS;AXES=d.AXES;START_USERS=d.START_USERS;DEAD=d.DEAD;MAXU=d.MAXU;toStart();});
