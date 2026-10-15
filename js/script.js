@@ -1,7 +1,7 @@
 ﻿/* ============================================================
    ENGINE — ไม่แตะ DOM ทดสอบได้แยก
    ============================================================ */
-let NODES={},ENDINGS={},AXES=[],START_USERS=1000,DEAD=200,MAXU=1200;
+let PATHS={},NODES={},ENDINGS={},AXES=[],START_USERS=1000,DEAD=200,MAXU=1200;
 const NODE_ENTER={
  repeat:S=>S.rulesFixed
   ?{u:[[-90,'สินค้าถูกซื้อในราคาถูกอีกครั้ง ลูกค้าเสียความเชื่อมั่น']],trust:-10,damage:10}
@@ -89,7 +89,7 @@ const app=$('#app');
 const fmtN=n=>Math.round(n).toLocaleString('en-US');
 const sgn=d=>d>0?'+'+fmtN(d):d<0?'\u2212'+fmtN(Math.abs(d)):'\u00B10';
 let S=null;
-const UI={screen:'start',phase:'choose',from:START_USERS,last:null,armed:false};
+const UI={screen:'select',phase:'choose',from:START_USERS,last:null,armed:false};
 const KIOSK=(function(){try{return new URLSearchParams(location.search).get('kiosk')==='1';}catch(e){return false;}})();
 
 /* storage: เก็บตอนจบ/ตัวเลือกที่เคยเจอ (ในเบราว์เซอร์นี้เท่านั้น) */
@@ -139,13 +139,29 @@ function bindTop(){
 function go(){window.scrollTo(0,0);const f=app.querySelector('[data-focus]');if(f)f.focus({preventScroll:true});resetIdle();}
 
 /* ---------- screens ---------- */
+function loadPath(id){const p=PATHS[id];NODES=p.NODES;ENDINGS=p.ENDINGS;AXES=p.AXES;START_USERS=p.START_USERS;DEAD=p.DEAD;MAXU=p.MAXU;}
+function selectPath(id){loadPath(id);toStart();}
+function toPathSelect(){S=null;UI.screen='select';render();}
+function renderPathSelect(){
+  const keys=Object.keys(PATHS);
+  app.innerHTML=`
+  <div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step"></span></div>
+  <header class="hero">
+    <h1 class="logo" data-focus tabindex="-1">Launch <span>&amp;</span> Defend</h1>
+    <p class="tagline">สร้างให้ฉลาด เลือกให้คิด ปกป้องระบบของคุณ</p>
+  </header>
+  <section class="card scn"><span class="tag">เลือกโจทย์</span><h2>มีกี่เส้นทางที่คุณอยากลอง?</h2></section>
+  <div class="choices">`+keys.map((k,i)=>`<button class="choice" data-path="${k}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${PATHS[k].title}</span></button>`).join('')+`</div>`;
+  app.querySelectorAll('.choice').forEach(b=>{b.onclick=()=>selectPath(b.dataset.path);});
+}
 function toStart(){S=null;UI.screen='start';UI.phase='choose';render();}
 function begin(){
   S=newState();UI.screen='play';UI.phase='choose';UI.from=S.users;UI.last=null;
   enterNode(S,'start');render();
 }
 function render(){
-  if(UI.screen==='start')renderStart();
+  if(UI.screen==='select')renderPathSelect();
+  else if(UI.screen==='start')renderStart();
   else if(UI.screen==='play')renderPlay();
   else renderResult();
   go();
@@ -359,4 +375,4 @@ $('#idleBtn').onclick=resetIdle;
 
 fetch('js/data.b64')
   .then(r=>r.text())
-  .then(t=>{const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t),c=>c.charCodeAt(0))));NODES=d.NODES;ENDINGS=d.ENDINGS;AXES=d.AXES;START_USERS=d.START_USERS;DEAD=d.DEAD;MAXU=d.MAXU;toStart();});
+  .then(t=>{const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t),c=>c.charCodeAt(0))));PATHS=d.paths;toPathSelect();});
