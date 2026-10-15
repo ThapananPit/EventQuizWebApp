@@ -30,7 +30,7 @@ jobs:
         run: node encode.js
 
       - name: Remove source data before deploy
-        run: rm js/data.json
+        run: rm js/paths/*.json
 
       - uses: actions/configure-pages@v4
 

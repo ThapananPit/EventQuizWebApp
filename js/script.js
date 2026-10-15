@@ -1,7 +1,7 @@
 ﻿/* ============================================================
    ENGINE — ไม่แตะ DOM ทดสอบได้แยก
    ============================================================ */
-let PATHS={},NODES={},ENDINGS={},AXES=[],START_USERS=1000,DEAD=200,MAXU=1200;
+let PATHS=[],NODES={},ENDINGS={},AXES=[],START_USERS=1000,DEAD=200,MAXU=1200;
 const NODE_ENTER={
  repeat:S=>S.rulesFixed
   ?{u:[[-90,'สินค้าถูกซื้อในราคาถูกอีกครั้ง ลูกค้าเสียความเชื่อมั่น']],trust:-10,damage:10}
@@ -139,11 +139,14 @@ function bindTop(){
 function go(){window.scrollTo(0,0);const f=app.querySelector('[data-focus]');if(f)f.focus({preventScroll:true});resetIdle();}
 
 /* ---------- screens ---------- */
-function loadPath(id){const p=PATHS[id];NODES=p.NODES;ENDINGS=p.ENDINGS;AXES=p.AXES;START_USERS=p.START_USERS;DEAD=p.DEAD;MAXU=p.MAXU;}
-function selectPath(id){loadPath(id);toStart();}
+function loadPath(id){
+  return fetch(`js/paths/${id}.b64`)
+    .then(r=>r.text())
+    .then(t=>{const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t),c=>c.charCodeAt(0))));NODES=d.NODES;ENDINGS=d.ENDINGS;AXES=d.AXES;START_USERS=d.START_USERS;DEAD=d.DEAD;MAXU=d.MAXU;});
+}
+function selectPath(id){loadPath(id).then(()=>toStart());}
 function toPathSelect(){S=null;UI.screen='select';render();}
 function renderPathSelect(){
-  const keys=Object.keys(PATHS);
   app.innerHTML=`
   <div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step"></span></div>
   <header class="hero">
@@ -151,7 +154,7 @@ function renderPathSelect(){
     <p class="tagline">สร้างให้ฉลาด เลือกให้คิด ปกป้องระบบของคุณ</p>
   </header>
   <section class="card scn"><span class="tag">เลือกโจทย์</span><h2>มีกี่เส้นทางที่คุณอยากลอง?</h2></section>
-  <div class="choices">`+keys.map((k,i)=>`<button class="choice" data-path="${k}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${PATHS[k].title}</span></button>`).join('')+`</div>`;
+  <div class="choices">`+PATHS.map((p,i)=>`<button class="choice" data-path="${p.id}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${p.title}</span></button>`).join('')+`</div>`;
   app.querySelectorAll('.choice').forEach(b=>{b.onclick=()=>selectPath(b.dataset.path);});
 }
 function toStart(){S=null;UI.screen='start';UI.phase='choose';render();}
@@ -373,6 +376,6 @@ function resetIdle(){
 ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,()=>{if(KIOSK)resetIdle();},{passive:true}));
 $('#idleBtn').onclick=resetIdle;
 
-fetch('js/data.b64')
-  .then(r=>r.text())
-  .then(t=>{const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t),c=>c.charCodeAt(0))));PATHS=d.paths;toPathSelect();});
+fetch('js/index.json')
+  .then(r=>r.json())
+  .then(d=>{PATHS=d.paths;toPathSelect();});
