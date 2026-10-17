@@ -9,3 +9,10 @@ directory = "."
 binding = "DB"
 database_name = "openhouse_quizz"
 database_id = "74737863-1076-48ed-bf91-408764adefb8"
+
+[observability.logs]
+enabled = true
+invocation_logs = true
+
+[observability.traces]
+enabled = false
