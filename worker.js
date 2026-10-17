@@ -3,6 +3,15 @@ import { setCookie, getCookie } from 'hono/cookie'
 import { sign, verify } from 'hono/jwt'
 
 const app = new Hono()
+
+
+// TEMP DEBUG
+app.onError((err, c) => {
+  console.error(err)
+  return c.text(`❌ CRASH DETAILS: ${err.message}\n\nSTACK: ${err.stack}`, 500)
+})
+
+
 const COOKIE = 'ld_sess'
 const STATE_COOKIE = 'ld_state'
 const TTL = 60 * 60 * 24 * 7
