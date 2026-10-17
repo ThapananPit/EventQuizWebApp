@@ -2,6 +2,7 @@
    ENGINE — ไม่แตะ DOM ทดสอบได้แยก
    ============================================================ */
 let PATHS=[],NODES={},ENDINGS={},AXES=[],START_USERS=1000,DEAD=200,MAXU=1200;
+let USER=null,CURRENT_PATH_ID=null;
 const NODE_ENTER={
  repeat:S=>S.rulesFixed
   ?{u:[[-90,'สินค้าถูกซื้อในราคาถูกอีกครั้ง ลูกค้าเสียความเชื่อมั่น']],trust:-10,damage:10}
@@ -144,8 +145,22 @@ function loadPath(id){
     .then(r=>r.text())
     .then(t=>{const d=JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(t),c=>c.charCodeAt(0))));NODES=d.NODES;ENDINGS=d.ENDINGS;AXES=d.AXES;START_USERS=d.START_USERS;DEAD=d.DEAD;MAXU=d.MAXU;});
 }
-function selectPath(id){loadPath(id).then(()=>toStart());}
+function selectPath(id){CURRENT_PATH_ID=id;loadPath(id).then(()=>toStart());}
 function toPathSelect(){S=null;UI.screen='select';render();}
+function renderLogin(){
+  app.innerHTML=`
+  <div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step"></span></div>
+  <header class="hero">
+    <h1 class="logo" data-focus tabindex="-1">Launch <span>&amp;</span> Defend</h1>
+    <p class="tagline">สร้างให้ฉลาด เลือกให้คิด ปกป้องระบบของคุณ</p>
+  </header>
+  <section class="card scn">
+    <span class="tag">เริ่มต้น</span>
+    <h2>เข้าสู่ระบบเพื่อเริ่มเล่น</h2>
+    <p>ลงทะเบียนด้วยบัญชี Google เพื่อบันทึกคะแนนและติดตามความก้าวหน้าของคุณ</p>
+  </section>
+  <a class="primary" href="/auth/google" style="display:block;text-align:center;text-decoration:none">เข้าสู่ระบบด้วย Google</a>`;
+}
 function renderPathSelect(){
   app.innerHTML=`
   <div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step"></span></div>
@@ -163,7 +178,8 @@ function begin(){
   enterNode(S,'start');render();
 }
 function render(){
-  if(UI.screen==='select')renderPathSelect();
+  if(UI.screen==='login')renderLogin();
+  else if(UI.screen==='select')renderPathSelect();
   else if(UI.screen==='start')renderStart();
   else if(UI.screen==='play')renderPlay();
   else renderResult();
@@ -250,6 +266,12 @@ function finish(){
   if(!S.forcedEnding&&S.dead)S.forcedEnding='collapse';
   S.endId=endingOf(S);remember('endings',S.endId);
   STORE=loadStore();
+  if(USER&&CURRENT_PATH_ID){
+    const sc=scoreOf(S,S.endId);
+    fetch('/api/scores',{method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({path_id:CURRENT_PATH_ID,score:sc.total,ending:S.endId,users_remaining:S.users})
+    }).catch(()=>{});
+  }
   UI.screen='result';render();
 }
 
@@ -376,6 +398,7 @@ function resetIdle(){
 ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,()=>{if(KIOSK)resetIdle();},{passive:true}));
 $('#idleBtn').onclick=resetIdle;
 
-fetch('js/index.json')
-  .then(r=>r.json())
-  .then(d=>{PATHS=d.paths;toPathSelect();});
+Promise.all([
+  fetch('js/index.json').then(r=>r.json()),
+  fetch('/api/me').then(r=>r.ok?r.json():null).catch(()=>null)
+]).then(([idx,user])=>{PATHS=idx.paths;USER=user;if(USER)toPathSelect();else{UI.screen='login';render();}});

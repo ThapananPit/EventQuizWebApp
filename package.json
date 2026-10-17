@@ -1,0 +1,11 @@
+{
+  "name": "launch-and-defend",
+  "private": true,
+  "scripts": {
+    "build": "node encode.js && rm js/paths/*.json"
+  },
+  "dependencies": {
+    "hono": "^4.6.0",
+    "@hono/oauth-providers": "^0.7.0"
+  }
+}
