@@ -5,4 +5,4 @@ pages_build_output_dir = "."
 [[d1_databases]]
 binding = "DB"
 database_name = "launch-defend-db"
-database_id = "YOUR_DATABASE_ID_HERE"
+database_id = "74737863-1076-48ed-bf91-408764adefb8"
