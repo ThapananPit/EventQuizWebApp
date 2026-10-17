@@ -23,7 +23,7 @@ const GOOGLE_USERINFO = 'https://www.googleapis.com/oauth2/v3/userinfo'
 async function getSession(c) {
   const token = getCookie(c, COOKIE)
   if (!token) return null
-  try { return await verify(token, c.env.SESSION_SECRET) }
+  try { return await verify(token, c.env.SESSION_SECRET, 'HS256') }
   catch { return null }
 }
 
@@ -75,7 +75,8 @@ app.get('/auth/google', async (c) => {
 
   const token = await sign(
     { sub: u.sub, email: u.email, name: u.name, exp: Math.floor(Date.now() / 1000) + TTL },
-    c.env.SESSION_SECRET
+    c.env.SESSION_SECRET,
+    'HS256'
   )
   setCookie(c, COOKIE, token, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: TTL, path: '/' })
   return c.redirect('/')
