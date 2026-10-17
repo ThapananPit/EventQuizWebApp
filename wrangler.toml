@@ -1,6 +1,9 @@
 name = "launch-and-defend"
 compatibility_date = "2024-09-23"
-pages_build_output_dir = "."
+main = "worker.js"
+
+[assets]
+directory = "."
 
 [[d1_databases]]
 binding = "DB"

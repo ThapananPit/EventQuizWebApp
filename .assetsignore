@@ -1,0 +1,14 @@
+node_modules
+package.json
+package-lock.json
+wrangler.toml
+encode.js
+watch.js
+schema.sql
+worker.js
+functions
+*.md
+.gitignore
+.github
+.claude
+js/paths/*.json
