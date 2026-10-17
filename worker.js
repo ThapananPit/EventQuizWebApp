@@ -14,7 +14,15 @@ async function getSession(c) {
   catch { return null }
 }
 
-app.use('/auth/google', async (c, next) => {
+app.get('/debug-env', (c) => {
+  return c.json({
+    has_client_id: !!c.env.GOOGLE_CLIENT_ID,
+    has_client_secret: !!c.env.GOOGLE_CLIENT_SECRET,
+    has_session_secret: !!c.env.SESSION_SECRET,
+  })
+})
+
+app.use('/auth/google', (c, next) => {
   return googleAuth({
     client_id: c.env.GOOGLE_CLIENT_ID,
     client_secret: c.env.GOOGLE_CLIENT_SECRET,
