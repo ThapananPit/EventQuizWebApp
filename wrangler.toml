@@ -1,0 +1,8 @@
+name = "launch-and-defend"
+compatibility_date = "2024-09-23"
+pages_build_output_dir = "."
+
+[[d1_databases]]
+binding = "DB"
+database_name = "launch-defend-db"
+database_id = "YOUR_DATABASE_ID_HERE"
