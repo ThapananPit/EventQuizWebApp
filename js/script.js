@@ -398,7 +398,100 @@ function resetIdle(){
 ['pointerdown','keydown','touchstart','scroll'].forEach(ev=>window.addEventListener(ev,()=>{if(KIOSK)resetIdle();},{passive:true}));
 $('#idleBtn').onclick=resetIdle;
 
+/* ---------- background fx ---------- */
+(function initBgfx(){
+  const container=document.getElementById('bgfx');
+  if(!container)return;
+  const cmds=[
+    'nmap -sV 192.168.1.0/24',
+    'sudo iptables -L -n -v',
+    'grep -r "password" /var/log/',
+    'ssh -i id_rsa admin@10.0.0.1',
+    'cat /etc/shadow | awk -F: \'{print $1}\'',
+    'chmod 700 /etc/cron.daily/',
+    'netstat -tulpn | grep LISTEN',
+    'curl -X POST /api/auth --data @creds.json',
+    'tcpdump -i eth0 port 443 -w capture.pcap',
+    'openssl rand -hex 32 > session.key',
+    'tail -f /var/log/nginx/error.log',
+    'find / -perm -4000 -type f 2>/dev/null',
+    'base64 -d payload.b64 | bash',
+    '[+] Host 192.168.1.1 up (0.0012s latency)',
+    '[-] Auth rejected: signature mismatch',
+    '[*] Scanning 65535 ports...',
+    '[OK] Firewall ruleset applied',
+    '[WARN] 47 failed logins from 10.0.0.44',
+    'ERROR: EACCES permission denied',
+    'HTTP/1.1 200 OK  Content-Type: application/json',
+    'JWT: sub=user_42 exp=1750000000 alg=HS256',
+    'INSERT INTO scores (user_id, score) VALUES (?,?)',
+    'whois 203.0.113.42 | grep OrgName',
+    'dig +short TXT _dmarc.example.com',
+    'sudo -l | grep "(ALL) NOPASSWD"',
+    'HASH sha256:a3f9b2c1d4e5f6a7b8c9d0e1f2a3b4c5',
+    'ps aux | grep -E "root|www-data"',
+    'diff config.backup config.current',
+    'ufw deny from 10.0.0.44 to any',
+    './exploit.py --target localhost --port 8080',
+  ];
+  for(let i=0;i<26;i++){
+    const el=document.createElement('span');
+    el.className='bgfx-item';
+    el.textContent=cmds[i%cmds.length];
+    el.style.left=(Math.random()*91)+'%';
+    const dur=38+Math.random()*38;
+    el.style.animationDuration=dur.toFixed(1)+'s';
+    el.style.animationDelay=(-Math.random()*dur).toFixed(1)+'s';
+    el.style.opacity=(0.032+Math.random()*0.038).toFixed(3);
+    container.appendChild(el);
+  }
+})();
+
+/* ---------- boot sequence ---------- */
+const BOOT_LINES=[
+  {c:'LAUNCH & DEFEND v1.0 // KERNEL INIT',s:null,t:null},
+  {c:'LOADING PATH MODULES ...............',s:'bok',t:'[OK]'},
+  {c:'MOUNTING THREAT SIMULATION .........',s:'bok',t:'[OK]'},
+  {c:'VERIFYING USER SESSION .............',s:'bwt',t:'[WAIT]'},
+  {c:'CALIBRATING RISK METRICS ...........',s:'bok',t:'[OK]'},
+  {c:'LOADING DECISION TREE ..............',s:'bok',t:'[OK]'},
+  {c:'ACCESS GRANTED',s:null,t:null,flicker:true},
+];
+const BOOT_STEP=230;
+const BOOT_MIN=200+BOOT_LINES.length*BOOT_STEP+600;
+
+let _bootDone=false,_bootData=null;
+function _finishBoot(){
+  if(!_bootDone||!_bootData)return;
+  const el=document.getElementById('boot');
+  el.classList.add('done');
+  setTimeout(()=>{el.style.display='none';},500);
+  const[idx,user]=_bootData;
+  PATHS=idx.paths;USER=user;
+  if(USER)toPathSelect();else{UI.screen='login';render();}
+}
+
+(function(){
+  const log=document.getElementById('bootLog');
+  const timer=document.getElementById('bootTimer');
+  const t0=Date.now();
+  const iv=setInterval(()=>{
+    const s=((Date.now()-t0)/1000).toFixed(1);
+    timer.textContent='[SYS] '+s+'s ELAPSED';
+  },100);
+  BOOT_LINES.forEach((l,i)=>{
+    const div=document.createElement('div');
+    div.className='boot-line';
+    const cc=l.flicker?'bgr text-flicker':'bc';
+    const tag=l.t?`<span class="${l.s}">${l.t}</span>`:'';
+    div.innerHTML=`<span class="bp">></span><span class="${cc}">${l.c}</span>${tag}`;
+    log.appendChild(div);
+    setTimeout(()=>div.classList.add('show'),200+i*BOOT_STEP);
+  });
+  setTimeout(()=>{clearInterval(iv);_bootDone=true;_finishBoot();},BOOT_MIN);
+})();
+
 Promise.all([
   fetch('js/index.json').then(r=>r.json()),
   fetch('/api/me').then(r=>r.ok?r.json():null).catch(()=>null)
-]).then(([idx,user])=>{PATHS=idx.paths;USER=user;if(USER)toPathSelect();else{UI.screen='login';render();}});
+]).then(result=>{_bootData=result;_finishBoot();});

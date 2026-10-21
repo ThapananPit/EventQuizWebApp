@@ -6,10 +6,19 @@
 <title>Launch &amp; Defend — ออเดอร์ 1 บาท</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;500;700&family=Orbitron:wght@600;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@600;800&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+<div id="bgfx" aria-hidden="true"></div>
+<div id="boot" aria-hidden="true">
+  <div class="boot-hdr">
+    <span class="boot-brand">LAUNCH <b>&amp;</b> DEFEND <b>//</b> SYSTEM BOOT</span>
+    <span class="cursor-blink">_</span>
+  </div>
+  <div class="boot-log" id="bootLog"></div>
+  <div class="boot-foot"><span id="bootTimer">[SYS] INITIALIZING</span></div>
+</div>
 <div class="wrap" id="app"></div>
 <div class="idle" id="idle" role="alert"><div class="in"><span id="idleMsg"></span><button class="secondary" style="width:auto" id="idleBtn">ยังเล่นอยู่</button></div></div>
 <div class="sr" aria-live="polite" id="live"></div>

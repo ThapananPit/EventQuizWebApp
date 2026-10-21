@@ -5,12 +5,6 @@ import { sign, verify } from 'hono/jwt'
 const app = new Hono()
 
 
-// TEMP DEBUG
-app.onError((err, c) => {
-  console.error(err)
-  return c.text(`CRASH DETAILS: ${err.message}\n\nSTACK: ${err.stack}`, 500)
-})
-
 
 const COOKIE = 'ld_sess'
 const STATE_COOKIE = 'ld_state'
@@ -80,17 +74,6 @@ app.get('/auth/google', async (c) => {
   )
   setCookie(c, COOKIE, token, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: TTL, path: '/' })
   return c.redirect('/')
-})
-
-app.get('/debug-session', async (c) => {
-  const raw = getCookie(c, COOKIE)
-  if (!raw) return c.json({ status: 'no_cookie' })
-  try {
-    const decoded = await verify(raw, c.env.SESSION_SECRET)
-    return c.json({ status: 'ok', decoded })
-  } catch (e) {
-    return c.json({ status: 'verify_failed', error: e.message })
-  }
 })
 
 app.get('/api/me', async (c) => {
