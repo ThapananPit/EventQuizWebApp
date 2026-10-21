@@ -2,6 +2,9 @@ name = "launch-and-defend"
 compatibility_date = "2024-09-23"
 main = "worker.js"
 
+[alias]
+"hono/jwt" = "./node_modules/hono/dist/middleware/jwt/index.js"
+
 [assets]
 directory = "."
 

@@ -11,4 +11,4 @@ functions
 .gitignore
 .github
 .claude
-js/paths/*.json
+js/paths/**/*.json

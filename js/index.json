@@ -2,19 +2,19 @@
  "paths": [
   {
    "id": "a",
-   "title": "ร้านค้าออนไลน์ที่คุณเขียนเอง"
+   "title": { "th": "ร้านค้าออนไลน์ที่คุณเขียนเอง", "en": "The online shop you built" }
   },
   {
    "id": "b",
-   "title": "เว็บลงทะเบียนกิจกรรมของชมรม"
+   "title": { "th": "เว็บลงทะเบียนกิจกรรมของชมรม", "en": "The club event registration site" }
   },
   {
    "id": "c",
-   "title": "เว็บขายบัตรคอนเสิร์ต"
+   "title": { "th": "เว็บขายบัตรคอนเสิร์ต", "en": "The concert ticket platform" }
   },
   {
    "id": "d",
-   "title": "แอปแชตสำหรับนักเรียน"
+   "title": { "th": "แอปแชตสำหรับนักเรียน", "en": "The student chat app" }
   }
  ]
 }

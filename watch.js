@@ -1,20 +1,22 @@
 const fs = require('fs');
 const path = require('path');
 
-const pathsDir = path.join(__dirname, 'js/paths');
+const langs = ['th', 'en'];
 
-function encodeFile(file) {
-  const src = path.join(pathsDir, file);
-  const dst = path.join(pathsDir, file.replace('.json', '.b64'));
+function encodeFile(lang, file) {
+  const dir = path.join(__dirname, 'js/paths', lang);
+  const src = path.join(dir, file);
+  const dst = path.join(dir, file.replace('.json', '.b64'));
   fs.writeFileSync(dst, Buffer.from(fs.readFileSync(src, 'utf8')).toString('base64'), 'utf8');
-  console.log(`[watch] encoded: ${file} → ${file.replace('.json', '.b64')}`);
+  console.log(`[watch] encoded: ${lang}/${file} → ${lang}/${file.replace('.json', '.b64')}`);
 }
 
-const files = fs.readdirSync(pathsDir).filter(f => f.endsWith('.json'));
-files.forEach(encodeFile);
-
-fs.watch(pathsDir, (event, filename) => {
-  if (filename && filename.endsWith('.json')) encodeFile(filename);
+langs.forEach(lang => {
+  const dir = path.join(__dirname, 'js/paths', lang);
+  if (!fs.existsSync(dir)) return;
+  fs.readdirSync(dir).filter(f => f.endsWith('.json')).forEach(f => encodeFile(lang, f));
+  fs.watch(dir, (event, filename) => {
+    if (filename && filename.endsWith('.json')) encodeFile(lang, filename);
+  });
+  console.log(`[watch] watching js/paths/${lang}/*.json`);
 });
-
-console.log('[watch] watching js/paths/*.json for changes...');

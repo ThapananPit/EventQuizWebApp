@@ -1,4 +1,4 @@
 .claude
-js/paths/*.b64
+js/paths/**/*.b64
 RedLinerReference.zip
 RedLinerReference/

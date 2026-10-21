@@ -1,12 +1,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const pathsDir = path.join(__dirname, 'js/paths');
-const files = fs.readdirSync(pathsDir).filter(f => f.endsWith('.json'));
+const langs = ['th', 'en'];
 
-files.forEach(file => {
-  const src = path.join(pathsDir, file);
-  const dst = path.join(pathsDir, file.replace('.json', '.b64'));
-  fs.writeFileSync(dst, Buffer.from(fs.readFileSync(src, 'utf8')).toString('base64'), 'utf8');
-  console.log(`encoded: ${file} → ${file.replace('.json', '.b64')}`);
+langs.forEach(lang => {
+  const dir = path.join(__dirname, 'js/paths', lang);
+  if (!fs.existsSync(dir)) return;
+  fs.readdirSync(dir).filter(f => f.endsWith('.json')).forEach(file => {
+    const src = path.join(dir, file);
+    const dst = path.join(dir, file.replace('.json', '.b64'));
+    fs.writeFileSync(dst, Buffer.from(fs.readFileSync(src, 'utf8')).toString('base64'), 'utf8');
+    console.log(`encoded: ${lang}/${file} → ${lang}/${file.replace('.json', '.b64')}`);
+  });
 });
