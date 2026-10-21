@@ -2,7 +2,7 @@
   "name": "launch-and-defend",
   "private": true,
   "scripts": {
-    "build": "node encode.js && rm js/paths/*.json"
+    "build": "node encode.js"
   },
   "dependencies": {
     "hono": "^4.6.0"
