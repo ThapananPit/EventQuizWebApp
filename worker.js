@@ -78,7 +78,22 @@ app.get('/auth/google', async (c) => {
 
 app.get('/api/me', async (c) => {
   const s = await getSession(c)
-  return c.json(s ? { id: s.sub, email: s.email, name: s.name } : null)
+  if (!s) return c.json(null)
+  const user = await c.env.DB.prepare(
+    'SELECT id, email, name, school, age, referral FROM users WHERE id = ?'
+  ).bind(s.sub).first()
+  return c.json(user ?? null)
+})
+
+app.post('/api/profile', async (c) => {
+  const s = await getSession(c)
+  if (!s) return c.json({ error: 'unauthorized' }, 401)
+  const { school, age, referral } = await c.req.json()
+  if (!school || !age || !referral) return c.json({ error: 'missing fields' }, 400)
+  await c.env.DB.prepare(
+    'UPDATE users SET school=?, age=?, referral=? WHERE id=?'
+  ).bind(school, age, referral, s.sub).run()
+  return c.json({ ok: true })
 })
 
 app.post('/api/logout', (c) => {

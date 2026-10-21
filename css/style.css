@@ -236,6 +236,18 @@ a.primary{text-decoration:none}
 .idle.on{display:block}
 .idle .in{max-width:720px;margin:0 auto;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
 
+/* text input field */
+.field{
+  display:block;width:100%;
+  background:var(--surface2);border:1px solid var(--line);border-radius:0;
+  padding:10px 12px;font:inherit;color:var(--text);font-size:15px;
+  margin-top:6px;
+}
+.field:focus{outline:none;border-color:var(--purple);}
+.field::placeholder{color:var(--muted);}
+input[type=number].field{-moz-appearance:textfield;}
+input[type=number].field::-webkit-inner-spin-button{-webkit-appearance:none;}
+
 /* background floating CLI text */
 #bgfx{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden;}
 .bgfx-item{

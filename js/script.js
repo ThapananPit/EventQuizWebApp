@@ -161,6 +161,56 @@ function renderLogin(){
   </section>
   <a class="primary" href="/auth/google" style="display:block;text-align:center;text-decoration:none">เข้าสู่ระบบด้วย Google</a>`;
 }
+function renderQuestionnaire(){
+  const REFS=[
+    {id:'social',label:'Social Media'},
+    {id:'wom',label:'Word of Mouth'},
+    {id:'events',label:'Events & Community'},
+    {id:'other',label:'Other'},
+  ];
+  app.innerHTML=`
+  <div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step">ข้อมูลผู้เล่น</span></div>
+  <header class="hero">
+    <h1 class="logo" data-focus tabindex="-1">PLAYER <span>PROFILE</span></h1>
+    <p class="tagline">กรอกข้อมูลสักครู่ก่อนเริ่มเล่น</p>
+  </header>
+  <section class="card scn">
+    <span class="tag">ลงทะเบียนครั้งแรก</span>
+    <h2>ข้อมูลพื้นฐาน</h2>
+    <p>ใช้เพื่อการวิจัยเท่านั้น ไม่มีการเปิดเผยต่อสาธารณะ</p>
+  </section>
+  <section class="card">
+    <div class="sub">โรงเรียน / มหาวิทยาลัย</div>
+    <input class="field" id="qSchool" type="text" placeholder="ชื่อสถาบันการศึกษา..." autocomplete="off" maxlength="120">
+    <div class="sub" style="margin-top:16px">อายุ</div>
+    <input class="field" id="qAge" type="number" min="10" max="99" placeholder="อายุของคุณ">
+    <div class="sub" style="margin-top:16px">รู้จักสาขาวิศวกรรมความมั่นคงไซเบอร์ได้อย่างไร?</div>
+    <div class="choices" id="qRef" style="margin-top:8px">`+
+    REFS.map((o,i)=>`<button class="choice" data-ref="${o.id}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${o.label}</span></button>`).join('')+
+    `</div>
+  </section>
+  <button class="primary" id="btnProfile" disabled>บันทึกและเริ่มเล่น</button>`;
+
+  let selRef=null;
+  const schoolEl=$('#qSchool'),ageEl=$('#qAge'),btn=$('#btnProfile');
+  const check=()=>{btn.disabled=!(schoolEl.value.trim()&&ageEl.value&&selRef);};
+  schoolEl.oninput=check;ageEl.oninput=check;
+  app.querySelectorAll('#qRef .choice').forEach(b=>{
+    b.onclick=()=>{
+      app.querySelectorAll('#qRef .choice').forEach(x=>x.classList.remove('scn'));
+      b.classList.add('scn');selRef=b.dataset.ref;check();
+    };
+  });
+  btn.onclick=async()=>{
+    btn.disabled=true;btn.textContent='กำลังบันทึก...';
+    try{
+      const r=await fetch('/api/profile',{method:'POST',headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({school:schoolEl.value.trim(),age:parseInt(ageEl.value),referral:selRef})});
+      if(r.ok){USER.school=schoolEl.value.trim();USER.age=parseInt(ageEl.value);USER.referral=selRef;toPathSelect();}
+      else{btn.disabled=false;btn.textContent='บันทึกและเริ่มเล่น';}
+    }catch{btn.disabled=false;btn.textContent='บันทึกและเริ่มเล่น';}
+  };
+}
 function renderPathSelect(){
   app.innerHTML=`
   <div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step"></span></div>
@@ -179,6 +229,7 @@ function begin(){
 }
 function render(){
   if(UI.screen==='login')renderLogin();
+  else if(UI.screen==='questionnaire')renderQuestionnaire();
   else if(UI.screen==='select')renderPathSelect();
   else if(UI.screen==='start')renderStart();
   else if(UI.screen==='play')renderPlay();
@@ -468,7 +519,10 @@ function _finishBoot(){
   setTimeout(()=>{el.style.display='none';},500);
   const[idx,user]=_bootData;
   PATHS=idx.paths;USER=user;
-  if(USER)toPathSelect();else{UI.screen='login';render();}
+  if(USER){
+    if(!USER.school||!USER.age||!USER.referral){UI.screen='questionnaire';render();}
+    else toPathSelect();
+  }else{UI.screen='login';render();}
 }
 
 (function(){
