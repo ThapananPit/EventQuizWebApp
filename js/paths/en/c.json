@@ -1,26 +1,26 @@
 {
- "title": "เว็บขายบัตรคอนเสิร์ต",
+ "title": "The Concert Ticket Sales Website",
  "START_USERS": 1000,
  "DEAD": 200,
  "MAXU": 1200,
  "NODES": {
   "start": {
-   "title": "เว็บล่มก่อนเปิดขาย 2 นาที",
-   "tag": "ทราฟฟิกถล่ม (DDoS)",
+   "title": "Site Crashes 2 Minutes Before Sales Open",
+   "tag": "Traffic Flood (DDoS)",
    "best": "a",
-   "bestWhy": "เปิดตัวกรองทราฟฟิกเพื่อหยุดการถล่มก่อน แล้วเลื่อนเวลาขายอย่างโปร่งใส จะเสียแฟนน้อยกว่าการเดาแก้",
-   "text": "คุณทำเว็บขายบัตรคอนเสิร์ตให้วงดนตรีของมหาวิทยาลัย การขายเปิด 10:00 น. แต่ตอน 9:58 น. ทราฟฟิก (จำนวนคำขอที่เข้ามาที่เว็บ) พุ่งขึ้น 50 เท่า มาจากเครื่องหลายพันเครื่องทั่วโลก เว็บล่ม แฟนตัวจริง 1,000 คนที่รออยู่เข้าไม่ได้ คุณจะทำอะไรก่อน?",
+   "bestWhy": "Activate traffic filtering to stop the flood first, then delay the sale opening transparently. That loses fewer fans than guessing your way through fixes.",
+   "text": "You run the ticket sales website for a university band. Sales open at 10:00 AM, but at 9:58 AM traffic (the number of requests hitting the site) spikes 50x, coming from thousands of machines worldwide. The site crashes. 1,000 genuine fans waiting to buy can't get in. What do you do first?",
    "source": "Cloudflare Learning Center: What is a DDoS attack?; CISA: Understanding and Responding to DDoS Attacks",
    "choices": [
     {
      "id": "a",
-     "label": "เปิดบริการกรองทราฟฟิก (DDoS protection) ของผู้ให้บริการโฮสติ้ง แล้วประกาศเลื่อนเวลาขายออกไปก่อน",
+     "label": "Enable the hosting provider's DDoS protection service, then announce a postponement of the sale opening.",
      "q": "good",
-     "out": "คุณเลื่อนการขายไปราว 6 ชั่วโมง แฟนบางคนหงุดหงิด แต่ทราฟฟิกปลอมถูกกรองทิ้ง เว็บกลับมาหายใจได้ และคุณมีเวลาอ่าน log ว่าเกิดอะไรขึ้น",
+     "out": "You delay the sale by about 6 hours. Some fans are frustrated, but fake traffic gets filtered out, the site recovers, and you have time to read the logs and understand what happened.",
      "u": [
       [
        -60,
-       "เลื่อนขาย 6 ชั่วโมง แฟนบางส่วนไม่รอ"
+       "Sale delayed 6 hours — some fans don't wait."
       ]
      ],
      "trust": 5,
@@ -29,18 +29,18 @@
       "speed": -1,
       "long": 1
      },
-     "lesson": "การโจมตีแบบ DDoS คือการส่งคำขอปลอมจำนวนมหาศาลจนเว็บรับไม่ไหว ทางแก้คือกรองทราฟฟิกปลอมทิ้งก่อนถึงเว็บ แล้วค่อยหาว่าใครทำและเพื่ออะไร",
+     "lesson": "A DDoS attack floods a site with fake requests until it can't respond. The fix is filtering out the fake traffic before it reaches the site, then figuring out who did it and why.",
      "next": "investigate"
     },
     {
      "id": "b",
-     "label": "รีสตาร์ทเซิร์ฟเวอร์ซ้ำไปเรื่อยๆ จนกว่าจะเข้าได้",
+     "label": "Keep restarting the server until the site comes back up.",
      "q": "bad",
-     "out": "เว็บกลับมาได้ไม่กี่วินาทีแล้วล่มอีก แฟนกดรีเฟรชกันทั้งวัน และคุณยังไม่รู้เลยว่าทราฟฟิกมาจากไหน",
+     "out": "The site comes back for a few seconds then crashes again. Fans keep refreshing all day, and you still have no idea where the traffic is coming from.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -48,18 +48,18 @@
       "speed": 2,
       "long": -1
      },
-     "lesson": "การรีสตาร์ทแก้อาการ ไม่ได้แก้ต้นเหตุ ตราบใดที่ทราฟฟิกปลอมยังวิ่งเข้ามา เว็บก็จะล่มซ้ำ",
+     "lesson": "Restarting treats the symptom, not the cause. As long as fake traffic keeps hitting the site, it will keep crashing.",
      "next": "repeat"
     },
     {
      "id": "c",
-     "label": "บล็อก IP 10 อันดับแรกที่ส่งคำขอมากที่สุด เพราะคิดว่ามีคนทำอยู่คนเดียว",
+     "label": "Block the top 10 IPs sending the most requests — assuming it's one person doing this.",
      "q": "mid",
-     "out": "ทราฟฟิกลดลงนิดเดียว เพราะคำขอมาจากเครื่องหลายพันเครื่อง และ IP ที่บล็อกไปบางอันเป็นของหอพักนักศึกษาที่แฟนตัวจริงใช้อยู่",
+     "out": "Traffic drops only slightly, because requests are coming from thousands of machines. And some of the blocked IPs belong to student dormitories where real fans are.",
      "u": [
       [
        -20,
-       "แฟนบางส่วนถูกบล็อกโดยไม่ตั้งใจ"
+       "Some real fans accidentally blocked."
       ]
      ],
      "axes": {
@@ -69,18 +69,18 @@
      "set": {
       "wrongDx": true
      },
-     "lesson": "ตั้งสมมติฐานจากหลักฐาน DDoS มาจากเครื่องจำนวนมากที่ถูกควบคุม (botnet) บล็อกทีละ IP ไม่ทัน และอาจบล็อกผู้ใช้จริงโดยไม่ตั้งใจ",
+     "lesson": "Base your hypothesis on evidence. A DDoS comes from large numbers of controlled machines (a botnet). Blocking individual IPs doesn't work and may block real users.",
      "next": "repeat"
     },
     {
      "id": "d",
-     "label": "ยกเลิกการขายรอบนี้ แล้วย้ายเว็บไปเซิร์ฟเวอร์ใหญ่ที่สุดที่หาได้ และเขียนระบบขายใหม่ทั้งหมด",
+     "label": "Cancel this sale round, move the site to the biggest server you can find, and rewrite the ticketing system from scratch.",
      "q": "mid",
-     "out": "คุณใช้เวลาสองสัปดาห์สร้างระบบใหม่ ค่าเซิร์ฟเวอร์แพงขึ้นมาก แฟนจำนวนมากหมดความสนใจระหว่างรอ แต่ระบบใหม่รับคนได้เยอะกว่าเดิมมาก",
+     "out": "You spend two weeks building a new system. Server costs jump significantly, many fans lose interest while waiting — but the new system can handle far more load.",
      "u": [
       [
        -300,
-       "ยกเลิกการขาย แฟนจำนวนมากหายไป"
+       "Sale cancelled — many fans lost."
       ]
      ],
      "trust": -5,
@@ -92,28 +92,28 @@
      "set": {
       "rewrote": true
      },
-     "lesson": "เซิร์ฟเวอร์ใหญ่ขึ้นช่วยรับโหลดได้ แต่ DDoS ขนาดใหญ่ส่งทราฟฟิกได้มากกว่าเซิร์ฟเวอร์ใดๆ เสมอ ทางที่คุ้มกว่าคือกรองทราฟฟิกปลอม",
+     "lesson": "A bigger server can handle more load, but a large-scale DDoS can always send more traffic than any single server can absorb. Filtering fake traffic is the more cost-effective solution.",
      "next": "rewrite"
     }
    ]
   },
   "investigate": {
-   "title": "ใครถล่มเว็บ และเพื่ออะไร",
-   "tag": "วิเคราะห์เหตุ",
+   "title": "Who Crashed the Site and Why?",
+   "tag": "Incident Analysis",
    "best": "a",
-   "bestWhy": "ต้นเหตุมีสองจุดพร้อมกัน ต้องปิดทั้งสอง: กรองทราฟฟิกปลอม และจำกัดบอทซื้อบัตรที่ฝั่ง Server",
-   "text": "จาก log คุณพบว่าการถล่มเว็บเป็นแค่ฉากบังหน้า ระหว่างที่แฟนตัวจริงเข้าไม่ได้ บอท (โปรแกรมอัตโนมัติ) ของนักเก็งกำไรบัตรยิงคำสั่งซื้อตรงเข้าระบบ ได้บัตรไป 40% ของทั้งหมด และเริ่มขายต่อในราคา 5 เท่า ต้นเหตุมีสองจุด (1) ยังไม่มีการกรองทราฟฟิกปลอม และ (2) ระบบไม่จำกัดจำนวนบัตรต่อคน และไม่มีการตรวจว่าผู้ซื้อเป็นคนจริงหรือบอท คุณจะแก้อย่างไร?",
+   "bestWhy": "There are two simultaneous root causes — both must be closed: filter fake traffic and enforce purchase limits server-side.",
+   "text": "From the logs you find that the crash was just a cover. While real fans were locked out, bots (automated programs) run by ticket scalpers fired purchase commands directly at the system and grabbed 40% of all tickets, which are now being resold on social media at 5x the original price. There are two root causes: (1) there was no traffic filtering in place, and (2) the system has no per-person ticket limit and no way to tell whether a buyer is human or a bot. How do you fix this?",
    "source": "OWASP Automated Threats to Web Applications (Scalping); CISA: Understanding and Responding to DDoS Attacks",
    "choices": [
     {
      "id": "a",
-     "label": "เปิดตัวกรองทราฟฟิกถาวร ตั้งระบบคิว จำกัดบัตรคนละ 4 ใบ และตรวจว่าเป็นคนจริงที่ฝั่ง Server แล้วยกเลิกออเดอร์ของบอทก่อนเปิดขายใหม่",
+     "label": "Enable permanent traffic filtering, set up a queue, limit tickets to 4 per person, and verify buyers are human at the Server — then cancel the bot orders before reopening sales.",
      "q": "good",
-     "out": "คุณใช้เวลาหนึ่งวันตั้งค่าทั้งหมด ยกเลิกออเดอร์บอทแล้วคืนบัตรเข้าระบบ จากนั้นลองยิงคำสั่งซื้อแบบบอทด้วยตัวเอง ปรากฏว่าถูกปฏิเสธทั้งหมด",
+     "out": "You spend one day setting everything up, cancel the bot orders and return the tickets to the pool, then try firing bot-style purchase commands yourself — the system rejects all of them.",
      "u": [
       [
        -20,
-       "เลื่อนขายเพิ่มอีกครึ่งวัน"
+       "Sale delayed another half day."
       ]
      ],
      "trust": 10,
@@ -126,18 +126,18 @@
       "rulesFixed": true,
       "serverMoney": true
      },
-     "lesson": "ป้องกันให้ครบทั้งสองชั้น: กรองทราฟฟิกปลอมไม่ให้เว็บล่ม และบังคับกติกาการซื้อที่ Server เพราะบอทไม่ได้ใช้หน้าเว็บแบบคน",
+     "lesson": "Protect at both layers: filter fake traffic so the site doesn't crash, and enforce purchase rules at the Server — because bots don't use your webpage the way humans do.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "เปิดตัวกรองทราฟฟิกก่อน เรื่องบอทซื้อบัตรค่อยว่ากันทีหลัง",
+     "label": "Enable traffic filtering first — deal with the ticket-buying bots later.",
      "q": "mid",
-     "out": "เว็บไม่ล่มแล้ว คุณเปิดขายใหม่ได้เร็ว แต่ระบบยังไม่จำกัดจำนวนบัตรต่อคน และไม่ตรวจว่าเป็นบอท",
+     "out": "The site no longer crashes. You reopen sales quickly, but there's still no per-person ticket limit and no bot detection.",
      "u": [
       [
        -10,
-       "เลื่อนขายสั้นๆ"
+       "Brief sale delay."
       ]
      ],
      "trust": 5,
@@ -149,18 +149,18 @@
      "set": {
       "serverMoney": true
      },
-     "lesson": "การแก้ครึ่งทางทำให้รู้สึกว่าจบแล้ว ทั้งที่ปัญหาจริงที่ผู้โจมตีต้องการ (บัตร) ยังเปิดอยู่",
+     "lesson": "A half-fix creates a false sense of completion — but the real goal of the attack (getting tickets) is still achievable.",
      "next": "partialClient"
     },
     {
      "id": "c",
-     "label": "จำกัดบัตรคนละ 4 ใบ แล้วรีบแก้โค้ดบนเว็บจริงทันทีโดยไม่ทดสอบก่อน เพราะแฟนรออยู่",
+     "label": "Limit tickets to 4 per person, then push the code change to the live site immediately without testing — fans are waiting.",
      "q": "mid",
-     "out": "ข้อจำกัดบัตรใช้ได้ คุณเปิดขายใหม่ได้เร็ว แต่โค้ดที่แก้สดๆ ยังไม่ผ่านการทดสอบ และยังไม่ได้เปิดตัวกรองทราฟฟิก",
+     "out": "The ticket limit works. You reopen sales quickly, but the untested code hasn't been properly reviewed, and traffic filtering still isn't enabled.",
      "u": [
       [
        -10,
-       "เลื่อนขายสั้นๆ"
+       "Brief sale delay."
       ]
      ],
      "axes": {
@@ -170,22 +170,22 @@
      "set": {
       "rulesFixed": true
      },
-     "lesson": "ความรีบไม่ควรเป็นเหตุผลให้ข้ามการทดสอบ ให้ลองกับระบบสำเนาก่อนแล้วค่อยขึ้นของจริง",
+     "lesson": "Being in a rush shouldn't be a reason to skip testing. Try the fix on a staging copy first, then push it live.",
      "next": "partialRules"
     }
    ]
   },
   "partialClient": {
-   "title": "บอทกวาดบัตรรอบสอง",
-   "tag": "โจมตีซ้ำ: บอทเก็งกำไร",
+   "title": "Bots Sweep the Second Round",
+   "tag": "Repeat Attack: Scalper Bots",
    "best": "a",
-   "bestWhy": "กติกาการซื้อต้องบังคับที่ Server การซ่อนหรือตรวจที่หน้าเว็บ บอทข้ามได้เสมอ",
-   "text": "ห้าวันต่อมา การขายรอบสองเปิด เว็บไม่ล่มแล้ว แต่บอทกวาดบัตรไป 60% ภายในนาทีแรก บัตรถูกขายต่อในโซเชียลราคา 5 เท่า แฟนตัวจริงโกรธมากและติดแท็กวงดนตรีต่อว่า",
+   "bestWhy": "Purchase rules must be enforced at the Server. Hiding or checking things on the webpage — bots can always bypass that.",
+   "text": "Five days later, the second round of sales opens. The site doesn't crash this time — but bots sweep 60% of all tickets within the first minute, which are immediately listed on social media at 5x the price. Genuine fans are furious and start tagging the band.",
    "enter": {
     "u": [
      [
       -90,
-      "บอทกวาดบัตร แฟนตัวจริงซื้อไม่ได้"
+      "Bots sweep tickets — real fans can't buy."
      ]
     ],
     "damage": 10
@@ -194,13 +194,13 @@
    "choices": [
     {
      "id": "a",
-     "label": "บังคับจำกัดบัตรต่อคนและตรวจว่าเป็นคนจริงที่ฝั่ง Server ตั้งระบบคิว และยกเลิกออเดอร์ที่มาจากบอท",
+     "label": "Enforce per-person ticket limits and bot detection at the Server, set up a queue, and cancel orders that came from bots.",
      "q": "good",
-     "out": "คุณยกเลิกออเดอร์ที่ผิดปกติ แล้วเปิดขายบัตรที่คืนมาใหม่ผ่านคิว ครั้งนี้บอทถูกปฏิเสธทั้งหมด แฟนตัวจริงได้บัตร",
+     "out": "You cancel the suspicious orders, re-release those tickets through the queue, and this time all bot attempts are rejected. Real fans get their tickets.",
      "u": [
       [
        -15,
-       "ปิดขายเพื่อแก้ไข"
+       "Sales paused to apply the fix."
       ]
      ],
      "trust": 5,
@@ -211,18 +211,18 @@
      "set": {
       "rulesFixed": true
      },
-     "lesson": "กติกาที่สำคัญ (เช่น จำนวนบัตรต่อคน) ต้องตัดสินที่ Server เพราะบอทไม่ได้ใช้หน้าเว็บของคุณ มันส่งคำขอตรงเข้าระบบ",
+     "lesson": "Important rules (like tickets per person) must be enforced at the Server — because bots don't use your webpage. They send purchase requests directly to the system.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "ซ่อนปุ่ม \"ซื้อ\" ไว้จนถึงเวลาเปิดขาย และเพิ่มโค้ดในหน้าเว็บให้กดได้ทีละครั้ง",
+     "label": "Hide the buy button until sales open, and add code on the webpage to allow only one click at a time.",
      "q": "bad",
-     "out": "หน้าเว็บดูเรียบร้อยขึ้น แต่บอทไม่ได้กดปุ่มบนหน้าจอ มันส่งคำสั่งซื้อตรงเข้าระบบ และข้ามการตรวจไปภายในชั่วโมงเดียว",
+     "out": "The webpage looks cleaner, but bots don't click buttons on a screen. They send purchase commands directly to the system and bypass these checks within the hour.",
      "u": [
       [
        -30,
-       "บอทข้ามการตรวจที่หน้าเว็บสำเร็จ"
+       "Bots bypass the client-side check successfully."
       ]
      ],
      "damage": 5,
@@ -231,38 +231,38 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "การตรวจที่หน้าเว็บ (ฝั่ง client) ช่วยประสบการณ์ผู้ใช้ แต่ไม่ใช่ความปลอดภัย เพราะผู้โจมตีควบคุมฝั่งนั้นได้ทั้งหมด",
+     "lesson": "Client-side checks (webpage checks) improve the user experience but are not security — attackers have full control over their own client.",
      "next": "repeat"
     }
    ]
   },
   "partialRules": {
-   "title": "อีเมลยืนยันส่งผิดคน",
-   "tag": "โจมตีซ้ำ: โค้ดที่ไม่ได้ทดสอบ",
+   "title": "Confirmation Emails Sent to the Wrong People",
+   "tag": "Repeat Attack: Untested Code",
    "best": "a",
-   "bestWhy": "แก้ให้ครบทันที ตรวจว่าข้อมูลอะไรหลุดไปถึงใคร และแจ้งผู้ได้รับผลกระทบ",
-   "text": "ห้าวันต่อมา การขายรอบสองเปิด เว็บถูกถล่มอีกครั้งเพราะยังไม่มีตัวกรอง และในความวุ่นวาย โค้ดที่แก้สดๆ เกิดข้อผิดพลาด ส่งอีเมลยืนยันการซื้อสลับคน ผู้ซื้อ 2,100 คนได้เห็นชื่อ เบอร์โทร และเลขที่นั่งของคนอื่น",
+   "bestWhy": "Fix everything completely, check what data was exposed and to whom, and notify all affected people.",
+   "text": "Five days later, the second round of sales opens. The site gets flooded again because traffic filtering still isn't in place, and in the chaos, the untested code change causes a bug: confirmation emails are sent to the wrong people. 2,100 buyers each see another person's name, phone number, and seat number.",
    "enter": {
     "u": [
      [
       -120,
-      "แฟนที่เห็นข้อมูลหลุดส่วนหนึ่งขอคืนบัตร"
+      "Fans who saw leaked data — some request refunds."
      ]
     ],
     "trust": -20,
     "damage": 35
    },
-   "source": "EU GDPR มาตรา 33–34 (การแจ้งเหตุข้อมูลรั่ว)",
+   "source": "EU GDPR Articles 33–34 (data breach notification)",
    "choices": [
     {
      "id": "a",
-     "label": "แก้โค้ดและเปิดตัวกรองทราฟฟิก ตรวจว่าอีเมลไหนไปถึงใคร แล้วแจ้งผู้ได้รับผลกระทบทุกคนตรงๆ พร้อมคำขอโทษ",
+     "label": "Fix the code and enable traffic filtering, check which emails went to whom, then notify all 2,100 affected buyers directly with an apology.",
      "q": "good",
-     "out": "คุณส่งอีเมลแจ้งทั้ง 2,100 คนว่าข้อมูลอะไรหลุดและควรระวังอะไร บางคนโกรธ แต่หลายคนขอบคุณที่บอกตรงๆ",
+     "out": "You email all 2,100 people explaining what data was exposed and what to watch out for. Some are angry, but many thank you for being upfront.",
      "u": [
       [
        -60,
-       "แฟนบางส่วนขอคืนบัตรหลังรับแจ้ง"
+       "Some fans request refunds after being notified."
       ]
      ],
      "trust": 15,
@@ -275,18 +275,18 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "การแจ้งผู้ได้รับผลกระทบตรงไปตรงมาเจ็บในระยะสั้น แต่ช่วยให้เขาป้องกันตัวเองได้ (กฎหมายคุ้มครองข้อมูลระดับสากลอย่าง GDPR ของสหภาพยุโรป กำหนดให้แจ้งหน่วยงานกำกับภายใน 72 ชั่วโมง และแจ้งผู้ได้รับผลกระทบเมื่อมีความเสี่ยงสูง)",
+     "lesson": "Notifying affected people honestly hurts in the short term, but it lets them protect themselves. (International data protection law such as the EU's GDPR requires notifying the supervisory authority within 72 hours and notifying affected individuals when the risk is high.)",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้โค้ดเงียบๆ ไม่ประกาศ เพราะคิดว่าคนคงไม่ได้สังเกต",
+     "label": "Fix the code quietly and don't announce it — you think people probably didn't notice.",
      "q": "bad",
-     "out": "ระบบกลับมาปกติ แต่คนที่ได้ข้อมูลของคนอื่นไปเริ่มถามในโซเชียลว่าทำไมได้อีเมลของคนแปลกหน้า",
+     "out": "The system returns to normal, but people who received someone else's data start asking on social media why they got a stranger's email.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -300,18 +300,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การเงียบไม่ได้ทำให้ปัญหาหาย มันแค่ซ่อนความเสียหายไว้ก่อนจะถูกค้นพบ และตอนนั้นความเชื่อใจจะเสียหนักกว่าเดิม",
+     "lesson": "Staying silent doesn't make the problem go away — it just hides the damage until it surfaces, and when it does, the trust loss will be far worse.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "ปิดการขาย แล้วจ้างผู้เชี่ยวชาญภายนอกตรวจทั้งระบบก่อนประกาศ",
+     "label": "Suspend sales and bring in an external expert to audit the whole system before making any announcement.",
      "q": "mid",
-     "out": "ผู้เชี่ยวชาญพบจุดผิดพลาดเพิ่มอีกสองจุดและยืนยันได้ว่าข้อมูลใดหลุด คุณประกาศพร้อมแผนแก้ที่ชัดเจน แต่ต้องปิดขายนานและเสียค่าใช้จ่าย",
+     "out": "The expert finds two more bugs and confirms exactly what data was exposed. You announce with a clear remediation plan, but sales have to stay suspended for a long time at significant cost.",
      "u": [
       [
        -150,
-       "ปิดขายนาน แฟนบางส่วนไม่รอ"
+       "Extended suspension — some fans don't wait."
       ]
      ],
      "trust": 10,
@@ -324,28 +324,28 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้เชี่ยวชาญภายนอกคุ้มค่าเมื่อไม่แน่ใจขอบเขตความเสียหาย แต่ต้องชั่งน้ำหนักกับเวลาที่บริการต้องหยุด",
+     "lesson": "External experts are worth it when you're unsure of the damage scope — but you need to weigh the cost against the time your service has to stay down.",
      "next": "wave2"
     }
    ]
   },
   "repeat": {
-   "title": "ล่มอีกรอบ",
-   "tag": "ต้นเหตุยังไม่ถูกแก้",
+   "title": "Crashed Again",
+   "tag": "Root Cause Still Not Fixed",
    "best": "a",
-   "bestWhy": "เมื่อโดนซ้ำ แปลว่าต้นเหตุยังอยู่ ต้องหยุด แก้ให้ครบ และสื่อสารตรงๆ",
-   "text": "การขายรอบใหม่ เว็บล่มอีกครั้งตั้งแต่นาทีแรก และบอทกวาดบัตรไปเกือบหมด แฟนตัวจริงไม่ได้บัตร ส่วนบัตรถูกขายต่อในโซเชียลราคาหลายเท่า คุณจะทำอย่างไร?",
+   "bestWhy": "Being hit again means the root cause is still there. Stop, fix everything properly, and communicate honestly.",
+   "text": "A new sale round opens. The site crashes from the first minute and bots sweep nearly all the tickets. Real fans get nothing, and the tickets show up on social media at many times the original price. What do you do?",
    "source": "CISA: Understanding and Responding to DDoS Attacks; OWASP Automated Threats to Web Applications",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดการขายชั่วคราว เปิดตัวกรองทราฟฟิก บังคับจำกัดบัตรและตรวจบอทที่ Server ยกเลิกออเดอร์บอท แล้วประกาศตรงๆ ว่าเกิดอะไรขึ้น",
+     "label": "Suspend sales, enable traffic filtering, enforce ticket limits and bot detection at the Server, cancel bot orders, then communicate openly about what happened.",
      "q": "good",
-     "out": "คุณแก้ทั้งสองจุดจนครบ ยกเลิกบัตรของบอท และประกาศตรงๆ แฟนเสียใจแต่ส่วนใหญ่เห็นว่าคุณรับผิดชอบ",
+     "out": "You fix both root causes completely, cancel the bot tickets, and make an honest announcement. Fans are upset, but most see that you're taking responsibility.",
      "u": [
       [
        -90,
-       "ปิดขายและเสียแฟนบางส่วนจากข่าว"
+       "Sales suspended — some fans lost from the news."
       ]
      ],
      "trust": 15,
@@ -360,18 +360,18 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "โดนซ้ำแปลว่ารอบแรกยังไม่ได้แก้ที่ต้นเหตุ ให้หยุด ทบทวนหลักฐาน แล้วแก้ให้ครบพร้อมสื่อสารตรงไปตรงมา",
+     "lesson": "Being attacked again means the first round didn't fix the root cause. Stop, review the evidence, fix everything completely, and communicate straightforwardly.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้ระบบให้ครบ แต่ไม่บอกใครว่าบัตรรอบก่อนตกไปอยู่กับบอท",
+     "label": "Fix the system completely, but don't tell anyone that the previous tickets ended up with bots.",
      "q": "bad",
-     "out": "ระบบปลอดภัยขึ้นจริง แต่แฟนที่ซื้อบัตรต่อจากนักเก็งกำไรในราคาแพงไม่รู้ว่าเกิดอะไรขึ้น",
+     "out": "The system is genuinely more secure — but fans who bought tickets from scalpers at inflated prices don't know what happened.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -386,18 +386,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การซ่อนเหตุไม่ได้ปกป้องผู้ใช้ มันแค่เลื่อนวันที่ความจริงถูกเปิดเผย",
+     "lesson": "Concealing an incident doesn't protect users — it only delays the day the truth comes out.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "แจกโค้ดส่วนลดและเพิ่มรอบการแสดง เพื่อดึงแฟนกลับ ไว้ค่อยแก้ระบบทีหลัง",
+     "label": "Give out discount codes and add more show dates to win fans back — fix the system later.",
      "q": "bad",
-     "out": "ยอดสั่งซื้อพุ่งทันที แต่บอทก็ได้ส่วนลดด้วย และกวาดบัตรรอบใหม่ไปพร้อมๆ กับแฟนจริง",
+     "out": "Orders spike immediately, but bots get the discount codes too, and they sweep the new round alongside real fans.",
      "u": [
       [
        60,
-       "โค้ดส่วนลดดึงแฟนบางส่วนกลับมา"
+       "Discount codes bring some fans back."
       ]
      ],
      "trust": -10,
@@ -406,22 +406,22 @@
       "speed": 2,
       "long": -2
      },
-     "lesson": "แก้ที่ภาพลักษณ์โดยไม่แก้ระบบคือการเลื่อนปัญหา มันกลับมาแรงกว่าเดิม",
+     "lesson": "Polishing your image without fixing the system just delays the problem — and it comes back harder.",
      "next": "END:bleeding"
     }
    ]
   },
   "rewrite": {
-   "title": "ระบบใหม่ ช่องใหม่",
-   "tag": "ช่องโหว่ใหม่จากการเร่งทำ",
+   "title": "New System, New Holes",
+   "tag": "New Vulnerabilities from a Rushed Build",
    "best": "a",
-   "bestWhy": "ปิดช่องแอดมินก่อนเปิดใช้จริง หลายชั้น (จำกัดการลองรหัส + ด่านที่สอง) ปลอดภัยกว่ารอให้เกิดเหตุ",
-   "text": "สองสัปดาห์ต่อมา ระบบขายบัตรใหม่เปิดตัว มีตัวกรองทราฟฟิก ระบบคิว และจำกัดบัตรต่อคนครบ แฟนบางส่วนกลับมาตามข่าว แต่ตอนเร่งทำ คุณลืมเปลี่ยนรหัสผ่านเริ่มต้นของหน้าแอดมิน และไม่ได้จำกัดจำนวนครั้งที่ล็อกอินผิด ตอนนี้มีบอทลองรหัสผ่านหน้าแอดมินราว 3,000 ครั้งต่อชั่วโมง",
+   "bestWhy": "Close the admin panel vulnerabilities before going live — multiple layers (login rate limiting + a second factor) are safer than waiting for something to go wrong.",
+   "text": "Two weeks later the new ticketing system launches. It has traffic filtering, a queue system, and per-person ticket limits. Some fans come back following the news. But in the rush, you forgot to change the admin panel's default password and didn't limit failed login attempts. A bot is now trying to guess the admin password about 3,000 times per hour.",
    "enter": {
     "u": [
      [
       120,
-      "แฟนบางส่วนกลับมาตามข่าวเปิดตัว"
+      "Some fans return following the relaunch news."
      ]
     ],
     "trust": 10,
@@ -430,17 +430,17 @@
      "serverMoney": true
     }
    },
-   "source": "CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น); NIST SP 800-63B (จำกัดการลองรหัส)",
+   "source": "CISA Secure by Design (no default passwords); NIST SP 800-63B (limit login attempts)",
    "choices": [
     {
      "id": "a",
-     "label": "เปลี่ยนรหัสเริ่มต้น เปิดยืนยันตัวตนสองขั้นตอน (2-step) ให้แอดมิน และจำกัดจำนวนครั้งที่ล็อกอินผิด",
+     "label": "Change the default password, enable two-factor authentication (2-step) for the admin account, and limit failed login attempts.",
      "q": "good",
-     "out": "บอทยังพยายามอยู่ แต่ถูกบล็อกหลังพยายามผิดไม่กี่ครั้ง และต่อให้เดารหัสถูกก็เข้าไม่ได้ถ้าไม่มีรหัสจากโทรศัพท์ของคุณ",
+     "out": "The bot keeps trying but gets blocked after just a few failed attempts — and even if it guesses the password right, it still can't get in without the code from your phone.",
      "u": [
       [
        20,
-       "แฟนมั่นใจเมื่อระบบนิ่ง"
+       "Fans feel confident as the system stays stable."
       ]
      ],
      "axes": {
@@ -450,18 +450,18 @@
      "set": {
       "mfa": true
      },
-     "lesson": "ป้องกันหลายชั้น (defence in depth): จำกัดการลองรหัส + ด่านที่สอง ทำให้รหัสผ่านที่อ่อนหรือหลุดไม่ใช่จุดพังจุดเดียว",
+     "lesson": "Defence in depth: rate limiting + a second factor means a weak or leaked password is no longer a single point of failure.",
      "next": "wave2_blocked"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนเฉพาะรหัสเริ่มต้นเป็นรหัสที่ยาวขึ้น",
+     "label": "Only change the default password to a longer one.",
      "q": "mid",
-     "out": "รหัสยาวช่วยได้มาก แต่บอทยังลองได้ไม่จำกัด และยังไม่มีด่านที่สองถ้ารหัสถูกหลอกขอไป",
+     "out": "A longer password helps a lot, but the bot can still try an unlimited number of times — and there's still no second factor if the password is phished.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -469,18 +469,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "รหัสผ่านที่แข็งแรงเป็นด่านแรกที่ดี แต่ไม่ควรเป็นด่านเดียว",
+     "lesson": "A strong password is a good first layer — but it shouldn't be the only layer.",
      "next": "wave2"
     },
     {
      "id": "c",
-     "label": "ยังไม่ทำตอนนี้ ต้องรีบเปิดขายรอบใหม่ก่อน",
+     "label": "Don't do it right now — need to open the new sale round first.",
      "q": "bad",
-     "out": "ยอดขายวันแรกดีมาก แต่คืนนั้นบอทเดารหัสแอดมินสำเร็จ",
+     "out": "First-day sales are great — but that night the bot successfully guesses the admin password.",
      "u": [
       [
        60,
-       "เปิดขายรอบใหม่ได้ผล"
+       "New sale round pays off."
       ]
      ],
      "axes": {
@@ -491,28 +491,28 @@
      "set": {
       "adminWeak": true
      },
-     "lesson": "ความเสี่ยงที่ยังไม่เกิดไม่ใช่ความเสี่ยงที่ไม่มี บอทที่ลองรหัสอยู่แล้วคือหลักฐานว่าระบบกำลังถูกเล็ง",
+     "lesson": "A risk that hasn't materialized yet is not a risk that doesn't exist. A bot actively guessing passwords is clear evidence the system is already being targeted.",
      "next": "takeover"
     }
    ]
   },
   "wave2": {
-   "title": "อีเมลปลอมจากระบบรับเงิน",
-   "tag": "ฟิชชิ่ง",
+   "title": "Fake Email from the Payment Processor",
+   "tag": "Phishing",
    "best": "a",
-   "bestWhy": "ตรวจจากช่องทางที่คุณเข้าเอง ไม่ใช่ลิงก์ในอีเมล และเพิ่มด่านที่สองให้บัญชีสำคัญ",
-   "text": "ผ่านไปราวหนึ่งสัปดาห์ ช่องเดิมถูกปิดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี คุณได้รับอีเมลที่อ้างว่ามาจากบริษัทรับชำระเงินที่เว็บใช้อยู่ แจ้งว่า \"พบรายการผิดปกติ บัญชีรับเงินของคุณจะถูกระงับใน 24 ชั่วโมงหากไม่ยืนยันตัวตน\" โลโก้และสำนวนดูเหมือนจริงมาก",
+   "bestWhy": "Check through a channel you navigate yourself — not a link in the email — and add a second factor to important accounts.",
+   "text": "About a week passes. The previous holes are closed, but the attacker changes tactics. You receive an email claiming to be from the payment company the website uses, saying: \"Suspicious activity detected — your payment account will be suspended in 24 hours if you don't verify your identity.\" The logo and wording look completely genuine.",
    "source": "CISA Secure Our World: Recognize and Report Phishing; Verizon DBIR",
    "choices": [
     {
      "id": "a",
-     "label": "ไม่กดลิงก์ เปิดเว็บบริษัทรับชำระเงินด้วยการพิมพ์ที่อยู่เอง ตรวจว่ามีแจ้งเตือนจริงไหม และเปิด 2-step ให้ทุกบัญชีแอดมิน",
+     "label": "Don't click the link. Open the payment company's website by typing the address yourself, check for any real alerts, and enable 2-step for all admin accounts.",
      "q": "good",
-     "out": "ไม่มีแจ้งเตือนใดๆ ในบัญชีจริง คุณรู้ว่าเป็นฟิชชิ่ง จึงเปิด 2-step ให้ทุกบัญชีแอดมิน และบอกทีมไม่ให้กดลิงก์ในอีเมลแบบนี้",
+     "out": "There are no alerts on the real account. You recognize it as phishing, enable 2-step for all admin accounts, and warn the team not to click links in emails like this.",
      "u": [
       [
        40,
-       "ระบบนิ่ง แฟนกลับมาซื้อ"
+       "System stable — fans return to buy."
       ]
      ],
      "trust": 5,
@@ -524,74 +524,74 @@
      "set": {
       "mfa": true
      },
-     "lesson": "อีเมลที่เร่งให้รีบทำ + ขู่ว่าจะระงับบัญชี + ลิงก์ คือสัญญาณฟิชชิ่งคลาสสิก ให้ตรวจจากช่องทางที่คุณเข้าเอง",
+     "lesson": "An urgent email + a threat to suspend your account + a link is the classic phishing signal. Always verify through a channel you navigate yourself.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "กดลิงก์ ถ้าหน้าตาเหมือนจริงก็กรอกรหัส เพราะกลัวรับเงินไม่ได้",
+     "label": "Click the link — if it looks real, enter your password, because you're afraid of not being able to receive payments.",
      "q": "bad",
-     "out": "หน้านั้นเป็นหน้าปลอมที่เก็บรหัสผ่านของคุณ ไม่กี่ชั่วโมงต่อมามีคนล็อกอินเข้าหลังบ้านของเว็บขายบัตรด้วยรหัสเดียวกัน",
+     "out": "The page is a fake that captures your password. A few hours later someone logs into the ticket site's admin panel using those credentials.",
      "u": [
       [
        0,
-       "ยังไม่เห็นผลทันที"
+       "No visible effect yet."
       ]
      ],
      "axes": {
       "sec": -2,
       "speed": 2
      },
-     "lesson": "ความเร่งด่วนเป็นเครื่องมือของฟิชชิ่ง และการใช้รหัสผ่านเดียวกันหลายที่ทำให้หลุดทีเดียวพังทั้งชุด",
+     "lesson": "Urgency is a phishing tool. Reusing the same password in multiple places means one compromise takes down everything.",
      "next": "takeover"
     },
     {
      "id": "c",
-     "label": "ลบอีเมลทิ้ง ไม่ต้องทำอะไรเพิ่ม",
+     "label": "Delete the email and do nothing more.",
      "q": "mid",
-     "out": "คุณรอดครั้งนี้ แต่ไม่ได้ตรวจบัญชีหรือเพิ่มด่านที่สอง ถ้ามีอีเมลที่แนบเนียนกว่านี้มาอีก ก็ไม่มีอะไรช่วย",
+     "out": "You dodge this one — but you haven't checked your accounts or added a second factor. If a more convincing email comes next, there's nothing to fall back on.",
      "u": [
       [
        10,
-       "ไม่มีเหตุเพิ่ม"
+       "No additional incidents."
       ]
      ],
      "axes": {
       "speed": 1,
       "long": -1
      },
-     "lesson": "ไม่โดนหลอกครั้งนี้ไม่ได้แปลว่าปลอดภัย ควรเสริมด่านที่สอง (2-step) เพื่อให้รหัสผ่านหลุดแล้วไม่พังทั้งระบบ",
+     "lesson": "Not being fooled this time doesn't mean you're safe. Adding a second factor (2-step) means a leaked password won't bring down the whole system.",
      "next": "END"
     }
    ]
   },
   "takeover": {
-   "title": "บัญชีแอดมินถูกยึด",
-   "tag": "ยึดบัญชี",
+   "title": "Admin Account Hijacked",
+   "tag": "Account Takeover",
    "best": "a",
-   "bestWhy": "ต้องตัดผู้โจมตีออกจากทุกทาง ไม่ใช่แค่เปลี่ยนรหัสผ่าน แล้วตรวจย้อนหลังว่าเขาแก้อะไร",
-   "text": "ผู้โจมตีเข้าหลังบ้านของเว็บขายบัตรด้วยบัญชีแอดมินจริง เขาเปลี่ยนบัญชีรับเงินเป็นของตัวเอง สร้างบัตร VIP ฟรีให้ตัวเอง 200 ใบ และเปิดดูข้อมูลผู้ซื้อ โดยไม่ต้องใช้ช่องโหว่ในโค้ดเลย",
+   "bestWhy": "You need to cut the attacker off from every access point — not just change the password. Then audit what they changed.",
+   "text": "The attacker is inside the ticket site's admin panel using a legitimate admin account. They changed the payment receiving account to their own, created 200 free VIP tickets for themselves, and viewed buyer data — all without exploiting a single line of code.",
    "enter": {
     "u": [
      [
       -250,
-      "บัญชีรับเงินถูกเปลี่ยน แฟนจำนวนมากหายไป"
+      "Payment account altered — many fans lost."
      ]
     ],
     "trust": -20,
     "damage": 40
    },
-   "source": "NIST SP 800-61 (การรับมือเหตุ); OWASP Session Management Cheat Sheet",
+   "source": "NIST SP 800-61 (incident response); OWASP Session Management Cheat Sheet",
    "choices": [
     {
      "id": "a",
-     "label": "สั่งออกจากระบบทุกเครื่อง เปลี่ยนรหัสทุกบัญชี เปิด 2-step ตรวจ log ว่าอะไรถูกแก้ ยกเลิกบัตรปลอม คืนบัญชีรับเงิน และแจ้งผู้ซื้อ",
+     "label": "Log out every active session, change passwords on all accounts, enable 2-step, audit the logs for what was changed, cancel the fake tickets, restore the payment account, and notify buyers.",
      "q": "good",
-     "out": "คุณไล่ย้อนการเปลี่ยนแปลงทีละรายการ ยกเลิกบัตรปลอมทั้งหมด คืนบัญชีรับเงินเดิม ปิดทางเข้าครบ และแจ้งผู้ซื้อตรงๆ",
+     "out": "You go through every change one by one, cancel all fake tickets, restore the original payment account, close every access point, and notify buyers directly.",
      "u": [
       [
        -80,
-       "ปิดขายแก้ไข แฟนบางส่วนขอคืนบัตรหลังรับแจ้ง"
+       "Sales paused for remediation — some fans request refunds after being notified."
       ]
      ],
      "trust": 15,
@@ -605,22 +605,22 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "เมื่อบัญชีถูกยึด ต้องตัดผู้โจมตีออกจากทุกทาง ทั้งเซสชัน (การล็อกอินที่ยังค้างอยู่) โทเค็น และคีย์ แล้วตรวจย้อนหลังว่าเขาแก้อะไรไปบ้าง",
+     "lesson": "When an account is hijacked, you must cut the attacker off from every access point — active sessions, tokens, and keys — not just change the password. Then audit everything they touched.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนรหัสผ่านอย่างเดียวแล้วเปิดขายต่อ",
+     "label": "Change the password only, then resume sales.",
      "q": "bad",
-     "out": "ผู้โจมตียังล็อกอินค้างอยู่ เขากลับเข้ามาอีกคืนหนึ่งและเปลี่ยนบัญชีรับเงินอีกครั้ง",
+     "out": "The attacker is still logged in on their device. They come back the next night and change the payment account again.",
      "u": [
       [
        -40,
-       "ปิดขายสั้นๆ เพื่อเปลี่ยนรหัสผ่าน"
+       "Brief pause to change the password."
       ],
       [
        -150,
-       "ผู้โจมตีกลับเข้ามาทางการล็อกอินที่ค้างไว้"
+       "Attacker returns via the still-active session."
       ]
      ],
      "trust": -10,
@@ -630,18 +630,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "เปลี่ยนรหัสผ่านอย่างเดียวไม่พอ ถ้าผู้โจมตียังล็อกอินค้างอยู่ ต้องสั่งออกจากระบบทุกเครื่องด้วย",
+     "lesson": "Changing the password alone isn't enough. If the attacker still has an active session, they can keep coming back. You must log them out of every device.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "จ้างทีมผู้เชี่ยวชาญภายนอกตรวจหลังบ้านทั้งระบบ แล้วทำตามคำแนะนำ",
+     "label": "Hire an external security team to audit the entire backend, then follow their recommendations.",
      "q": "mid",
-     "out": "ทีมตรวจพบว่าผู้โจมตีสร้างบัญชีแอดมินลับไว้ ช่วยลบออกและตั้ง 2-step ให้ ผู้ซื้อได้รับแจ้ง ต้นทุนสูงแต่ปลอดภัย",
+     "out": "The team discovers the attacker created a hidden admin account. They remove it, set up 2-step, and buyers are notified. Costly, but thorough.",
      "u": [
       [
        -150,
-       "ปิดขายนานและเสียค่าตรวจ แฟนบางส่วนไม่รอ"
+       "Extended suspension and audit fees — some fans don't wait."
       ]
      ],
      "trust": 10,
@@ -655,38 +655,38 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้โจมตีมักทิ้ง \"ประตูหลัง\" ไว้ ผู้ชำนาญช่วยหาสิ่งที่เรามองไม่เห็น แต่ต้องแลกกับเวลาและเงิน",
+     "lesson": "Attackers often leave a \"backdoor\" behind. Expert eyes can find things you'd miss — but it comes at a cost in time and money.",
      "next": "END"
     }
    ]
   },
   "news": {
-   "title": "ข่าวหลุดในโซเชียล",
-   "tag": "ผลของการปิดบัง",
+   "title": "The Story Breaks on Social Media",
+   "tag": "The Cost of Staying Silent",
    "best": "a",
-   "bestWhy": "ถ้าพลาดเรื่องการแจ้ง ให้ยอมรับและแก้ทันทีที่รู้ตัว ยิ่งเงียบนาน ความเชื่อใจยิ่งเสียมาก",
-   "text": "แฟนคนหนึ่งโพสต์ภาพอีเมลยืนยันที่มีชื่อและเบอร์ของคนอื่น พร้อมเล่าว่าบัตรที่ซื้อต่อจากนักเก็งกำไรใช้เข้างานไม่ได้ โพสต์ถูกแชร์หลายพันครั้งภายในคืนเดียว และคนเริ่มถามว่าผู้จัดรู้เรื่องนี้ไหม",
+   "bestWhy": "If you missed the disclosure window, admit it and act as soon as you realize. The longer you stay silent, the more trust you lose.",
+   "text": "A fan posts a screenshot of a confirmation email containing someone else's name and phone number, and describes how a ticket bought from a scalper wouldn't scan at the gate. The post is shared thousands of times overnight, and people start asking whether the organizer knew about this.",
    "enter": {
     "u": [
      [
       -200,
-      "ข่าวหลุดว่าผู้จัดเคยปิดบังเหตุ"
+      "News breaks that the organizer covered up the incident."
      ]
     ],
     "trust": -30,
     "damage": 20
    },
-   "source": "EU GDPR มาตรา 34 (แจ้งผู้ได้รับผลกระทบ)",
+   "source": "EU GDPR Article 34 (notification of affected individuals)",
    "choices": [
     {
      "id": "a",
-     "label": "ออกแถลงการณ์ยอมรับ บอกว่าเกิดอะไรขึ้น แก้อะไรแล้ว และบอกแฟนว่าควรทำอย่างไรต่อ",
+     "label": "Issue a public statement acknowledging what happened, what was fixed, and telling fans what they should do next.",
      "q": "good",
-     "out": "คุณยอมรับว่ารู้เรื่องมาก่อนแล้วไม่ได้แจ้ง ถูกวิจารณ์หนัก แต่ข้อมูลที่ชัดเจนทำให้แฟนส่วนหนึ่งยังอยู่",
+     "out": "You admit you knew earlier and didn't notify anyone. The criticism is heavy — but the clear information keeps some fans on your side.",
      "u": [
       [
        -100,
-       "แฟนบางส่วนเลิกตามหลังรู้ว่าถูกปิดบัง"
+       "Some fans stop following after learning they were kept in the dark."
       ]
      ],
      "trust": 20,
@@ -697,18 +697,18 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ถ้าพลาดเรื่องการแจ้ง ให้แก้ทันทีที่รู้ตัว ความโปร่งใสที่มาช้ายังดีกว่าไม่มาเลย",
+     "lesson": "If you missed the disclosure, fix it the moment you realize. Late transparency is still better than none.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "บอกว่าเป็นภาพตัดต่อ ไม่เกี่ยวกับเว็บเรา",
+     "label": "Say the screenshot is fake and has nothing to do with the website.",
      "q": "bad",
-     "out": "ผู้ใช้หลายคนโพสต์อีเมลแบบเดียวกันออกมา การปฏิเสธถูกแชร์ต่อเป็นตัวอย่างของผู้จัดที่ไม่รับผิดชอบ",
+     "out": "Multiple users post more screenshots from the same system. The denial gets shared as a textbook example of an irresponsible organizer.",
      "u": [
       [
        -350,
-       "ถูกจับได้ว่าปฏิเสธข้อเท็จจริง"
+       "Caught denying verifiable facts."
       ]
      ],
      "trust": -30,
@@ -716,18 +716,18 @@
       "open": -2,
       "long": -2
      },
-     "lesson": "การปฏิเสธข้อเท็จจริงที่ตรวจสอบได้ ทำให้ความเสียหายกลายเป็นวิกฤตความน่าเชื่อถือ",
+     "lesson": "Denying verifiable facts turns a data incident into a full-blown credibility crisis.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "ปิดการขายตรวจสอบสามวันก่อนออกแถลงการณ์",
+     "label": "Suspend sales for three days to investigate before issuing any statement.",
      "q": "mid",
-     "out": "คุณยืนยันขอบเขตความเสียหายได้ครบแล้วค่อยประกาศ แต่ช่วงสามวันนั้นข่าวลือแพร่ไปไกลกว่า",
+     "out": "You confirm the full scope of the damage before speaking — but during those three silent days, the rumours travel further than the facts.",
      "u": [
       [
        -150,
-       "เงียบสามวัน ข่าวลือแพร่"
+       "Three days of silence — rumours spread."
       ]
      ],
      "trust": 5,
@@ -739,41 +739,41 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ตรวจให้แน่ใจก่อนพูดเป็นเรื่องดี แต่ถ้าเงียบนานเกินไป ข่าวลือจะเล่าเรื่องแทนคุณ",
+     "lesson": "Verifying before speaking is good — but if you go silent too long, rumours will tell the story for you.",
      "next": "wave2"
     }
    ]
   },
   "wave2_blocked": {
-   "title": "ฟิชชิ่งที่ไม่ได้ผล",
-   "tag": "ฟิชชิ่ง (ถูกสกัด)",
+   "title": "Phishing That Failed",
+   "tag": "Phishing (Blocked)",
    "best": "a",
    "bestWhy": "—",
-   "text": "สัปดาห์ต่อมา อีเมลปลอมที่อ้างเป็นบริษัทรับชำระเงินมาถึงทีมคุณ มีแอดมินหนึ่งคนกรอกรหัสผ่านลงหน้าปลอมไปแล้ว แต่ผู้โจมตีเข้าบัญชีไม่ได้ เพราะทุกบัญชีแอดมินมี 2-step และคุณได้รับแจ้งเตือนว่ามีการล็อกอินจากอุปกรณ์แปลก",
+   "text": "The following week, a fake email impersonating the payment company reaches your team. One admin already entered their password on the fake page — but the attacker can't get into the account, because every admin account has 2-step enabled. You receive an alert about a login attempt from an unknown device.",
    "enter": {
     "u": [
      [
       30,
-      "แฟนเห็นระบบนิ่ง ไม่มีเหตุ"
+      "Fans see the system running smoothly — no incidents."
      ]
     ],
     "trust": 5
    },
-   "source": "Microsoft Security: MFA หยุดการยึดบัญชีอัตโนมัติได้เกือบทั้งหมด",
+   "source": "Microsoft Security: MFA blocks nearly all automated account takeovers",
    "choices": [
     {
      "id": "a",
-     "label": "ดูบทสรุป",
+     "label": "View summary",
      "q": "good",
-     "out": "คุณเปลี่ยนรหัสของแอดมินคนนั้นและเตือนทีมอีกครั้ง ไม่มีความเสียหายเกิดขึ้น",
+     "out": "You change that admin's password and remind the team to stay alert. No damage is done.",
      "u": [
       [
        0,
-       "ไม่มีความเสียหาย"
+       "No damage."
       ]
      ],
      "axes": {},
-     "lesson": "ด่านที่สองทำให้ความผิดพลาดของคนเดียวไม่กลายเป็นหายนะของทั้งระบบ",
+     "lesson": "A second factor means one person's mistake doesn't become a disaster for the whole system.",
      "next": "END"
     }
    ]
@@ -781,91 +781,91 @@
  },
  "ENDINGS": {
   "root": {
-   "title": "ผู้จัดที่แฟนไว้ใจ",
+   "title": "An Organizer Fans Can Trust",
    "tone": "good",
-   "desc": "คุณกรองทราฟฟิกปลอม หยุดบอท ปิดด่านหลายชั้น และแฟนตัวจริงได้บัตรเกือบครบ"
+   "desc": "You filtered fake traffic, stopped the bots, layered your defences, and genuine fans got most of their tickets."
   },
   "rebuilder": {
-   "title": "สถาปนิกผู้สร้างใหม่",
+   "title": "The Architect Who Started Over",
    "tone": "good",
-   "desc": "คุณเลือกเส้นทางที่แพงที่สุด คือสร้างระบบใหม่ทั้งหมด แล้วอุดช่องใหม่จากการเร่งทำได้ทัน ระบบปลอดภัย แต่แฟนไม่เหมือนเดิม"
+   "desc": "You took the most expensive path — a full rebuild — and still caught the new vulnerabilities that came with the rush. The system is secure, but the fanbase is not the same."
   },
   "honest": {
-   "title": "ซื่อสัตย์แต่บอบช้ำ",
+   "title": "Honest but Bruised",
    "tone": "mid",
-   "desc": "งานนี้เจ็บหนัก แต่คุณบอกความจริงกับแฟน ความเชื่อใจที่เหลืออยู่คือฐานให้งานครั้งหน้ากลับมาได้"
+   "desc": "This event took a serious hit, but you told fans the truth. The trust that remains is the foundation for the next event."
   },
   "survivor": {
-   "title": "ผู้รอดที่เรียนรู้",
+   "title": "A Survivor Who Learned",
    "tone": "mid",
-   "desc": "เว็บขายบัตรยังเปิดอยู่และปิดช่องสำคัญได้แล้ว แม้ระหว่างทางจะมีผลที่ต้องแลกมา"
+   "desc": "The ticket site is still running and the critical holes are closed — even if there were costs along the way."
   },
   "nomfa": {
-   "title": "แก้เก่ง แต่ลืมด่านสอง",
+   "title": "Strong on Fixes, Forgot the Second Layer",
    "tone": "mid",
-   "desc": "ทราฟฟิกและบอทถูกจัดการแล้ว แต่บัญชีแอดมินยังพึ่งรหัสผ่านอย่างเดียว ความเสี่ยงที่เหลือคือเรื่องของคน"
+   "desc": "Traffic and bots are handled, but admin accounts still rely on a password alone. The remaining risk is a human one."
   },
   "cover": {
-   "title": "ปิดบังจนเสียความเชื่อใจ",
+   "title": "Covered It Up and Lost the Trust",
    "tone": "bad",
-   "desc": "ระบบอาจถูกแก้แล้ว แต่การไม่บอกแฟนทำให้ความเสียหายถูกเลื่อนไปเกิดทีหลังและแรงกว่าเดิม"
+   "desc": "The system may have been fixed — but not telling fans only delayed the damage, and when it hit, it hit harder."
   },
   "scarred": {
-   "title": "แผลลึกแต่ยังยืน",
+   "title": "Deep Wounds, Still Standing",
    "tone": "bad",
-   "desc": "รายได้และข้อมูลของงานเสียหายหนัก งานยังจัดได้ แต่ต้องใช้เวลานานกว่าแฟนจะกลับมาไว้ใจ"
+   "desc": "The event's revenue and data took serious damage. It can still go ahead, but rebuilding fan trust will take a long time."
   },
   "bleeding": {
-   "title": "เลือดไหลไม่หยุด",
+   "title": "Bleeding Out",
    "tone": "bad",
-   "desc": "คุณดึงแฟนด้วยโปรโมชันโดยไม่แก้ระบบ บอทและผู้โจมตีใช้ช่องเดิมทุกรอบ งานค่อยๆ พังโดยไม่มีวันจบเหตุ"
+   "desc": "You attracted fans with promotions instead of fixing the system. Bots and attackers exploit the same holes every round. The event is slowly falling apart with no end to the incident in sight."
   },
   "collapse": {
-   "title": "งานต้องยกเลิก",
+   "title": "The Event Had to Be Cancelled",
    "tone": "bad",
-   "desc": "แฟนเหลือน้อยเกินกว่างานจะจัดต่อได้ ลองย้อนดูว่าการตัดสินใจครั้งไหนทำให้แฟนหายมากที่สุด"
+   "desc": "The fanbase dropped too low to continue. Look back and see which decision caused the biggest drop."
   }
  },
  "AXES": [
   {
    "k": "sec",
-   "L": "ความต่อเนื่องของบริการ",
-   "R": "ความปลอดภัย",
+   "L": "Service Continuity",
+   "R": "Security",
    "letL": "B",
    "letR": "S",
-   "dL": "คุณมักรักษาให้เว็บขายบัตรเปิดต่อก่อน แม้ความเสี่ยงยังไม่หมด",
-   "dR": "คุณยอมเสียผู้ใช้ระยะสั้นเพื่อให้ระบบปลอดภัยก่อน",
-   "dM": "คุณชั่งน้ำหนักระหว่างความปลอดภัยกับการให้เว็บขายบัตรเปิดต่อได้ค่อนข้างสมดุล"
+   "dL": "You tend to keep the ticket site running first, even when risk remains.",
+   "dR": "You're willing to lose users in the short term to secure the system first.",
+   "dM": "You strike a reasonable balance between security and keeping the ticket site running."
   },
   {
    "k": "speed",
-   "L": "รอบคอบ",
-   "R": "ลงมือเร็ว",
+   "L": "Methodical",
+   "R": "Act Fast",
    "letL": "C",
    "letR": "F",
-   "dL": "คุณชอบตรวจให้แน่ใจก่อนลงมือ ข้อดีคือแม่น ข้อระวังคือช้า",
-   "dR": "คุณตัดสินใจไว ข้อดีคือหยุดเหตุเร็ว ข้อระวังคือแก้ไม่ครบ",
-   "dM": "คุณปรับจังหวะเร็ว/ช้าตามสถานการณ์ได้ดี"
+   "dL": "You prefer to verify before acting. The upside is precision; the downside is speed.",
+   "dR": "You decide quickly. The upside is stopping incidents fast; the downside is missing things.",
+   "dM": "You adjust your pace well to the demands of each situation."
   },
   {
    "k": "open",
-   "L": "รักษาภาพลักษณ์",
-   "R": "โปร่งใส",
+   "L": "Image First",
+   "R": "Transparent",
    "letL": "I",
    "letR": "T",
-   "dL": "คุณมักกังวลเรื่องภาพลักษณ์ ซึ่งมักทำให้ผู้ใช้เสียความเชื่อใจทีหลัง",
-   "dR": "คุณบอกความจริงกับผู้ใช้ แม้เจ็บในระยะสั้น",
-   "dM": "คุณยังไม่ได้เจอจังหวะที่ต้องเลือกเรื่องการสื่อสารมากนัก"
+   "dL": "You tend to prioritize image — which often erodes user trust later.",
+   "dR": "You tell users the truth, even when it stings in the short term.",
+   "dM": "You haven't faced many situations that forced a clear communication choice yet."
   },
   {
    "k": "long",
-   "L": "แก้เฉพาะหน้า",
-   "R": "มองระยะยาว",
+   "L": "Quick Patch",
+   "R": "Long-Term Thinking",
    "letL": "N",
    "letR": "L",
-   "dL": "คุณมักเลือกทางที่ได้ผลเร็ว ซึ่งบางครั้งทิ้งต้นเหตุไว้",
-   "dR": "คุณมองถึงต้นเหตุและผลระยะยาว",
-   "dM": "คุณผสมการแก้เฉพาะหน้ากับการแก้ที่ต้นเหตุ"
+   "dL": "You tend to choose the fast fix, which sometimes leaves the root cause untouched.",
+   "dR": "You think about root causes and long-term consequences.",
+   "dM": "You mix quick patches with root-cause fixes."
   }
  ]
 }

@@ -1,26 +1,26 @@
 {
- "title": "ร้านค้าออนไลน์ที่คุณเขียนเอง",
+ "title": "The Online Shop You Built Yourself",
  "START_USERS": 1000,
  "DEAD": 200,
  "MAXU": 1200,
  "NODES": {
   "start": {
-   "title": "ออเดอร์ 1 บาท",
-   "tag": "ช่องโหว่ในตรรกะร้านค้า",
+   "title": "Orders for 1 Baht",
+   "tag": "Logic Flaw in the Store",
    "best": "a",
-   "bestWhy": "ปิดร้านสั้นๆ เพื่อกักกันก่อน แล้วหาต้นเหตุจากหลักฐาน จะเสียลูกค้าน้อยกว่าการแก้มั่วหรือเขียนใหม่ทั้งหมด",
-   "text": "เช้านี้คุณเปิดหลังร้านของร้านค้าออนไลน์ที่เขียนเอง แล้วพบ 38 ออเดอร์ที่ราคารวมแค่ 1 บาท ทั้งที่สินค้าราคาหลักร้อยถึงหลักพัน ทั้งหมดมาจากบัญชีใหม่ไม่กี่บัญชีภายใน 20 นาที ขณะที่ลูกค้าปกติยังสั่งของอยู่ คุณจะทำอะไรก่อน?",
-   "source": "NIST SP 800-61 (คู่มือรับมือเหตุ: กักกัน → กำจัดต้นเหตุ → กู้คืน)",
+   "bestWhy": "Briefly closing the store to contain the situation first, then finding the root cause from evidence, will cost fewer customers than guessing your way through fixes or rewriting everything from scratch.",
+   "text": "This morning you open the admin panel of your self-built online store and find 38 orders totaling just 1 baht — despite products priced in the hundreds to thousands. All of them came from a handful of new accounts within 20 minutes, while regular customers are still shopping normally. What do you do first?",
+   "source": "NIST SP 800-61 (Incident Response Guide: containment → root cause elimination → recovery)",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดร้านชั่วคราว แล้วตรวจให้แน่ใจก่อนว่าเกิดจากอะไร",
+     "label": "Temporarily close the store and investigate what happened before doing anything else.",
      "q": "good",
-     "out": "คุณปิดหน้าร้านราว 6 ชั่วโมง ลูกค้าบางคนหงุดหงิดที่สั่งของไม่ได้ แต่ผู้โจมตีก็สั่งเพิ่มไม่ได้แล้ว และคุณมีเวลาอ่าน log โดยไม่ถูกแย่งเขียนทับ",
+     "out": "You close the storefront for about 6 hours. Some customers are frustrated they can't order, but the attacker can't place more orders either — and you now have time to read the logs without them being overwritten.",
      "u": [
       [
        -60,
-       "ปิดร้าน 6 ชั่วโมง ลูกค้าบางส่วนไม่รอ"
+       "Store closed for 6 hours — some customers don't wait."
       ]
      ],
      "trust": 5,
@@ -29,18 +29,18 @@
       "speed": -1,
       "long": 1
      },
-     "lesson": "กักกันก่อน (containment): หยุดความเสียหายไม่ให้ลุกลาม แล้วค่อยหาต้นเหตุ การปิดสั้นๆ ที่มีเป้าหมายดีกว่าการแก้สะเปะสะปะทั้งที่ยังไม่รู้สาเหตุ",
+     "lesson": "Contain first (containment): stop the damage from spreading, then find the root cause. A short, purposeful closure is better than patching blindly when you don't yet know what's wrong.",
      "next": "investigate"
     },
     {
      "id": "b",
-     "label": "ยกเลิกออเดอร์ 1 บาททั้งหมด แล้วเปิดร้านต่อ",
+     "label": "Cancel all the 1-baht orders and keep the store open.",
      "q": "bad",
-     "out": "ทั้งวันดูเงียบสงบ ลูกค้าไม่รู้เรื่องอะไรเลย แต่คุณยังตอบไม่ได้ว่าราคาถูกแก้ได้อย่างไร",
+     "out": "The day looks quiet and customers notice nothing — but you still can't answer how the prices were manipulated in the first place.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -48,18 +48,18 @@
       "speed": 2,
       "long": -1
      },
-     "lesson": "การลบผลลัพธ์ไม่ใช่การแก้ต้นเหตุ ถ้าช่องที่ใช้โจมตียังอยู่ ผู้โจมตีก็แค่ทำซ้ำ",
+     "lesson": "Deleting the results is not the same as fixing the root cause. If the vulnerability that was exploited is still there, the attacker will just do it again.",
      "next": "repeat"
     },
     {
      "id": "c",
-     "label": "เปลี่ยนรหัสผ่านแอดมินและบังคับทุกบัญชีตั้งรหัสใหม่ เพราะคิดว่ารหัสผ่านหลุด",
+     "label": "Change the admin password and force all accounts to reset their passwords — you suspect a credential leak.",
      "q": "mid",
-     "out": "ลูกค้าที่ถูกบังคับรีเซ็ตรหัสรู้สึกยุ่งยาก และ log ที่คุณอ่านทีหลังจะบอกว่าไม่มีใครขโมยรหัสผ่านเลย",
+     "out": "Customers forced to reset their passwords find it annoying, and the logs you read later show that no one's credentials were stolen at all.",
      "u": [
       [
        -20,
-       "บังคับรีเซ็ตรหัสผ่าน ลูกค้าบางส่วนเลิกใช้"
+       "Forced password reset — some customers drop off."
       ]
      ],
      "axes": {
@@ -69,18 +69,18 @@
      "set": {
       "wrongDx": true
      },
-     "lesson": "ตั้งสมมติฐานจากหลักฐาน ไม่ใช่ความรู้สึก ผู้โจมตีไม่ได้เดารหัสผ่าน แต่ฉวยโอกาสจากกฎที่หลวม การแก้ผิดจุดทำให้เสียเวลาและเสียความเชื่อมั่น",
+     "lesson": "Base your hypothesis on evidence, not gut feeling. The attacker didn't guess passwords — they exploited a loose rule. Fixing the wrong thing wastes time and erodes trust.",
      "next": "repeat"
     },
     {
      "id": "d",
-     "label": "ปิดร้านแล้วเขียนระบบใหม่ทั้งหมดให้ปลอดภัย",
+     "label": "Close the store and rewrite the entire system from scratch to make it secure.",
      "q": "mid",
-     "out": "คุณปิดร้านสองสัปดาห์เพื่อเขียนใหม่ ผู้ใช้เก่าย้ายไปร้านอื่นจำนวนมากระหว่างรอ แต่คุณมั่นใจว่าระบบใหม่จะไม่มีช่องเดิม",
+     "out": "You close the store for two weeks to rewrite everything. Many existing users move to competitors while waiting, but you're confident the new system won't have the same flaw.",
      "u": [
       [
        -300,
-       "ร้านปิดสองสัปดาห์ ลูกค้าเก่าย้ายไปร้านคู่แข่ง"
+       "Store closed for two weeks — existing customers move to competitors."
       ]
      ],
      "trust": -5,
@@ -92,28 +92,28 @@
      "set": {
       "rewrote": true
      },
-     "lesson": "การเขียนใหม่ทั้งหมดดูปลอดภัยแต่แพงและเสี่ยง โค้ดที่เร่งทำมักมีช่องโหว่ใหม่ ทางที่คุ้มกว่ามักเป็นหาต้นเหตุแล้วแก้เฉพาะจุดอย่างถูกต้อง",
+     "lesson": "A full rewrite looks safe but is costly and risky — code written in a rush tends to introduce new vulnerabilities. Finding the root cause and patching precisely is usually the smarter path.",
      "next": "rewrite"
     }
    ]
   },
   "investigate": {
-   "title": "ค้นหาต้นเหตุ",
-   "tag": "วิเคราะห์เหตุ",
+   "title": "Finding the Root Cause",
+   "tag": "Incident Analysis",
    "best": "a",
-   "bestWhy": "ต้นเหตุมีสองจุดพร้อมกัน ต้องปิดทั้งสอง จึงจะไม่ถูกโจมตีซ้ำผ่านช่องที่เหลือ",
-   "text": "จาก log (บันทึกการใช้งานของระบบ) คุณพบว่าผู้โจมตีไม่ได้เดารหัสผ่านใครเลย เขาใช้เครื่องมือสำหรับนักพัฒนาที่มีอยู่ในทุกเบราว์เซอร์ (DevTools) ส่งคำสั่งสร้างออเดอร์เข้าฐานข้อมูลตรงๆ แล้วใส่ราคาเอง ต้นเหตุมีสองจุดพร้อมกัน (1) กฎสิทธิ์ของฐานข้อมูล (Rules) ยอมให้ทุกคนที่ล็อกอินแก้ข้อมูลออเดอร์ได้ทุกช่อง และ (2) ราคารวมถูกคำนวณในเบราว์เซอร์ของลูกค้า (ฝั่ง client) แล้วระบบหลังร้าน (Server) เชื่อตามนั้นโดยไม่ตรวจ คุณจะแก้อย่างไร?",
+   "bestWhy": "There are two root causes happening simultaneously — both must be closed, otherwise the remaining one can still be exploited.",
+   "text": "From the logs (system activity records) you find that the attacker never guessed anyone's password. Using developer tools built into every browser (DevTools), they sent order-creation commands directly to the database and inserted their own prices. There are two simultaneous root causes: (1) the database permission rules (Rules) allow any logged-in user to edit any field of any order, and (2) the total price is calculated in the customer's browser (client-side) and the backend server (Server) trusts that value without verifying it. How do you fix this?",
    "source": "OWASP Top 10: Broken Access Control, Insecure Design",
    "choices": [
     {
      "id": "a",
-     "label": "แก้ Rules ให้เขียนได้เฉพาะช่องที่จำเป็น และย้ายการคำนวณราคา/ชำระเงินมาไว้ที่ Server แล้วค่อยเปิดร้าน",
+     "label": "Tighten the Rules so only necessary fields can be written, and move price calculation and payment handling to the Server — then reopen the store.",
      "q": "good",
-     "out": "คุณใช้เวลาหนึ่งวันแก้ Rules ให้ผู้ใช้ส่งได้เฉพาะรายการสินค้าและจำนวน ส่วนราคาให้ Server อ่านจากฐานข้อมูลสินค้าแล้วคำนวณเอง จากนั้นลองแก้ราคาด้วยตัวเองหลายวิธี ปรากฏว่าทำไม่ได้แล้ว",
+     "out": "You spend one day tightening the Rules so users can only submit item lists and quantities, while the Server reads prices from the product database and calculates totals itself. You then try to manipulate the price several ways — none of them work anymore.",
      "u": [
       [
        -20,
-       "ปิดร้านเพิ่มอีกครึ่งวัน"
+       "Store closed for another half day."
       ]
      ],
      "trust": 10,
@@ -126,18 +126,18 @@
       "rulesFixed": true,
       "serverMoney": true
      },
-     "lesson": "หลักสำคัญ: อย่าเชื่อข้อมูลจากฝั่ง client เรื่องเงินและสิทธิ์ต้องตัดสินที่ Server และ Rules ควรอนุญาตเท่าที่จำเป็นเท่านั้น (least privilege)",
+     "lesson": "Key principle: never trust data from the client side. Anything involving money or permissions must be decided at the Server, and Rules should allow only the minimum necessary access (least privilege).",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้เฉพาะ Rules ให้เข้มงวดก่อน เรื่องคำนวณราคาไว้ค่อยทำทีหลัง",
+     "label": "Fix the Rules first to be strict — deal with server-side price calculation later.",
      "q": "mid",
-     "out": "Rules ใหม่กันการเขียนตรงเข้าฐานข้อมูลได้ คุณเปิดร้านเร็วกว่าแผน แต่หน้าชำระเงินยังเชื่อราคาที่เบราว์เซอร์ส่งมา",
+     "out": "The new Rules block direct writes to the database. You reopen the store ahead of schedule, but the checkout flow still trusts prices sent by the browser.",
      "u": [
       [
        -10,
-       "ปิดร้านสั้นๆ"
+       "Brief store closure."
       ]
      ],
      "trust": 5,
@@ -149,18 +149,18 @@
      "set": {
       "rulesFixed": true
      },
-     "lesson": "การแก้ครึ่งทางสร้างความรู้สึกว่าปลอดภัยแล้ว ทั้งที่ช่องที่สองยังเปิดอยู่ ต้องไล่ปิดให้ครบทุกต้นเหตุที่พบ",
+     "lesson": "A half-fix creates a false sense of security — the second vulnerability is still open. You need to close every root cause you've found.",
      "next": "partialClient"
     },
     {
      "id": "c",
-     "label": "ย้ายการคำนวณราคามา Server ก่อน ส่วน Rules ปล่อยไว้ เพราะกลัวแก้แล้วระบบพัง",
+     "label": "Move price calculation to the Server first — leave the Rules alone for now because you're worried about breaking something.",
      "q": "mid",
-     "out": "ราคาถูกคำนวณที่ Server แล้ว ออเดอร์ 1 บาทหมดไป คุณเปิดร้านต่อโดยไม่ได้แตะ Rules ที่ยังเปิดกว้างอยู่",
+     "out": "Prices are now calculated server-side, so the 1-baht orders disappear. You reopen the store without touching the Rules that are still wide open.",
      "u": [
       [
        -10,
-       "ปิดร้านสั้นๆ"
+       "Brief store closure."
       ]
      ],
      "axes": {
@@ -170,37 +170,37 @@
      "set": {
       "serverMoney": true
      },
-     "lesson": "ความกลัวว่าจะพังไม่ควรกลายเป็นเหตุผลให้เว้นช่องโหว่ ให้ทดสอบกับสำเนาก่อนแล้วแก้ ไม่ใช่ปล่อยไว้",
+     "lesson": "Fear of breaking something shouldn't be a reason to leave a vulnerability open. Test the fix on a copy first, then apply it — don't just leave it.",
      "next": "partialRules"
     }
    ]
   },
   "partialClient": {
-   "title": "ช่องที่สองถูกใช้",
-   "tag": "โจมตีซ้ำ: ราคาจาก client",
+   "title": "The Second Hole Gets Exploited",
+   "tag": "Repeat Attack: Client-Side Price",
    "best": "a",
-   "bestWhy": "ต้องย้ายการคิดราคาไป Server จริงๆ การตรวจฝั่งเบราว์เซอร์ผู้โจมตีข้ามได้เสมอ",
-   "text": "ห้าวันต่อมา Rules ใหม่กันการเขียนตรงเข้าฐานข้อมูลได้ แต่ผู้โจมตีเปลี่ยนวิธี เขาแก้ค่าราคาในคำขอชำระเงินที่หน้าเว็บส่งมา ซึ่งระบบยังเชื่อ เขาได้สินค้า 12 ชิ้นในราคาถูกมาก ร้านขาดทุนและสินค้าหมดสต็อก",
+   "bestWhy": "Price calculation must genuinely move to the Server. Browser-side checks can always be bypassed by an attacker.",
+   "text": "Five days later, the new Rules block direct database writes — but the attacker adapts. They modify the price value in the payment request sent by the webpage, which the system still trusts. They acquire 12 items at a fraction of the real cost. The store loses money and stock runs out.",
    "enter": {
     "u": [
      [
       -90,
-      "สินค้าถูกซื้อในราคาถูก สต็อกหมด ลูกค้าจริงซื้อไม่ได้"
+      "Items purchased at manipulated prices — stock depleted, real customers can't buy."
      ]
     ],
     "damage": 10
    },
-   "source": "OWASP Top 10: Insecure Design (อย่าเชื่อข้อมูลจากฝั่ง client)",
+   "source": "OWASP Top 10: Insecure Design (never trust data from the client side)",
    "choices": [
     {
      "id": "a",
-     "label": "ย้ายการคิดราคาไป Server ทันที ให้ Server อ่านราคาจากฐานข้อมูลสินค้าเท่านั้น และไม่รับราคาจาก client",
+     "label": "Move price calculation to the Server immediately — the Server reads prices from the product database only and does not accept prices from the client.",
      "q": "good",
-     "out": "คุณปิดช่องที่สองจนครบ ทดสอบแก้ราคาหลายวิธีแล้วระบบปฏิเสธทั้งหมด",
+     "out": "You close the second hole completely. You try to manipulate the price several ways and the system rejects all of them.",
      "u": [
       [
        -15,
-       "ปิดร้านเพื่อแก้ไข"
+       "Store closed to apply the fix."
       ]
      ],
      "trust": 5,
@@ -211,18 +211,18 @@
      "set": {
       "serverMoney": true
      },
-     "lesson": "ข้อมูลที่มาจากฝั่ง client ถือเป็น \"คำขอ\" ไม่ใช่ \"ความจริง\" Server ต้องคำนวณและตรวจเองทุกครั้ง",
+     "lesson": "Data coming from the client is a \"request,\" not a \"fact.\" The Server must calculate and verify everything on its own, every time.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "เพิ่มโค้ดตรวจในเบราว์เซอร์ว่าราคาต้องตรงกับที่แสดงบนหน้า",
+     "label": "Add browser-side code to check that the submitted price matches what's displayed on the page.",
      "q": "bad",
-     "out": "การตรวจเพิ่มดูใช้ได้บนหน้าจอปกติ แต่ผู้โจมตีไม่ได้ใช้หน้าจอของคุณ เขาส่งคำขอตรงเข้า API ข้ามการตรวจไปภายในชั่วโมงเดียว",
+     "out": "The check looks fine in normal use, but the attacker isn't using your interface — they send requests directly to the API, bypassing the check within the hour.",
      "u": [
       [
        -30,
-       "ผู้โจมตีข้ามการตรวจฝั่ง client สำเร็จ"
+       "Attacker bypasses the client-side check successfully."
       ]
      ],
      "damage": 5,
@@ -231,38 +231,38 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "การตรวจฝั่ง client ช่วยประสบการณ์ผู้ใช้ แต่ไม่ใช่ความปลอดภัย เพราะผู้โจมตีควบคุมฝั่ง client ได้ทั้งหมด",
+     "lesson": "Client-side validation improves the user experience, but it is not security — attackers have full control over their own client.",
      "next": "repeat"
     }
    ]
   },
   "partialRules": {
-   "title": "ข้อมูลลูกค้ารั่ว",
-   "tag": "โจมตีซ้ำ: Rules เปิดกว้าง",
+   "title": "Customer Data Leaked",
+   "tag": "Repeat Attack: Wide-Open Rules",
    "best": "a",
-   "bestWhy": "แก้ช่องให้ครบทันที ตรวจว่าอะไรรั่ว และแจ้งลูกค้า เพื่อให้เขาป้องกันตัวเองได้",
-   "text": "ห้าวันต่อมา ราคาถูกคำนวณที่ Server แล้ว แต่ Rules ที่ยังเปิดกว้างให้ผู้ล็อกอินทุกคนอ่านข้อมูลของทุกคนได้ ผู้โจมตีส่งคำสั่งตรงเข้าฐานข้อมูลแล้วดึงชื่อ ที่อยู่ และเบอร์โทรของลูกค้า 2,100 ราย ต่อมาลูกค้ากลุ่มหนึ่งเริ่มได้รับสแปม",
+   "bestWhy": "Close the hole completely right away, check what data leaked, and notify customers so they can protect themselves.",
+   "text": "Five days later, prices are calculated server-side — but the Rules still let any logged-in user read everyone else's data. The attacker sends commands directly to the database and pulls the names, addresses, and phone numbers of 2,100 customers. A group of customers then starts receiving spam.",
    "enter": {
     "u": [
      [
       -120,
-      "ลูกค้าที่ได้รับสแปมส่วนหนึ่งเลิกใช้ร้าน"
+      "Customers receiving spam — some stop using the store."
      ]
     ],
     "trust": -20,
     "damage": 35
    },
-   "source": "EU GDPR มาตรา 33–34 (การแจ้งเหตุข้อมูลรั่ว)",
+   "source": "EU GDPR Articles 33–34 (data breach notification)",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดช่องทันที แก้ Rules ให้ครบ ตรวจ log ว่าข้อมูลใดถูกอ่าน แล้วแจ้งลูกค้าที่ได้รับผลกระทบ",
+     "label": "Close the hole immediately, fix the Rules completely, check the logs to see what data was accessed, then notify all affected customers.",
      "q": "good",
-     "out": "คุณแก้ Rules แล้วอีเมลแจ้งลูกค้า 2,100 ราย บอกว่าอะไรรั่ว ควรระวังอะไร ลูกค้าบางส่วนโกรธ แต่หลายคนขอบคุณที่บอกตรงๆ",
+     "out": "You fix the Rules and email all 2,100 customers explaining what leaked and what to watch out for. Some are angry, but many thank you for being upfront.",
      "u": [
       [
        -60,
-       "ลูกค้าบางส่วนเลิกใช้หลังรับแจ้ง"
+       "Some customers leave after being notified."
       ]
      ],
      "trust": 15,
@@ -275,18 +275,18 @@
       "rulesFixed": true,
       "disclosed": "yes"
      },
-     "lesson": "การแจ้งผู้ได้รับผลกระทบตรงไปตรงมาเจ็บในระยะสั้น แต่ช่วยให้ผู้ใช้ป้องกันตัวเองได้และสร้างความเชื่อใจระยะยาว (กฎหมายคุ้มครองข้อมูลระดับสากลอย่าง GDPR ของสหภาพยุโรป กำหนดให้แจ้งหน่วยงานกำกับภายใน 72 ชั่วโมง และแจ้งผู้ได้รับผลกระทบเมื่อมีความเสี่ยงสูง)",
+     "lesson": "Notifying affected users honestly hurts in the short term, but it lets them protect themselves and builds long-term trust. (International data protection law such as the EU's GDPR requires notifying the supervisory authority within 72 hours and notifying affected individuals when the risk is high.)",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้ Rules แล้วไม่ประกาศอะไร เพราะยังไม่มีหลักฐานว่าข้อมูลถูกนำไปใช้",
+     "label": "Fix the Rules quietly and don't announce anything — there's no evidence the data has been misused yet.",
      "q": "bad",
-     "out": "ร้านกลับมาปกติและยังไม่มีข่าวในตอนแรก แต่ลูกค้าที่ได้รับสแปมไม่รู้ว่าข้อมูลหลุดจากที่ไหน จึงไม่ได้ป้องกันตัวเอง",
+     "out": "The store returns to normal and there's no news at first — but customers who received spam have no idea their data leaked, so they can't protect themselves.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -300,18 +300,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การเงียบไม่ได้ทำให้ปัญหาหาย มันแค่ซ่อนความเสียหายไว้ก่อนจะถูกค้นพบ และเมื่อถูกค้นพบ ความเชื่อใจจะเสียหนักกว่าเดิม",
+     "lesson": "Staying silent doesn't make the problem go away — it just hides the damage until it surfaces, and when it does, the trust loss will be far worse.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "ปิดร้านแล้วจ้างผู้เชี่ยวชาญภายนอกตรวจทั้งระบบก่อนประกาศ",
+     "label": "Close the store and bring in an external expert to audit the entire system before making any announcement.",
      "q": "mid",
-     "out": "ผู้เชี่ยวชาญพบจุดอ่อนเพิ่มอีกสองจุดและช่วยยืนยันว่าข้อมูลใดรั่ว คุณประกาศพร้อมแผนแก้ที่ชัดเจน แต่ต้องปิดร้านนานและเสียค่าใช้จ่าย",
+     "out": "The expert finds two additional weaknesses and helps confirm exactly what data was leaked. You announce with a clear remediation plan, but the store has to stay closed for a long time at significant cost.",
      "u": [
       [
        -150,
-       "ปิดร้านนาน ลูกค้าบางส่วนไม่รอ"
+       "Extended closure — some customers don't wait."
       ]
      ],
      "trust": 10,
@@ -324,28 +324,28 @@
       "rulesFixed": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้เชี่ยวชาญภายนอกคุ้มค่าเมื่อไม่แน่ใจขอบเขตความเสียหาย แต่ต้องชั่งน้ำหนักกับเวลาที่ร้านต้องปิด",
+     "lesson": "External experts are worth it when you're unsure of the damage scope — but you need to weigh the cost against the time your store has to stay closed.",
      "next": "wave2"
     }
    ]
   },
   "repeat": {
-   "title": "โจมตีซ้ำ",
-   "tag": "ช่องเดิมถูกใช้ซ้ำ",
+   "title": "Attacked Again",
+   "tag": "Same Hole, Second Attack",
    "best": "a",
-   "bestWhy": "เมื่อถูกโจมตีซ้ำ แปลว่าต้นเหตุยังไม่ถูกแก้ ต้องหยุด แก้ให้ครบ และสื่อสารตรงๆ",
-   "text": "ไม่กี่วันต่อมา ออเดอร์ราคาผิดปกติกลับมาอีก และครั้งนี้มีลูกค้าแจ้งว่าได้รับข้อความแปลกๆ ที่รู้ชื่อและที่อยู่ของพวกเขา แปลว่าช่องเดิมยังเปิดอยู่ และอาจมีข้อมูลหลุดออกไปด้วย คุณจะทำอย่างไร?",
-   "source": "NIST SP 800-61; EU GDPR มาตรา 34",
+   "bestWhy": "Being attacked again means the root cause was never fixed. Stop, fix everything properly, and communicate honestly.",
+   "text": "A few days later, abnormal-price orders are back — and this time some customers report receiving strange messages that know their name and address. The original vulnerability is still open, and data may have leaked. What do you do?",
+   "source": "NIST SP 800-61; EU GDPR Article 34",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดร้านชั่วคราว แก้ต้นเหตุให้ครบ (Rules + คิดราคาที่ Server) แล้วประกาศตรงๆ ว่าเกิดอะไรขึ้น",
+     "label": "Temporarily close the store, fix both root causes completely (Rules + server-side pricing), then communicate openly about what happened.",
      "q": "good",
-     "out": "คุณปิดร้านชั่วคราว แก้ Rules และย้ายการคิดราคาไป Server ให้ครบ แล้วประกาศตรงๆ ว่าเกิดอะไรขึ้น ลูกค้าเสียใจแต่ส่วนใหญ่เห็นว่าคุณรับผิดชอบ",
+     "out": "You close the store, fix both the Rules and the server-side pricing completely, then make an honest announcement about what happened. Customers are upset, but most see that you're taking responsibility.",
      "u": [
       [
        -90,
-       "ปิดร้านและเสียลูกค้าบางส่วนจากข่าว"
+       "Store closed — some customers lost from the news."
       ]
      ],
      "trust": 15,
@@ -360,18 +360,18 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "ถูกโจมตีซ้ำแปลว่ารอบแรกยังไม่ได้แก้ที่ต้นเหตุ ให้หยุด ทบทวนหลักฐาน แล้วแก้ให้ครบพร้อมสื่อสารอย่างตรงไปตรงมา",
+     "lesson": "Being attacked again means the first round didn't fix the root cause. Stop, review the evidence, fix everything completely, and communicate straightforwardly.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้ทางเทคนิคให้ครบ แต่ไม่บอกใคร ไม่อยากให้ลูกค้าตกใจ",
+     "label": "Fix the technical issues completely, but don't tell anyone — you don't want to alarm customers.",
      "q": "bad",
-     "out": "ระบบปลอดภัยขึ้นจริง และร้านดูเงียบ แต่ลูกค้าที่ข้อมูลหลุดไม่รู้ตัวและไม่ได้ป้องกันตัวเอง",
+     "out": "The system is genuinely more secure now and the store looks quiet — but customers whose data leaked have no idea and aren't protecting themselves.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -386,18 +386,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การซ่อนเหตุไม่ได้ปกป้องลูกค้า มันแค่เลื่อนวันที่ความจริงถูกเปิดเผย",
+     "lesson": "Concealing an incident doesn't protect customers — it only delays the day the truth comes out.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "ลดราคาและแจกคูปองดึงลูกค้ากลับ ไว้ค่อยแก้ระบบทีหลัง",
+     "label": "Run a discount campaign and give out coupons to win customers back — fix the system later.",
      "q": "bad",
-     "out": "ยอดสั่งซื้อพุ่งทันที แต่ผู้โจมตีก็เห็นว่าช่องยังเปิดอยู่ และเริ่มใช้ซ้ำทุกวันพร้อมๆ กับลูกค้าจริง",
+     "out": "Orders spike immediately, but the attacker can see the vulnerability is still open and starts exploiting it every day right alongside real customers.",
      "u": [
       [
        60,
-       "คูปองดึงลูกค้าบางส่วนกลับมา"
+       "Coupons bring some customers back."
       ]
      ],
      "trust": -10,
@@ -406,22 +406,22 @@
       "speed": 2,
       "long": -2
      },
-     "lesson": "แก้ที่ภาพลักษณ์โดยไม่แก้ที่ระบบคือการเลื่อนปัญหา มันกลับมาแรงกว่าเดิม",
+     "lesson": "Polishing your image without fixing the system just delays the problem — and it comes back harder.",
      "next": "END:bleeding"
     }
    ]
   },
   "rewrite": {
-   "title": "ร้านใหม่ ช่องใหม่",
-   "tag": "ช่องโหว่ใหม่จากการเร่งทำ",
+   "title": "New Store, New Holes",
+   "tag": "New Vulnerabilities from a Rushed Build",
    "best": "a",
-   "bestWhy": "ปิดช่องแอดมินก่อนเปิดตัวจริง หลายชั้น (จำกัดการลองรหัส + ด่านที่สอง) ปลอดภัยกว่ารอให้เกิดเหตุ",
-   "text": "สองสัปดาห์ต่อมา ร้านใหม่เปิดตัว ระบบคิดราคาที่ Server แล้ว และ Rules รัดกุมกว่าเดิมมาก ลูกค้าบางส่วนกลับมาตามข่าวเปิดตัว แต่ตอนเร่งทำ คุณลืมเปลี่ยนรหัสผ่านเริ่มต้นของหน้าแอดมิน และไม่ได้จำกัดจำนวนครั้งที่ล็อกอินผิด ตอนนี้มีบอท (โปรแกรมอัตโนมัติ) ลองรหัสผ่านหน้าแอดมินราว 3,000 ครั้งต่อชั่วโมง",
+   "bestWhy": "Close the admin panel vulnerabilities before going live — multiple layers (login rate limiting + a second factor) are safer than waiting for something to go wrong.",
+   "text": "Two weeks later the new store launches. Prices are now calculated server-side and the Rules are far tighter. Some customers come back on the news of the launch — but in the rush, you forgot to change the admin panel's default password and didn't limit failed login attempts. A bot (automated program) is now trying to guess the admin password about 3,000 times per hour.",
    "enter": {
     "u": [
      [
       120,
-      "ลูกค้าบางส่วนกลับมาตามข่าวเปิดตัว"
+      "Some customers return following the relaunch news."
      ]
     ],
     "trust": 10,
@@ -430,17 +430,17 @@
      "serverMoney": true
     }
    },
-   "source": "CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น); NIST SP 800-63B (จำกัดการลองรหัส)",
+   "source": "CISA Secure by Design (no default passwords); NIST SP 800-63B (limit login attempts)",
    "choices": [
     {
      "id": "a",
-     "label": "เปลี่ยนรหัสเริ่มต้น เปิดการยืนยันตัวตนสองขั้นตอน (2-step) ให้แอดมิน และจำกัดจำนวนครั้งที่ล็อกอินผิด",
+     "label": "Change the default password, enable two-factor authentication (2-step) for the admin account, and limit failed login attempts.",
      "q": "good",
-     "out": "บอทยังพยายามอยู่ แต่ถูกบล็อกหลังพยายามผิดไม่กี่ครั้ง และต่อให้เดารหัสถูกก็เข้าไม่ได้หากไม่มีรหัสจากโทรศัพท์ของคุณ",
+     "out": "The bot keeps trying but gets blocked after just a few failed attempts — and even if it guesses the password right, it still can't get in without the code from your phone.",
      "u": [
       [
        20,
-       "ลูกค้ามั่นใจเมื่อร้านนิ่ง"
+       "Customers feel confident as the store stays stable."
       ]
      ],
      "axes": {
@@ -450,18 +450,18 @@
      "set": {
       "mfa": true
      },
-     "lesson": "ป้องกันหลายชั้น (defence in depth): จำกัดการลองรหัส + ด่านที่สอง ทำให้รหัสผ่านที่อ่อนหรือหลุดไม่ใช่จุดล้มเหลวจุดเดียว",
+     "lesson": "Defence in depth: rate limiting + a second factor means a weak or leaked password is no longer a single point of failure.",
      "next": "wave2_blocked"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนเฉพาะรหัสเริ่มต้นเป็นรหัสที่ยาวขึ้น",
+     "label": "Only change the default password to a longer one.",
      "q": "mid",
-     "out": "รหัสยาวช่วยได้มาก แต่บอทยังลองได้ไม่จำกัด และยังไม่มีด่านที่สองถ้ารหัสถูกหลอกขอไป",
+     "out": "A longer password helps a lot, but the bot can still try an unlimited number of times — and there's still no second factor if the password is phished.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -469,18 +469,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "รหัสผ่านที่แข็งแรงเป็นด่านแรกที่ดี แต่ไม่ควรเป็นด่านเดียว",
+     "lesson": "A strong password is a good first layer — but it shouldn't be the only layer.",
      "next": "wave2"
     },
     {
      "id": "c",
-     "label": "ยังไม่ทำตอนนี้ เพราะยังไม่มีใครเข้าได้ และต้องรีบโปรโมตร้านก่อน",
+     "label": "Don't do it right now — need to push the store promotion first, and no one has broken in yet.",
      "q": "bad",
-     "out": "ยอดสั่งซื้อวันแรกดีมาก แต่คืนนั้นบอทเดารหัสแอดมินสำเร็จ",
+     "out": "First-day orders are excellent — but that night the bot successfully guesses the admin password.",
      "u": [
       [
        60,
-       "แคมเปญโปรโมตได้ผล"
+       "Promotional campaign pays off."
       ]
      ],
      "axes": {
@@ -491,28 +491,28 @@
      "set": {
       "adminWeak": true
      },
-     "lesson": "ความเสี่ยงที่ยังไม่เกิดไม่ใช่ความเสี่ยงที่ไม่มี บอทที่ลองรหัสอยู่แล้วคือหลักฐานชัดว่าร้านกำลังถูกเล็ง",
+     "lesson": "A risk that hasn't materialized yet is not a risk that doesn't exist. A bot actively guessing passwords is clear evidence the store is already being targeted.",
      "next": "takeover"
     }
    ]
   },
   "wave2": {
-   "title": "อีเมลฟิชชิ่ง",
-   "tag": "ฟิชชิ่ง",
+   "title": "Phishing Email",
+   "tag": "Phishing",
    "best": "a",
-   "bestWhy": "ตรวจจากช่องทางที่คุณเข้าเอง ไม่ใช่ลิงก์ในอีเมล และเพิ่มด่านที่สองให้บัญชีสำคัญ",
-   "text": "ผ่านไปราวหนึ่งสัปดาห์ ช่องโหว่ที่เคยถูกใช้ถูกอุดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี คุณได้รับอีเมลที่อ้างว่ามาจากผู้ให้บริการโฮสติ้ง แจ้งว่าบัญชีของคุณจะถูกระงับใน 24 ชั่วโมงหากไม่กดลิงก์ยืนยัน โลโก้และสำนวนดูเหมือนจริงมาก",
-   "source": "CISA Secure Our World (ฟิชชิ่งและ 2-step); Verizon DBIR",
+   "bestWhy": "Check through a channel you navigate yourself — not a link in the email — and add a second factor to important accounts.",
+   "text": "About a week passes. The previously exploited vulnerabilities are closed, but the attacker changes tactics. You receive an email claiming to be from your hosting provider, saying your account will be suspended in 24 hours if you don't click a verification link. The logo and wording look completely genuine.",
+   "source": "CISA Secure Our World (phishing and 2-step); Verizon DBIR",
    "choices": [
     {
      "id": "a",
-     "label": "ไม่กดลิงก์ เปิดเว็บผู้ให้บริการด้วยการพิมพ์ที่อยู่เอง ตรวจว่ามีแจ้งเตือนจริงไหม และเปิด 2-step ให้ทุกบัญชีแอดมิน",
+     "label": "Don't click the link. Open the provider's website by typing the address yourself, check whether there's a real alert on your account, and enable 2-step for all admin accounts.",
      "q": "good",
-     "out": "ไม่มีแจ้งเตือนใดๆ ในบัญชีจริง คุณรู้ว่าเป็นฟิชชิ่ง จึงเปิด 2-step ให้ทุกบัญชีแอดมินเสริม และบอกทีมไม่ให้กดลิงก์ในอีเมลแบบนี้",
+     "out": "There are no alerts on the real account. You recognize it as phishing, enable 2-step for all admin accounts, and warn the team not to click links in emails like this.",
      "u": [
       [
        40,
-       "ร้านนิ่ง ลูกค้ากลับมาใช้"
+       "Store stays stable — customers return."
       ]
      ],
      "trust": 5,
@@ -524,58 +524,58 @@
      "set": {
       "mfa": true
      },
-     "lesson": "อีเมลที่เร่งให้รีบทำ + ลิงก์ คือสัญญาณฟิชชิ่งคลาสสิก ให้ตรวจจากช่องทางที่คุณเข้าเอง และ 2-step ช่วยได้แม้รหัสผ่านหลุด",
+     "lesson": "An urgent email + a link is the classic phishing signal. Always verify through a channel you navigate yourself. 2-step protects you even if your password is stolen.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "กดลิงก์ ถ้าหน้าตาเหมือนจริงก็กรอกรหัส เพราะกลัวบัญชีโดนระงับ",
+     "label": "Click the link — if it looks real, enter your password, because you're afraid of the account being suspended.",
      "q": "bad",
-     "out": "หน้าที่เห็นเป็นหน้าปลอมที่เก็บรหัสผ่านของคุณ ไม่กี่ชั่วโมงต่อมามีคนล็อกอินเข้าบัญชีโฮสติ้งและหลังร้านของคุณด้วยรหัสเดียวกัน",
+     "out": "The page is a fake that captures your password. A few hours later someone logs into your hosting account and your store's admin panel using those credentials.",
      "u": [
       [
        0,
-       "ยังไม่เห็นผลทันที"
+       "No visible effect yet."
       ]
      ],
      "axes": {
       "sec": -2,
       "speed": 2
      },
-     "lesson": "ความเร่งด่วนเป็นเครื่องมือของฟิชชิ่ง และการใช้รหัสผ่านเดียวกันหลายที่ทำให้หลุดทีเดียวพังทั้งชุด",
+     "lesson": "Urgency is a phishing tool. Reusing the same password in multiple places means one compromise takes down everything.",
      "next": "takeover"
     },
     {
      "id": "c",
-     "label": "ลบอีเมลทิ้ง ไม่ต้องทำอะไรเพิ่ม",
+     "label": "Delete the email and do nothing more.",
      "q": "mid",
-     "out": "คุณรอดครั้งนี้ แต่ไม่ได้ตรวจบัญชีหรือเพิ่มด่านที่สอง ถ้ามีอีเมลที่แนบเนียนกว่านี้มาอีก ก็ไม่มีอะไรช่วย",
+     "out": "You dodge this one — but you haven't checked your accounts or added a second factor. If a more convincing email comes next, there's nothing to fall back on.",
      "u": [
       [
        10,
-       "ไม่มีเหตุเพิ่ม"
+       "No additional incidents."
       ]
      ],
      "axes": {
       "speed": 1,
       "long": -1
      },
-     "lesson": "การไม่โดนหลอกครั้งนี้ไม่ได้แปลว่าปลอดภัย ควรเสริมด่านที่สอง (2-step) เพื่อให้รหัสผ่านหลุดแล้วไม่พังทั้งระบบ",
+     "lesson": "Not being fooled this time doesn't mean you're safe. Adding a second factor (2-step) means a leaked password won't bring down the whole system.",
      "next": "END"
     }
    ]
   },
   "takeover": {
-   "title": "บัญชีแอดมินถูกยึด",
-   "tag": "ยึดบัญชี",
+   "title": "Admin Account Hijacked",
+   "tag": "Account Takeover",
    "best": "a",
-   "bestWhy": "ต้องตัดผู้โจมตีออกจากทุกทาง (เซสชัน/โทเค็น) ไม่ใช่แค่เปลี่ยนรหัสผ่าน แล้วตรวจย้อนหลังว่าเขาแก้อะไร",
-   "text": "ผู้โจมตีเข้าหลังร้านด้วยบัญชีแอดมินจริง เขาแก้ราคาสินค้า เปลี่ยนบัญชีรับเงินเป็นของตัวเอง และเปิดดูข้อมูลลูกค้า โดยไม่ต้องใช้ช่องโหว่ในโค้ดเลย",
+   "bestWhy": "You need to cut the attacker off from every access point — sessions, tokens, everything — not just change the password. Then audit what they changed.",
+   "text": "The attacker is inside the admin panel using a legitimate admin account. They modified product prices, changed the payment receiving account to their own, and viewed customer data — all without exploiting a single line of code.",
    "enter": {
     "u": [
      [
       -250,
-      "ราคาและบัญชีรับเงินถูกแก้ ลูกค้าจำนวนมากหายไป"
+      "Prices and payment account altered — many customers lost."
      ]
     ],
     "trust": -20,
@@ -585,13 +585,13 @@
    "choices": [
     {
      "id": "a",
-     "label": "เพิกถอนทุกเซสชัน เปลี่ยนรหัสทุกบัญชี เปิด 2-step ตรวจ log ว่าอะไรถูกแก้ ย้อนค่าที่ถูกเปลี่ยน และแจ้งลูกค้า",
+     "label": "Revoke all sessions, change passwords on all accounts, enable 2-step, audit the logs to see what was changed, revert every altered value, and notify customers.",
      "q": "good",
-     "out": "คุณไล่ย้อนการเปลี่ยนแปลงทีละรายการ คืนบัญชีรับเงินเดิม ปิดทางเข้าเดิมครบ ลูกค้าได้รับแจ้งตรงๆ",
+     "out": "You go through every change one by one, restore the original payment account, close every access point, and customers receive a direct notification.",
      "u": [
       [
        -80,
-       "ปิดร้านแก้ไข และลูกค้าบางส่วนเลิกใช้หลังรับแจ้ง"
+       "Store closed for remediation — some customers leave after being notified."
       ]
      ],
      "trust": 15,
@@ -605,22 +605,22 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "เมื่อบัญชีถูกยึด ต้องตัดผู้โจมตีออกจากทุกทาง ทั้งเซสชัน (การล็อกอินที่ยังค้างอยู่) โทเค็น และคีย์ ไม่ใช่แค่เปลี่ยนรหัสผ่าน แล้วตรวจย้อนหลังว่าเขาแก้อะไรไปบ้าง",
+     "lesson": "When an account is hijacked, you must cut the attacker off from every access point — active sessions, tokens, and keys — not just change the password. Then audit everything they touched.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนรหัสผ่านอย่างเดียวแล้วเปิดร้านต่อ",
+     "label": "Change the password only, then reopen the store.",
      "q": "bad",
-     "out": "ผู้โจมตียังถือเซสชันเก่าที่ยังไม่หมดอายุ เขากลับเข้ามาอีกคืนหนึ่งและแก้บัญชีรับเงินอีกครั้ง",
+     "out": "The attacker still holds an active session that hasn't expired. They come back the next night and change the payment account again.",
      "u": [
       [
        -40,
-       "ปิดร้านสั้นๆ เพื่อเปลี่ยนรหัสผ่าน"
+       "Brief closure to change the password."
       ],
       [
        -150,
-       "ผู้โจมตีกลับเข้ามาทางเซสชันเดิม"
+       "Attacker returns via the still-active session."
       ]
      ],
      "trust": -10,
@@ -630,18 +630,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "เปลี่ยนรหัสผ่านอย่างเดียวไม่พอ ถ้าผู้โจมตียังมีเซสชัน (การล็อกอินที่ค้างอยู่) ก็เข้าได้ต่อ ต้องสั่งออกจากระบบทุกเครื่องด้วย",
+     "lesson": "Changing the password alone isn't enough. If the attacker still has an active session (a login that's still alive), they can keep coming in. You must log them out of every device.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "จ้างทีมผู้เชี่ยวชาญภายนอกตรวจหลังบ้านทั้งระบบ แล้วทำตามคำแนะนำ",
+     "label": "Hire an external security team to audit the entire backend, then follow their recommendations.",
      "q": "mid",
-     "out": "ทีมตรวจพบว่าผู้โจมตีฝังบัญชีแอดมินลับไว้ ช่วยลบออกและตั้งค่า 2-step ให้ ลูกค้าได้รับแจ้ง ต้นทุนสูงแต่ปลอดภัย",
+     "out": "The team discovers the attacker planted a hidden admin account. They remove it, set up 2-step, and customers are notified. Costly, but thorough.",
      "u": [
       [
        -150,
-       "ปิดร้านนานและเสียค่าตรวจ ลูกค้าบางส่วนไม่รอ"
+       "Extended closure and audit fees — some customers don't wait."
       ]
      ],
      "trust": 10,
@@ -655,38 +655,38 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้โจมตีมักทิ้ง \"ประตูหลัง\" ไว้ การตรวจโดยผู้ชำนาญช่วยหาสิ่งที่เรามองไม่เห็น แต่ต้องแลกกับเวลาและเงิน",
+     "lesson": "Attackers often leave a \"backdoor\" behind. Expert eyes can find things you'd miss on your own — but it comes at a cost in time and money.",
      "next": "END"
     }
    ]
   },
   "news": {
-   "title": "ข่าวหลุด",
-   "tag": "ผลของการปิดบัง",
+   "title": "The Story Breaks",
+   "tag": "The Cost of Staying Silent",
    "best": "a",
-   "bestWhy": "ถ้าพลาดเรื่องการแจ้ง ให้ยอมรับและแก้ทันทีที่รู้ตัว ยิ่งเงียบนาน ราคาของความเชื่อใจยิ่งแพง",
-   "text": "ลูกค้าคนหนึ่งโพสต์ว่าเขาได้รับสแปมที่อ้างชื่อและที่อยู่ที่ใช้สั่งของจากร้านคุณ โพสต์ถูกแชร์หลายพันครั้งภายในคืนเดียว และคนเริ่มถามว่าร้านรู้เรื่องนี้ไหม",
+   "bestWhy": "If you missed the disclosure window, admit it and act as soon as you realize. The longer you stay silent, the more expensive trust becomes to rebuild.",
+   "text": "A customer posts that they've been receiving spam that mentions their name and the address they used to shop at your store. The post is shared thousands of times overnight and people start asking whether the store knew about this.",
    "enter": {
     "u": [
      [
       -200,
-      "ข่าวหลุดว่าร้านเคยปิดบังเหตุ"
+      "News breaks that the store covered up the incident."
      ]
     ],
     "trust": -30,
     "damage": 20
    },
-   "source": "EU GDPR มาตรา 34 (แจ้งผู้ได้รับผลกระทบ)",
+   "source": "EU GDPR Article 34 (notification of affected individuals)",
    "choices": [
     {
      "id": "a",
-     "label": "ออกแถลงการณ์ยอมรับ บอกว่าอะไรรั่ว แก้อะไรแล้ว และแนะนำลูกค้าให้ระวังสแปมและเปลี่ยนรหัสผ่าน",
+     "label": "Issue a public statement acknowledging what happened, what data leaked, what has been fixed, and advise customers to watch out for spam and change their passwords.",
      "q": "good",
-     "out": "คุณยอมรับว่ารู้เรื่องมาก่อนแล้วไม่ได้แจ้ง ถูกวิจารณ์หนัก แต่ข้อมูลที่ชัดเจนทำให้ลูกค้าส่วนหนึ่งยังอยู่",
+     "out": "You admit you knew earlier and didn't notify anyone. The criticism is heavy — but the clear information keeps some customers on your side.",
      "u": [
       [
        -100,
-       "ลูกค้าบางส่วนเลิกใช้หลังรู้ว่าถูกปิดบัง"
+       "Some customers leave after learning they were kept in the dark."
       ]
      ],
      "trust": 20,
@@ -697,18 +697,18 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ถ้าพลาดเรื่องการแจ้ง ให้แก้ทันทีที่รู้ตัว ความโปร่งใสที่มาช้ายังดีกว่าไม่มาเลย",
+     "lesson": "If you missed the disclosure, fix it the moment you realize. Late transparency is still better than none.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "ปฏิเสธว่าไม่เกี่ยวข้องกับร้านเรา",
+     "label": "Deny any connection to your store.",
      "q": "bad",
-     "out": "ผู้ใช้ไล่เทียบข้อมูลแล้วพบว่าตรงกับร้านคุณ การปฏิเสธถูกแชร์ต่อเป็นตัวอย่างของร้านที่ไม่รับผิดชอบ",
+     "out": "Users cross-reference the data and find it matches your store. The denial gets shared as a textbook example of irresponsible handling.",
      "u": [
       [
        -350,
-       "ถูกจับได้ว่าปฏิเสธข้อเท็จจริง"
+       "Caught denying verifiable facts."
       ]
      ],
      "trust": -30,
@@ -716,18 +716,18 @@
       "open": -2,
       "long": -2
      },
-     "lesson": "การปฏิเสธข้อเท็จจริงที่ตรวจสอบได้ทำให้ความเสียหายกลายเป็นวิกฤตความน่าเชื่อถือ",
+     "lesson": "Denying verifiable facts turns a data incident into a full-blown credibility crisis.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "ปิดร้านตรวจสอบสามวันก่อนออกแถลงการณ์",
+     "label": "Close the store for three days to investigate before issuing any statement.",
      "q": "mid",
-     "out": "คุณหยุดรับออเดอร์เพื่อยืนยันขอบเขตความเสียหาย แล้วประกาศพร้อมรายละเอียด แต่ช่วงสามวันนั้นข่าวลือแพร่ไปไกลกว่า",
+     "out": "You confirm the full scope of the damage before speaking — but during those three silent days, the rumours travel further than the facts.",
      "u": [
       [
        -150,
-       "เงียบสามวัน ข่าวลือแพร่"
+       "Three days of silence — rumours spread."
       ]
      ],
      "trust": 5,
@@ -739,41 +739,41 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ตรวจให้แน่ใจก่อนพูดเป็นเรื่องดี แต่ถ้าเงียบนานเกินไป ข่าวลือจะเล่าเรื่องแทนคุณ",
+     "lesson": "Verifying before speaking is good — but if you go silent too long, rumours will tell the story for you.",
      "next": "wave2"
     }
    ]
   },
   "wave2_blocked": {
-   "title": "ฟิชชิ่งที่ไม่ได้ผล",
-   "tag": "ฟิชชิ่ง (ถูกสกัด)",
+   "title": "Phishing That Failed",
+   "tag": "Phishing (Blocked)",
    "best": "a",
    "bestWhy": "—",
-   "text": "สัปดาห์ต่อมา อีเมลฟิชชิ่งที่ปลอมเป็นผู้ให้บริการโฮสติ้งมาถึงทีมคุณ มีแอดมินหนึ่งคนกรอกรหัสผ่านลงหน้าปลอมไปแล้ว แต่ผู้โจมตีเข้าบัญชีไม่ได้ เพราะบัญชีแอดมินทุกบัญชีมี 2-step และคุณได้รับแจ้งเตือนว่ามีการล็อกอินจากอุปกรณ์แปลก",
+   "text": "The following week, a phishing email impersonating your hosting provider reaches your team. One admin already entered their password on the fake page — but the attacker can't get into the account, because every admin account has 2-step enabled. You receive an alert about a login attempt from an unknown device.",
    "enter": {
     "u": [
      [
       30,
-      "ลูกค้าเห็นร้านนิ่ง ไม่มีเหตุ"
+      "Customers see the store running smoothly — no incidents."
      ]
     ],
     "trust": 5
    },
-   "source": "Microsoft Security: MFA หยุดการยึดบัญชีอัตโนมัติได้เกือบทั้งหมด",
+   "source": "Microsoft Security: MFA blocks nearly all automated account takeovers",
    "choices": [
     {
      "id": "a",
-     "label": "ดูบทสรุป",
+     "label": "View summary",
      "q": "good",
-     "out": "คุณเปลี่ยนรหัสของแอดมินคนนั้นและเตือนทีมอีกครั้ง ไม่มีความเสียหายเกิดขึ้น",
+     "out": "You change that admin's password and remind the team to stay alert. No damage is done.",
      "u": [
       [
        0,
-       "ไม่มีความเสียหาย"
+       "No damage."
       ]
      ],
      "axes": {},
-     "lesson": "ด่านที่สองทำให้ความผิดพลาดของคนเดียวไม่กลายเป็นหายนะของทั้งร้าน",
+     "lesson": "A second factor means one person's mistake doesn't become a disaster for the whole store.",
      "next": "END"
     }
    ]
@@ -781,91 +781,91 @@
  },
  "ENDINGS": {
   "root": {
-   "title": "ผู้สร้างร้านที่ไว้ใจได้",
+   "title": "A Trustworthy Store Builder",
    "tone": "good",
-   "desc": "คุณแก้ถึงต้นเหตุ ปิดด่านหลายชั้น และร้านยังมีผู้ใช้เกือบเท่าเดิม ลูกค้าเห็นร้านที่รับมือเหตุได้อย่างเป็นระบบ"
+   "desc": "You fixed the root causes, layered your defences, and the store still has nearly as many users as before. Customers see a store that handled an incident systematically."
   },
   "rebuilder": {
-   "title": "สถาปนิกผู้สร้างใหม่",
+   "title": "The Architect Who Started Over",
    "tone": "good",
-   "desc": "คุณเลือกเส้นทางที่แพงที่สุด คือเขียนใหม่ทั้งหมด แล้วอุดช่องใหม่ที่เกิดจากการเร่งทำได้ทัน ร้านปลอดภัย แต่ผู้ใช้ไม่เหมือนเดิม"
+   "desc": "You took the most expensive path — a full rewrite — and still caught the new vulnerabilities that came with the rush. The store is secure, but the user base is not the same."
   },
   "honest": {
-   "title": "ซื่อสัตย์แต่บอบช้ำ",
+   "title": "Honest but Bruised",
    "tone": "mid",
-   "desc": "ร้านเจ็บหนัก แต่คุณบอกความจริงกับลูกค้า ความเชื่อใจที่เหลืออยู่คือฐานให้ร้านกลับมาได้"
+   "desc": "The store took a serious hit, but you told customers the truth. The trust that remains is the foundation for a comeback."
   },
   "survivor": {
-   "title": "ผู้รอดที่เรียนรู้",
+   "title": "A Survivor Who Learned",
    "tone": "mid",
-   "desc": "ร้านยังเปิดอยู่และปิดช่องสำคัญได้แล้ว แม้ระหว่างทางจะมีผลที่ต้องแลกมา"
+   "desc": "The store is still running and the critical holes are closed — even if there were costs along the way."
   },
   "nomfa": {
-   "title": "แก้เก่ง แต่ลืมด่านสอง",
+   "title": "Strong on Fixes, Forgot the Second Layer",
    "tone": "mid",
-   "desc": "ช่องโหว่ในโค้ดถูกอุดแล้ว แต่บัญชีแอดมินยังพึ่งรหัสผ่านอย่างเดียว ความเสี่ยงที่เหลืออยู่คือเรื่องของคน ไม่ใช่โค้ด"
+   "desc": "The code vulnerabilities are patched, but the admin account still relies on a password alone. The remaining risk is a human one, not a code one."
   },
   "cover": {
-   "title": "ปิดบังจนเสียความเชื่อใจ",
+   "title": "Covered It Up and Lost the Trust",
    "tone": "bad",
-   "desc": "ระบบอาจถูกแก้แล้ว แต่การไม่บอกลูกค้าทำให้ความเสียหายถูกเลื่อนไปเกิดทีหลังและแรงกว่าเดิม"
+   "desc": "The system may have been fixed — but not telling customers only delayed the damage, and when it hit, it hit harder."
   },
   "scarred": {
-   "title": "แผลลึกแต่ยังยืน",
+   "title": "Deep Wounds, Still Standing",
    "tone": "bad",
-   "desc": "ข้อมูลและทรัพย์สินของร้านเสียหายหนัก ร้านยังรอดอยู่ แต่ต้องใช้เวลานานกว่าลูกค้าจะกลับมาไว้ใจ"
+   "desc": "The store's data and assets took serious damage. It's still alive, but rebuilding customer trust will take a long time."
   },
   "bleeding": {
-   "title": "เลือดไหลไม่หยุด",
+   "title": "Bleeding Out",
    "tone": "bad",
-   "desc": "คุณเลือกดึงลูกค้าด้วยโปรโมชันโดยไม่แก้ระบบ ผู้โจมตีใช้ช่องเดิมทุกวัน ร้านค่อยๆ ล่มโดยไม่มีวันจบเหตุ"
+   "desc": "You chose to attract customers with promotions instead of fixing the system. The attacker exploits the same hole every day. The store is slowly collapsing with no end to the incident in sight."
   },
   "collapse": {
-   "title": "ร้านต้องปิดตัว",
+   "title": "The Store Had to Shut Down",
    "tone": "bad",
-   "desc": "จำนวนผู้ใช้ต่ำเกินกว่าร้านจะอยู่ต่อได้ ลองย้อนดูว่าการตัดสินใจครั้งไหนทำให้ผู้ใช้หายมากที่สุด"
+   "desc": "The user count dropped too low for the store to survive. Look back and see which decision caused the biggest drop."
   }
  },
  "AXES": [
   {
    "k": "sec",
-   "L": "ความต่อเนื่องของธุรกิจ",
-   "R": "ความปลอดภัย",
+   "L": "Business Continuity",
+   "R": "Security",
    "letL": "B",
    "letR": "S",
-   "dL": "คุณมักรักษาให้ร้านเปิดต่อก่อน แม้ความเสี่ยงยังไม่หมด",
-   "dR": "คุณยอมเสียรายได้ระยะสั้นเพื่อให้ระบบปลอดภัยก่อน",
-   "dM": "คุณชั่งน้ำหนักระหว่างความปลอดภัยกับการเปิดร้านได้ค่อนข้างสมดุล"
+   "dL": "You tend to keep the store open first, even when risk remains.",
+   "dR": "You're willing to sacrifice short-term revenue to secure the system first.",
+   "dM": "You strike a reasonable balance between security and keeping the store open."
   },
   {
    "k": "speed",
-   "L": "รอบคอบ",
-   "R": "ลงมือเร็ว",
+   "L": "Methodical",
+   "R": "Act Fast",
    "letL": "C",
    "letR": "F",
-   "dL": "คุณชอบตรวจให้แน่ใจก่อนลงมือ ข้อดีคือแม่น ข้อระวังคือช้า",
-   "dR": "คุณตัดสินใจไว ข้อดีคือหยุดเหตุเร็ว ข้อระวังคือแก้ไม่ครบ",
-   "dM": "คุณปรับจังหวะเร็ว/ช้าตามสถานการณ์ได้ดี"
+   "dL": "You prefer to verify before acting. The upside is precision; the downside is speed.",
+   "dR": "You decide quickly. The upside is stopping incidents fast; the downside is missing things.",
+   "dM": "You adjust your pace well to the demands of each situation."
   },
   {
    "k": "open",
-   "L": "รักษาภาพลักษณ์",
-   "R": "โปร่งใส",
+   "L": "Image First",
+   "R": "Transparent",
    "letL": "I",
    "letR": "T",
-   "dL": "คุณมักกังวลเรื่องภาพลักษณ์ ซึ่งมักทำให้ลูกค้าเสียความเชื่อใจทีหลัง",
-   "dR": "คุณบอกความจริงกับผู้ใช้ แม้เจ็บในระยะสั้น",
-   "dM": "คุณยังไม่ได้เจอจังหวะที่ต้องเลือกเรื่องการสื่อสารมากนัก"
+   "dL": "You tend to prioritize image — which often erodes trust later.",
+   "dR": "You tell users the truth, even when it stings in the short term.",
+   "dM": "You haven't faced many situations that forced a clear communication choice yet."
   },
   {
    "k": "long",
-   "L": "แก้เฉพาะหน้า",
-   "R": "มองระยะยาว",
+   "L": "Quick Patch",
+   "R": "Long-Term Thinking",
    "letL": "N",
    "letR": "L",
-   "dL": "คุณมักเลือกทางที่ได้ผลเร็ว ซึ่งบางครั้งทิ้งต้นเหตุไว้",
-   "dR": "คุณมองถึงต้นเหตุและผลระยะยาว",
-   "dM": "คุณผสมการแก้เฉพาะหน้ากับการแก้ที่ต้นเหตุ"
+   "dL": "You tend to choose the fast fix, which sometimes leaves the root cause untouched.",
+   "dR": "You think about root causes and long-term consequences.",
+   "dM": "You mix quick patches with root-cause fixes."
   }
  ]
 }

@@ -1,26 +1,26 @@
 {
- "title": "แอปแชตสำหรับนักเรียน",
+ "title": "The Student Chat App",
  "START_USERS": 1000,
  "DEAD": 200,
  "MAXU": 1200,
  "NODES": {
   "start": {
-   "title": "บัญชีผู้ใช้ถูกยึดในคืนเดียว",
-   "tag": "ยึดบัญชีด้วยรหัสที่หลุดจากเว็บอื่น",
+   "title": "Hundreds of Accounts Hijacked in One Night",
+   "tag": "Account Takeover via Leaked Credentials",
    "best": "a",
-   "bestWhy": "หยุดการลองล็อกอินที่ผิดปกติและสั่งออกจากระบบบัญชีที่โดนก่อน แล้วหาต้นเหตุจากหลักฐาน",
-   "text": "คุณทำแอปแชตสำหรับนักเรียนที่มีผู้ใช้ 1,000 คน เช้านี้มีคนแจ้งเข้ามาเพียบว่า \"มีคนเข้าบัญชีเรา แล้วส่งลิงก์หลอกลวงให้เพื่อนทุกคน\" คุณพบว่าเมื่อคืนมีการลองล็อกอิน 50,000 ครั้งในชั่วโมงเดียว ส่วนใหญ่ไม่สำเร็จ แต่ 300 บัญชีถูกเข้าได้ คุณจะทำอะไรก่อน?",
-   "source": "NIST SP 800-61 (การรับมือเหตุ); Have I Been Pwned (รหัสผ่านที่หลุดจากเว็บต่างๆ)",
+   "bestWhy": "Stop the abnormal login attempts and log out the compromised accounts first, then find the root cause from evidence.",
+   "text": "You run a student chat app with 1,000 users. This morning a flood of reports comes in: \"Someone got into our account and sent scam links to all our friends.\" You find that last night there were 50,000 login attempts in a single hour. Most failed, but 300 accounts were successfully accessed. What do you do first?",
+   "source": "NIST SP 800-61 (incident response); Have I Been Pwned (passwords leaked from other sites)",
    "choices": [
     {
      "id": "a",
-     "label": "จำกัดการล็อกอินชั่วคราว สั่งออกจากระบบทุกเครื่องของ 300 บัญชีที่โดน ลบลิงก์หลอกลวง แล้วตรวจว่าเกิดจากอะไร",
+     "label": "Temporarily rate-limit logins, force all 300 compromised accounts to log out on all devices, remove the scam links, then investigate what happened.",
      "q": "good",
-     "out": "แอปช้าลงราว 6 ชั่วโมง ผู้ใช้บางคนล็อกอินลำบาก แต่การลองรหัสหยุดลง บัญชีที่โดนถูกตัดออก และคุณมีเวลาอ่าน log",
+     "out": "The app slows down for about 6 hours and some users have trouble logging in — but the credential stuffing stops, the compromised accounts are cut off, and you now have time to read the logs.",
      "u": [
       [
        -60,
-       "ล็อกอินลำบาก 6 ชั่วโมง ผู้ใช้บางส่วนไม่รอ"
+       "Login difficulties for 6 hours — some users don't stick around."
       ]
      ],
      "trust": 5,
@@ -29,18 +29,18 @@
       "speed": -1,
       "long": 1
      },
-     "lesson": "กักกันก่อน: หยุดการโจมตีที่กำลังเกิดและตัดผู้โจมตีออกจากบัญชีที่โดน แล้วค่อยหาต้นเหตุจากหลักฐาน",
+     "lesson": "Contain first: stop the ongoing attack and cut the attacker out of compromised accounts, then find the root cause from evidence.",
      "next": "investigate"
     },
     {
      "id": "b",
-     "label": "ลบข้อความหลอกลวงทั้งหมด แล้วปล่อยแอปทำงานต่อ",
+     "label": "Delete all the scam messages and let the app keep running.",
      "q": "bad",
-     "out": "ทั้งวันดูเงียบ แต่คุณยังไม่รู้ว่าผู้โจมตีเข้าบัญชีได้อย่างไร และเขายังล็อกอินค้างอยู่ใน 300 บัญชีนั้น",
+     "out": "The day looks quiet, but you still don't know how the attacker got in — and they're still logged in to those 300 accounts.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -48,18 +48,18 @@
       "speed": 2,
       "long": -1
      },
-     "lesson": "การลบผลลัพธ์ไม่ใช่การแก้ต้นเหตุ ถ้าทางเข้ายังเปิดอยู่ ผู้โจมตีก็แค่ทำซ้ำ",
+     "lesson": "Removing the results is not the same as fixing the root cause. If the entry point is still open, the attacker will just do it again.",
      "next": "repeat"
     },
     {
      "id": "c",
-     "label": "ย้ายแอปไปเซิร์ฟเวอร์ใหม่ เพราะคิดว่ามีคนเจาะเซิร์ฟเวอร์",
+     "label": "Move the app to a new server — you think someone hacked into the server.",
      "q": "mid",
-     "out": "การย้ายใช้เวลาหนึ่งวันและผู้ใช้ใช้งานไม่ได้ แต่ log ที่อ่านทีหลังบอกว่าไม่มีใครเจาะเซิร์ฟเวอร์เลย ผู้โจมตีแค่ล็อกอินด้วยรหัสที่ถูกต้อง",
+     "out": "The migration takes a full day and users can't access the app — but the logs you read later show no one hacked the server. The attacker simply logged in with valid credentials.",
      "u": [
       [
        -20,
-       "ย้ายเซิร์ฟเวอร์ ผู้ใช้บางส่วนเลิกใช้"
+       "Server migration — some users drop off."
       ]
      ],
      "axes": {
@@ -69,18 +69,18 @@
      "set": {
       "wrongDx": true
      },
-     "lesson": "ตั้งสมมติฐานจากหลักฐาน ไม่ใช่ความรู้สึก การแก้ผิดจุดทำให้เสียเวลาในขณะที่การโจมตียังดำเนินอยู่",
+     "lesson": "Base your hypothesis on evidence, not gut feeling. Fixing the wrong thing wastes time while the attack is still ongoing.",
      "next": "repeat"
     },
     {
      "id": "d",
-     "label": "ปิดแอป แล้วเขียนระบบล็อกอินและแอปใหม่ทั้งหมด",
+     "label": "Shut down the app and rewrite the entire login system and app from scratch.",
      "q": "mid",
-     "out": "คุณปิดแอปสองสัปดาห์เพื่อเขียนใหม่ ผู้ใช้จำนวนมากย้ายไปแอปอื่นระหว่างรอ แต่ระบบใหม่ไม่มีช่องเดิม",
+     "out": "You shut the app down for two weeks to rewrite it. Many users move to other apps while waiting, but the new system won't have the same vulnerability.",
      "u": [
       [
        -300,
-       "แอปปิดสองสัปดาห์ ผู้ใช้ย้ายไปแอปอื่น"
+       "App down for two weeks — users move to other apps."
       ]
      ],
      "trust": -5,
@@ -92,28 +92,28 @@
      "set": {
       "rewrote": true
      },
-     "lesson": "การเขียนใหม่ทั้งหมดดูปลอดภัยแต่แพงและเสี่ยง โค้ดที่เร่งทำมักมีช่องโหว่ใหม่",
+     "lesson": "A full rewrite looks safe but is costly and risky — code written in a rush tends to introduce new vulnerabilities.",
      "next": "rewrite"
     }
    ]
   },
   "investigate": {
-   "title": "รหัสผ่านมาจากไหน",
-   "tag": "วิเคราะห์เหตุ",
+   "title": "Where Did the Passwords Come From?",
+   "tag": "Incident Analysis",
    "best": "a",
-   "bestWhy": "ต้นเหตุมีสองจุด ต้องปิดทั้งสอง: ป้องกันการลองล็อกอิน และเก็บรหัสผ่านอย่างปลอดภัย",
-   "text": "จาก log คุณพบว่าผู้โจมตีไม่ได้เจาะระบบ เขาใช้รายการอีเมลและรหัสผ่านที่เคยหลุดจากเว็บอื่น มาลองล็อกอินแอปของคุณทีละบัญชี (credential stuffing) ผู้ใช้ที่ใช้รหัสเดียวกันหลายที่จึงโดน และระหว่างตรวจ คุณพบอีกเรื่องที่น่ากลัวกว่า ฐานข้อมูลของคุณเก็บรหัสผ่านทุกคนเป็นตัวอักษรธรรมดาที่อ่านได้ทันที ต้นเหตุมีสองจุด (1) ไม่จำกัดการลองล็อกอินและไม่มี 2-step และ (2) รหัสผ่านไม่ได้ถูกแปลงให้อ่านไม่ออก (hash) คุณจะแก้อย่างไร?",
-   "source": "NIST SP 800-63B (จำกัดการลองรหัส, บล็อกรหัสที่หลุด, เก็บรหัสแบบ hash); OWASP Password Storage Cheat Sheet",
+   "bestWhy": "There are two root causes — both must be closed: protect against login brute-forcing, and store passwords securely.",
+   "text": "From the logs you find that the attacker didn't hack the system — they used a list of emails and passwords leaked from other websites and tried them against your app one by one (credential stuffing). Users who reused passwords across sites got compromised. And while investigating, you find something even more alarming: your database stores every user's password in plain, readable text. There are two root causes: (1) no login rate limiting and no 2-step authentication, and (2) passwords are stored without hashing. How do you fix this?",
+   "source": "NIST SP 800-63B (rate limiting, blocking known-leaked passwords, hashed storage); OWASP Password Storage Cheat Sheet",
    "choices": [
     {
      "id": "a",
-     "label": "จำกัดการลองล็อกอิน เปิดให้ใช้ 2-step บล็อกรหัสที่เคยหลุด และแปลงรหัสผ่านทั้งหมดเป็นแบบ hash พร้อมให้ทุกคนตั้งรหัสใหม่",
+     "label": "Rate-limit login attempts, enable 2-step, block known-leaked passwords, and convert all stored passwords to hashed form — then require everyone to set a new password.",
      "q": "good",
-     "out": "คุณใช้เวลาหนึ่งวันแก้ทั้งสองจุด ผู้ใช้ต้องตั้งรหัสใหม่และหลายคนเปิด 2-step จากนั้นคุณลองยิงรหัสที่หลุดใส่แอปเอง ปรากฏว่าถูกบล็อกทั้งหมด",
+     "out": "You spend one day fixing both issues. Users set new passwords and many enable 2-step. You then fire known-leaked credentials at the app yourself — all of them are blocked.",
      "u": [
       [
        -20,
-       "ผู้ใช้ต้องตั้งรหัสใหม่"
+       "Users must set new passwords."
       ]
      ],
      "trust": 10,
@@ -126,18 +126,18 @@
       "rulesFixed": true,
       "serverMoney": true
      },
-     "lesson": "สองหลักสำคัญ: กันการลองรหัสจำนวนมาก และอย่าเก็บรหัสผ่านแบบอ่านได้ ให้เก็บแบบ hash ที่แม้แต่เจ้าของระบบก็อ่านไม่ออก",
+     "lesson": "Two key principles: prevent mass login attempts, and never store passwords in readable form — use hashing so that even you can't read them.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "จำกัดการลองล็อกอินก่อน เรื่องเก็บรหัสผ่านไว้ค่อยทำทีหลัง",
+     "label": "Rate-limit logins first — deal with password storage later.",
      "q": "mid",
-     "out": "การลองรหัสหยุดลง แอปกลับมาเร็ว แต่รหัสผ่านทุกคนยังเก็บเป็นตัวอักษรธรรมดาในฐานข้อมูล",
+     "out": "The credential stuffing stops and the app is back up quickly — but everyone's password is still stored as plain text in the database.",
      "u": [
       [
        -10,
-       "ปิดแอปสั้นๆ"
+       "Brief app downtime."
       ]
      ],
      "trust": 5,
@@ -149,18 +149,18 @@
      "set": {
       "rulesFixed": true
      },
-     "lesson": "การแก้ครึ่งทางทำให้รู้สึกปลอดภัยแล้ว ทั้งที่ถ้าฐานข้อมูลหลุดเมื่อไร รหัสผ่านของทุกคนก็หลุดทันที",
+     "lesson": "A half-fix creates a false sense of security. If the database ever leaks, every password goes with it instantly.",
      "next": "partialRules"
     },
     {
      "id": "c",
-     "label": "แปลงรหัสผ่านเป็นแบบ hash ก่อน ส่วนการจำกัดล็อกอินปล่อยไว้ เพราะกลัวผู้ใช้บ่นว่ายุ่งยาก",
+     "label": "Convert passwords to hashed form first — leave login rate limiting for later because you're worried users will complain it's inconvenient.",
      "q": "mid",
-     "out": "รหัสผ่านในฐานข้อมูลปลอดภัยแล้ว แต่ผู้โจมตียังลองรหัสที่หลุดจากเว็บอื่นได้ไม่จำกัด",
+     "out": "The stored passwords are now safe — but the attacker can still try unlimited leaked credentials from other sites against your app.",
      "u": [
       [
        -10,
-       "ปิดแอปสั้นๆ"
+       "Brief app downtime."
       ]
      ],
      "axes": {
@@ -170,37 +170,37 @@
      "set": {
       "serverMoney": true
      },
-     "lesson": "ความกลัวว่าผู้ใช้จะบ่นไม่ควรเป็นเหตุผลให้เว้นช่องโหว่ การจำกัดการลองรหัสแทบไม่กระทบผู้ใช้ปกติ",
+     "lesson": "Worrying that users will complain shouldn't be a reason to leave a vulnerability open. Login rate limiting barely affects normal users.",
      "next": "partialClient"
     }
    ]
   },
   "partialClient": {
-   "title": "ยึดบัญชีรอบสอง",
-   "tag": "โจมตีซ้ำ: ลองรหัสไม่จำกัด",
+   "title": "Accounts Hijacked Again",
+   "tag": "Repeat Attack: Unlimited Login Attempts",
    "best": "a",
-   "bestWhy": "การจำกัดการลองรหัสต้องทำที่ Server การตรวจในแอปฝั่งผู้ใช้ บอทข้ามได้เสมอ",
-   "text": "ห้าวันต่อมา ผู้โจมตีกลับมาพร้อมรายการรหัสที่หลุดชุดใหม่ ลองล็อกอินอีก 80,000 ครั้ง ยึดได้เพิ่มอีก 150 บัญชี และส่งลิงก์ขายของปลอมให้เพื่อนของทุกคน ผู้ใช้หลายคนโอนเงินไปแล้ว",
+   "bestWhy": "Login rate limiting must happen at the Server. Client-side checks can always be bypassed by a bot.",
+   "text": "Five days later, the attacker returns with a fresh batch of leaked credentials and fires 80,000 more login attempts. Another 150 accounts are compromised, and the attacker sends scam shop links to every victim's friends. Several users have already transferred money.",
    "enter": {
     "u": [
      [
       -90,
-      "บัญชีถูกยึดเพิ่ม เพื่อนๆ โดนหลอกโอนเงิน"
+      "More accounts hijacked — friends tricked into transferring money."
      ]
     ],
     "damage": 10
    },
-   "source": "NIST SP 800-63B (จำกัดการลองรหัสที่ฝั่งผู้ให้บริการ); CISA Secure Our World (2-step)",
+   "source": "NIST SP 800-63B (server-side rate limiting); CISA Secure Our World (2-step)",
    "choices": [
     {
      "id": "a",
-     "label": "จำกัดการลองล็อกอินที่ Server เปิด 2-step สั่งออกจากระบบบัญชีที่โดน และแจ้งเจ้าของบัญชีให้เปลี่ยนรหัสทุกที่ที่ใช้ซ้ำ",
+     "label": "Rate-limit logins at the Server, enable 2-step, log out the compromised accounts, and notify affected users to change their passwords everywhere they reused them.",
      "q": "good",
-     "out": "คุณปิดทางเข้าจนครบ ลองยิงรหัสใส่แอปเองแล้วถูกบล็อกทั้งหมด และผู้ใช้ที่โดนได้เปลี่ยนรหัสในเว็บอื่นด้วย",
+     "out": "You close every entry point. Firing known-leaked credentials at the app yourself — all blocked. And affected users have changed their passwords on other sites too.",
      "u": [
       [
        -15,
-       "ปิดแอปเพื่อแก้ไข"
+       "App taken down to apply the fix."
       ]
      ],
      "trust": 5,
@@ -211,18 +211,18 @@
      "set": {
       "rulesFixed": true
      },
-     "lesson": "การจำกัดการลองรหัสและ 2-step ทำให้รหัสที่หลุดจากเว็บอื่นใช้กับแอปเราไม่ได้ และควรเตือนผู้ใช้ว่าอย่าใช้รหัสเดียวกันหลายที่",
+     "lesson": "Rate limiting and 2-step make passwords leaked from other sites useless against your app. And remind users: never reuse passwords across sites.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "เพิ่มโค้ดในแอปฝั่งผู้ใช้ ให้กดล็อกอินผิดได้แค่ 5 ครั้ง",
+     "label": "Add client-side code in the app to allow only 5 wrong login attempts.",
      "q": "bad",
-     "out": "ในแอปดูเหมือนได้ผล แต่บอทไม่ได้ใช้แอปของคุณ มันส่งคำขอล็อกอินตรงเข้าระบบ และข้ามการนับไปภายในชั่วโมงเดียว",
+     "out": "In the app it looks like it works — but bots don't use your app. They send login requests directly to the system and bypass the counter within the hour.",
      "u": [
       [
        -30,
-       "บอทข้ามการตรวจในแอปสำเร็จ"
+       "Bot bypasses the in-app check successfully."
       ]
      ],
      "damage": 5,
@@ -231,38 +231,38 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "การตรวจในแอปฝั่งผู้ใช้ (client) ช่วยประสบการณ์ผู้ใช้ แต่ไม่ใช่ความปลอดภัย เพราะผู้โจมตีควบคุมฝั่งนั้นได้ทั้งหมด",
+     "lesson": "Client-side checks (checks inside the app) improve the user experience but are not security — attackers have full control over their own client.",
      "next": "repeat"
     }
    ]
   },
   "partialRules": {
-   "title": "ฐานข้อมูลหลุด",
-   "tag": "โจมตีซ้ำ: รหัสผ่านเก็บแบบอ่านได้",
+   "title": "Database Leaked",
+   "tag": "Repeat Attack: Plaintext Password Storage",
    "best": "a",
-   "bestWhy": "แก้ให้ครบทันที ตรวจว่าอะไรหลุด และแจ้งผู้ใช้ เพื่อให้เขาไปเปลี่ยนรหัสทุกที่ที่ใช้ซ้ำ",
-   "text": "ห้าวันต่อมา มีคนพบว่าไฟล์สำรองฐานข้อมูลของแอปถูกเปิดเป็นลิงก์สาธารณะโดยไม่ตั้งใจ ในไฟล์มีอีเมล วันเกิด เลขประจำตัวนักเรียน และรหัสผ่านของผู้ใช้ 1,000 คนแบบอ่านได้ทันที และมีคนเอาไปโพสต์ในฟอรัมแฮกเกอร์แล้ว",
+   "bestWhy": "Fix everything completely, check what data was exposed, and notify users so they can change their passwords everywhere they reused them.",
+   "text": "Five days later, someone discovers that a backup of your app's database was accidentally left as a public link. The file contains the emails, birthdays, student IDs, and passwords of all 1,000 users in plain readable text — and someone has already posted it to a hacker forum.",
    "enter": {
     "u": [
      [
       -120,
-      "ผู้ใช้ที่รู้ข่าวส่วนหนึ่งเลิกใช้แอป"
+      "Users who hear the news — some stop using the app."
      ]
     ],
     "trust": -20,
     "damage": 35
    },
-   "source": "EU GDPR มาตรา 5 (เก็บข้อมูลเท่าที่จำเป็น) และ 33–34 (แจ้งเหตุ); OWASP Password Storage Cheat Sheet",
+   "source": "EU GDPR Articles 5 (data minimization) and 33–34 (breach notification); OWASP Password Storage Cheat Sheet",
    "choices": [
     {
      "id": "a",
-     "label": "ลบลิงก์ แปลงรหัสผ่านเป็น hash บังคับทุกคนตั้งรหัสใหม่ เลิกเก็บข้อมูลที่ไม่จำเป็นอย่างวันเกิด และแจ้งผู้ใช้ทุกคนตรงๆ ให้เปลี่ยนรหัสในเว็บอื่นด้วย",
+     "label": "Remove the public link, hash all stored passwords, require everyone to set a new password, stop storing unnecessary data like birthdays, and notify all users directly — telling them to change their passwords on every other site they reused them.",
      "q": "good",
-     "out": "คุณส่งข้อความแจ้งผู้ใช้ทุกคนว่าอะไรหลุดและควรทำอะไร บางคนโกรธ แต่หลายคนขอบคุณที่บอกเร็ว และทันเปลี่ยนรหัสในบัญชีอื่น",
+     "out": "You message every user explaining what was exposed and what to do. Some are angry, but many thank you for telling them quickly — and they make it in time to change their passwords elsewhere.",
      "u": [
       [
        -60,
-       "ผู้ใช้บางส่วนเลิกใช้หลังรับแจ้ง"
+       "Some users leave after being notified."
       ]
      ],
      "trust": 15,
@@ -275,18 +275,18 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "เก็บข้อมูลเท่าที่จำเป็น เพราะข้อมูลที่ไม่ได้เก็บก็ไม่มีทางหลุด และการแจ้งเร็วช่วยให้ผู้ใช้ป้องกันตัวเองได้ (กฎหมายคุ้มครองข้อมูลระดับสากลอย่าง GDPR ของสหภาพยุโรป กำหนดให้แจ้งหน่วยงานกำกับภายใน 72 ชั่วโมง และแจ้งผู้ได้รับผลกระทบเมื่อมีความเสี่ยงสูง)",
+     "lesson": "Collect only what you need — data you don't store can't leak. And notifying users quickly lets them protect themselves. (International data protection law such as the EU's GDPR requires notifying the supervisory authority within 72 hours and notifying affected individuals when the risk is high.)",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "ลบลิงก์เงียบๆ ไม่ประกาศ เพราะยังไม่มีใครมาถาม",
+     "label": "Quietly remove the public link and don't announce it — no one has asked about it yet.",
      "q": "bad",
-     "out": "แอปกลับมาปกติ แต่ผู้ใช้ที่ใช้รหัสเดียวกันกับโซเชียลและอีเมลไม่รู้ตัว จึงไม่ได้เปลี่ยนรหัสที่อื่น",
+     "out": "The app returns to normal, but users who reuse that password for social media and email don't know, so they don't change it.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -300,18 +300,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การเงียบไม่ได้ทำให้ข้อมูลที่หลุดกลับมา มันแค่ทำให้ผู้ใช้ไม่ได้ป้องกันตัว และความจริงจะถูกเปิดเผยทีหลัง",
+     "lesson": "Staying silent doesn't make the leaked data disappear — it just leaves users unable to protect themselves, and the truth will come out.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "ปิดแอป แล้วจ้างผู้เชี่ยวชาญภายนอกตรวจทั้งระบบก่อนประกาศ",
+     "label": "Take the app down and bring in an external expert to audit the entire system before making any announcement.",
      "q": "mid",
-     "out": "ผู้เชี่ยวชาญพบไฟล์สำรองที่เปิดสาธารณะอีกสองไฟล์ และยืนยันได้ว่าข้อมูลใดหลุด คุณประกาศพร้อมแผนแก้ที่ชัดเจน แต่ต้องปิดแอปนาน",
+     "out": "The expert finds two more publicly exposed backup files and confirms exactly what was leaked. You announce with a clear remediation plan, but the app has to stay down for a long time.",
      "u": [
       [
        -150,
-       "ปิดแอปนาน ผู้ใช้บางส่วนไม่รอ"
+       "Extended downtime — some users don't wait."
       ]
      ],
      "trust": 10,
@@ -324,28 +324,28 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้เชี่ยวชาญภายนอกคุ้มค่าเมื่อไม่แน่ใจขอบเขตความเสียหาย แต่ต้องชั่งน้ำหนักกับเวลาที่บริการต้องหยุด",
+     "lesson": "External experts are worth it when you're unsure of the damage scope — but you need to weigh that against the time your service has to stay down.",
      "next": "wave2"
     }
    ]
   },
   "repeat": {
-   "title": "โดนอีกรอบ",
-   "tag": "ต้นเหตุยังไม่ถูกแก้",
+   "title": "Hit Again",
+   "tag": "Root Cause Still Not Fixed",
    "best": "a",
-   "bestWhy": "เมื่อโดนซ้ำ แปลว่าต้นเหตุยังอยู่ ต้องหยุด แก้ให้ครบ และสื่อสารตรงๆ",
-   "text": "ไม่กี่วันต่อมา บัญชีถูกยึดเพิ่มอีกหลายร้อยบัญชี ลิงก์หลอกลวงกระจายทั่วแอป และมีคนพบรหัสผ่านของผู้ใช้แอปคุณถูกโพสต์ในฟอรัมแฮกเกอร์ แปลว่าทางเข้าเดิมยังเปิดอยู่ และข้อมูลหลุดออกไปแล้ว คุณจะทำอย่างไร?",
-   "source": "NIST SP 800-61 (การรับมือเหตุ); EU GDPR มาตรา 34",
+   "bestWhy": "Being hit again means the root cause is still there. Stop, fix everything properly, and communicate honestly.",
+   "text": "A few days later, hundreds more accounts are hijacked, scam links flood the app, and someone finds your users' passwords posted on a hacker forum. The original entry point is still open and data is already out. What do you do?",
+   "source": "NIST SP 800-61 (incident response); EU GDPR Article 34",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดแอปชั่วคราว จำกัดการลองล็อกอิน เปิด 2-step แปลงรหัสเป็น hash แล้วประกาศตรงๆ ว่าเกิดอะไรขึ้น",
+     "label": "Temporarily shut down the app, rate-limit logins, enable 2-step, hash all passwords, then communicate openly about what happened.",
      "q": "good",
-     "out": "คุณแก้ทั้งสองจุดจนครบ บังคับทุกคนตั้งรหัสใหม่ และประกาศตรงๆ ผู้ใช้เสียใจแต่ส่วนใหญ่เห็นว่าคุณรับผิดชอบ",
+     "out": "You fix both issues completely, require everyone to set a new password, and announce the situation honestly. Users are upset, but most see that you're taking responsibility.",
      "u": [
       [
        -90,
-       "ปิดแอปและเสียผู้ใช้บางส่วนจากข่าว"
+       "App down — some users lost from the news."
       ]
      ],
      "trust": 15,
@@ -360,18 +360,18 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "โดนซ้ำแปลว่ารอบแรกยังไม่ได้แก้ที่ต้นเหตุ ให้หยุด ทบทวนหลักฐาน แล้วแก้ให้ครบพร้อมสื่อสารตรงไปตรงมา",
+     "lesson": "Being hit again means the first round didn't fix the root cause. Stop, review the evidence, fix everything completely, and communicate straightforwardly.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้ระบบให้ครบ แต่ไม่บอกผู้ใช้ ไม่อยากให้ตกใจ",
+     "label": "Fix the system completely but don't tell users — you don't want to alarm them.",
      "q": "bad",
-     "out": "ระบบปลอดภัยขึ้นจริง แต่ผู้ใช้ที่รหัสหลุดไม่รู้ตัว และยังใช้รหัสเดียวกันในโซเชียลและอีเมลต่อไป",
+     "out": "The system is genuinely more secure — but users whose passwords leaked don't know, and are still using the same password on social media and email.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -386,18 +386,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การซ่อนเหตุไม่ได้ปกป้องผู้ใช้ มันแค่เลื่อนวันที่ความจริงถูกเปิดเผย",
+     "lesson": "Concealing an incident doesn't protect users — it only delays the day the truth comes out.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "แจกสติกเกอร์และฟีเจอร์พรีเมียมฟรีเพื่อดึงผู้ใช้กลับ ไว้ค่อยแก้ระบบทีหลัง",
+     "label": "Give out free stickers and premium features to win users back — fix the system later.",
      "q": "bad",
-     "out": "ผู้ใช้ใหม่สมัครเพิ่มทันที แต่ผู้โจมตีก็เห็นว่าทางเข้ายังเปิดอยู่ และยึดบัญชีใหม่ๆ ได้ทุกวัน",
+     "out": "New users sign up immediately, but the attacker can see the entry point is still open and hijacks new accounts every day.",
      "u": [
       [
        60,
-       "ของฟรีดึงผู้ใช้บางส่วนกลับมา"
+       "Free rewards bring some users back."
       ]
      ],
      "trust": -10,
@@ -406,22 +406,22 @@
       "speed": 2,
       "long": -2
      },
-     "lesson": "แก้ที่ภาพลักษณ์โดยไม่แก้ระบบคือการเลื่อนปัญหา มันกลับมาแรงกว่าเดิม",
+     "lesson": "Polishing your image without fixing the system just delays the problem — and it comes back harder.",
      "next": "END:bleeding"
     }
    ]
   },
   "rewrite": {
-   "title": "แอปใหม่ ช่องใหม่",
-   "tag": "ช่องโหว่ใหม่จากการเร่งทำ",
+   "title": "New App, New Holes",
+   "tag": "New Vulnerabilities from a Rushed Build",
    "best": "a",
-   "bestWhy": "ปิดช่องให้ครบก่อนเปิดใช้จริง: เข้ารหัสการเชื่อมต่อ และป้องกันบัญชีแอดมินหลายชั้น",
-   "text": "สองสัปดาห์ต่อมา แอปเวอร์ชันใหม่เปิดตัว มีการจำกัดการลองล็อกอิน มี 2-step ให้ผู้ใช้ และเก็บรหัสผ่านแบบ hash แล้ว ผู้ใช้บางส่วนกลับมาตามข่าว แต่ตอนเร่งทำ คุณลืมสองอย่าง (1) หน้าล็อกอินของเว็บเวอร์ชันใหม่ไม่ได้ใช้ https (ไม่มีรูปแม่กุญแจ) รหัสผ่านจึงถูกส่งแบบอ่านได้ผ่าน Wi-Fi สาธารณะ และ (2) หน้าแอดมินยังใช้รหัสผ่านเริ่มต้น ตอนนี้มีบอทลองรหัสหน้าแอดมินราว 3,000 ครั้งต่อชั่วโมง",
+   "bestWhy": "Close all holes before going live: encrypt connections and protect the admin account with multiple layers.",
+   "text": "Two weeks later the new version of the app launches. It has login rate limiting, 2-step for users, and hashed password storage. Some users return following the news. But in the rush, you forgot two things: (1) the new web login page doesn't use HTTPS (no padlock icon), so passwords are sent in readable form over public Wi-Fi; and (2) the admin panel still uses the default password. A bot is now trying to guess the admin password about 3,000 times per hour.",
    "enter": {
     "u": [
      [
       120,
-      "ผู้ใช้บางส่วนกลับมาตามข่าวเปิดตัว"
+      "Some users return following the relaunch news."
      ]
     ],
     "trust": 10,
@@ -430,17 +430,17 @@
      "serverMoney": true
     }
    },
-   "source": "Google Safety Center (https และรูปแม่กุญแจ); CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น)",
+   "source": "Google Safety Center (HTTPS and the padlock icon); CISA Secure by Design (no default passwords)",
    "choices": [
     {
      "id": "a",
-     "label": "เปิด https ทุกหน้า เปลี่ยนรหัสแอดมินเริ่มต้น เปิด 2-step ให้แอดมิน และจำกัดการลองล็อกอินหน้าแอดมิน",
+     "label": "Enable HTTPS on all pages, change the admin default password, enable 2-step for the admin account, and rate-limit admin login attempts.",
      "q": "good",
-     "out": "การเชื่อมต่อถูกเข้ารหัสทั้งหมด บอทยังพยายามอยู่แต่ถูกบล็อกหลังผิดไม่กี่ครั้ง และต่อให้เดารหัสถูกก็เข้าไม่ได้ถ้าไม่มีรหัสจากโทรศัพท์ของคุณ",
+     "out": "All connections are now encrypted. The bot keeps trying but gets blocked after a few failed attempts — and even if it guesses the password right, it can't get in without the code from your phone.",
      "u": [
       [
        20,
-       "ผู้ใช้มั่นใจเมื่อแอปนิ่ง"
+       "Users feel confident as the app stays stable."
       ]
      ],
      "axes": {
@@ -450,18 +450,18 @@
      "set": {
       "mfa": true
      },
-     "lesson": "https เข้ารหัสข้อมูลระหว่างทางไม่ให้คนบน Wi-Fi เดียวกันแอบอ่านได้ ส่วนบัญชีแอดมินควรมีหลายชั้น (defence in depth)",
+     "lesson": "HTTPS encrypts data in transit so no one on the same Wi-Fi can read it. Admin accounts should also be protected with multiple layers (defence in depth).",
      "next": "wave2_blocked"
     },
     {
      "id": "b",
-     "label": "เปิด https และเปลี่ยนรหัสแอดมินเป็นรหัสที่ยาวขึ้น",
+     "label": "Enable HTTPS and change the admin password to a longer one.",
      "q": "mid",
-     "out": "รหัสผ่านไม่ถูกแอบอ่านระหว่างทางแล้ว และรหัสแอดมินยาวขึ้น แต่บอทยังลองได้ไม่จำกัด และยังไม่มีด่านที่สองถ้ารหัสถูกหลอกขอไป",
+     "out": "Passwords are no longer readable in transit, and the admin password is longer — but the bot can still try an unlimited number of times, and there's no second factor if the password is phished.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -469,18 +469,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "รหัสผ่านที่แข็งแรงเป็นด่านแรกที่ดี แต่ไม่ควรเป็นด่านเดียว",
+     "lesson": "A strong password is a good first layer — but it shouldn't be the only layer.",
      "next": "wave2"
     },
     {
      "id": "c",
-     "label": "ยังไม่ทำตอนนี้ ต้องรีบโปรโมตแอปเวอร์ชันใหม่ก่อน",
+     "label": "Don't do it right now — need to promote the new version first.",
      "q": "bad",
-     "out": "ยอดผู้ใช้วันแรกดีมาก แต่คืนนั้นบอทเดารหัสแอดมินสำเร็จ",
+     "out": "First-day user numbers are great — but that night the bot successfully guesses the admin password.",
      "u": [
       [
        60,
-       "แคมเปญโปรโมตได้ผล"
+       "Promotional campaign pays off."
       ]
      ],
      "axes": {
@@ -491,28 +491,28 @@
      "set": {
       "adminWeak": true
      },
-     "lesson": "ความเสี่ยงที่ยังไม่เกิดไม่ใช่ความเสี่ยงที่ไม่มี บอทที่ลองรหัสอยู่แล้วคือหลักฐานว่าแอปกำลังถูกเล็ง",
+     "lesson": "A risk that hasn't materialized yet is not a risk that doesn't exist. A bot actively guessing passwords is clear evidence the app is already being targeted.",
      "next": "takeover"
     }
    ]
   },
   "wave2": {
-   "title": "หน้าล็อกอินปลอมของแอปคุณ",
-   "tag": "ฟิชชิ่ง",
+   "title": "A Fake Login Page for Your App",
+   "tag": "Phishing",
    "best": "a",
-   "bestWhy": "เตือนผู้ใช้ทันที แจ้งลบหน้าปลอม และให้บัญชีสำคัญมีด่านที่สอง",
-   "text": "ผ่านไปราวหนึ่งสัปดาห์ ช่องเดิมถูกปิดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี มีโพสต์ในโซเชียลว่า \"รับฟีเจอร์พรีเมียมฟรี แค่ล็อกอินผ่านลิงก์นี้\" ลิงก์พาไปหน้าล็อกอินปลอมที่หน้าตาเหมือนแอปของคุณทุกอย่าง และผู้ช่วยดูแลแอป (moderator) คนหนึ่งในทีมก็เพิ่งแชร์ลิงก์นี้ต่อ",
+   "bestWhy": "Warn users immediately, report the fake page for takedown, and give key accounts a second factor.",
+   "text": "About a week passes. The previous holes are closed, but the attacker changes tactics. A post circulates on social media: \"Get free premium features — just log in through this link.\" The link leads to a fake login page that looks exactly like your app. One of your moderators has already shared the link.",
    "source": "CISA Secure Our World: Recognize and Report Phishing; UK NCSC: Phishing attacks",
    "choices": [
     {
      "id": "a",
-     "label": "แจ้งเตือนผู้ใช้ในแอปทันที รายงานให้ผู้ให้บริการโฮสต์ลบหน้าปลอม และเปิด 2-step ให้บัญชีทีมงานทุกบัญชี",
+     "label": "Immediately alert users inside the app, report the fake page to the hosting provider for takedown, and enable 2-step for every team account.",
      "q": "good",
-     "out": "หน้าปลอมถูกลบภายในวัน ผู้ใช้ส่วนใหญ่เห็นคำเตือนก่อนกด และต่อให้ทีมงานหลงกรอกรหัสไป ก็ยังมีด่านที่สองกันไว้",
+     "out": "The fake page is taken down within the day. Most users see the warning before clicking, and even if a team member entered their password on the fake page, the second factor blocks the attacker.",
      "u": [
       [
        40,
-       "แอปนิ่ง ผู้ใช้กลับมาใช้"
+       "App stable — users return."
       ]
      ],
      "trust": 5,
@@ -524,74 +524,74 @@
      "set": {
       "mfa": true
      },
-     "lesson": "ของฟรี + ลิงก์ + หน้าล็อกอิน คือสัญญาณฟิชชิ่งคลาสสิก ให้ล็อกอินผ่านแอปหรือพิมพ์ที่อยู่เว็บเองเท่านั้น และ 2-step ช่วยได้แม้รหัสผ่านหลุด",
+     "lesson": "Free stuff + a link + a login page is the classic phishing signal. Always log in through the app or by typing the address yourself. 2-step protects you even if your password is stolen.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "ไม่ต้องทำอะไร เพราะไม่ใช่เว็บของเรา",
+     "label": "Do nothing — it's not our website.",
      "q": "bad",
-     "out": "ผู้ใช้หลายคนและผู้ช่วยดูแลแอปกรอกรหัสลงหน้าปลอม ไม่กี่ชั่วโมงต่อมามีคนล็อกอินเข้าบัญชีทีมงานด้วยรหัสเหล่านั้น",
+     "out": "Multiple users and moderators enter their passwords on the fake page. A few hours later someone logs into team accounts using those credentials.",
      "u": [
       [
        0,
-       "ยังไม่เห็นผลทันที"
+       "No visible effect yet."
       ]
      ],
      "axes": {
       "sec": -2,
       "speed": 2
      },
-     "lesson": "หน้าปลอมที่ใช้ชื่อแอปเราเป็นปัญหาของเรา เพราะผู้ใช้และทีมงานของเราคือเหยื่อ",
+     "lesson": "A fake page using your app's name is your problem — because your users and your team are the targets.",
      "next": "takeover"
     },
     {
      "id": "c",
-     "label": "โพสต์เตือนในเพจของแอปอย่างเดียว",
+     "label": "Post a warning on the app's official page only.",
      "q": "mid",
-     "out": "ผู้ใช้บางส่วนเห็นคำเตือน แต่หน้าปลอมยังเปิดอยู่ และบัญชีทีมงานยังไม่มีด่านที่สอง",
+     "out": "Some users see the warning, but the fake page is still up, and team accounts still have no second factor.",
      "u": [
       [
        10,
-       "ไม่มีเหตุเพิ่ม"
+       "No additional incidents."
       ]
      ],
      "axes": {
       "speed": 1,
       "long": -1
      },
-     "lesson": "การเตือนช่วยได้ แต่ควรแจ้งลบหน้าปลอมและเพิ่มด่านที่สองด้วย เพื่อให้คนที่พลาดไม่พังทั้งระบบ",
+     "lesson": "Warning helps, but you should also report the fake page for takedown and add a second factor — so that anyone who misses the warning doesn't bring down the whole system.",
      "next": "END"
     }
    ]
   },
   "takeover": {
-   "title": "บัญชีทีมงานถูกยึด",
-   "tag": "ยึดบัญชี",
+   "title": "Team Account Hijacked",
+   "tag": "Account Takeover",
    "best": "a",
-   "bestWhy": "ต้องตัดผู้โจมตีออกจากทุกทาง ไม่ใช่แค่เปลี่ยนรหัสผ่าน แล้วตรวจย้อนหลังว่าเขาทำอะไร",
-   "text": "ผู้โจมตีเข้าหลังบ้านด้วยบัญชีทีมงานจริง เขาส่งข้อความหลอกลวงจากบัญชีทางการของแอปถึงผู้ใช้ทุกคน แบนผู้ใช้จริงหลายสิบคน และเปิดดูข้อมูลผู้ใช้ โดยไม่ต้องใช้ช่องโหว่ในโค้ดเลย",
+   "bestWhy": "You need to cut the attacker off from every access point — not just change the password. Then audit what they did.",
+   "text": "The attacker is inside the app's backend using a legitimate team account. They sent scam messages from the app's official account to every user, banned dozens of real users, and viewed user data — all without exploiting a single line of code.",
    "enter": {
     "u": [
      [
       -250,
-      "ข้อความหลอกลวงจากบัญชีทางการ ผู้ใช้จำนวนมากหายไป"
+      "Scam messages from the official account — many users lost."
      ]
     ],
     "trust": -20,
     "damage": 40
    },
-   "source": "NIST SP 800-61 (การรับมือเหตุ); OWASP Session Management Cheat Sheet",
+   "source": "NIST SP 800-61 (incident response); OWASP Session Management Cheat Sheet",
    "choices": [
     {
      "id": "a",
-     "label": "สั่งออกจากระบบทุกเครื่อง เปลี่ยนรหัสทุกบัญชีทีมงาน เปิด 2-step ตรวจ log ว่าอะไรถูกแก้ ย้อนการแบน และแจ้งผู้ใช้",
+     "label": "Log out every active session on all devices, change passwords on all team accounts, enable 2-step, audit the logs for what was done, reverse all bans, and notify users.",
      "q": "good",
-     "out": "คุณไล่ย้อนการเปลี่ยนแปลงทีละรายการ ปลดแบนผู้ใช้ ลบข้อความหลอกลวง ปิดทางเข้าครบ และแจ้งผู้ใช้ตรงๆ",
+     "out": "You go through every change one by one, lift all bans, delete the scam messages, close every access point, and notify users directly.",
      "u": [
       [
        -80,
-       "ปิดแอปแก้ไข ผู้ใช้บางส่วนเลิกใช้หลังรับแจ้ง"
+       "App down for remediation — some users leave after being notified."
       ]
      ],
      "trust": 15,
@@ -605,22 +605,22 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "เมื่อบัญชีถูกยึด ต้องตัดผู้โจมตีออกจากทุกทาง ทั้งเซสชัน (การล็อกอินที่ยังค้างอยู่) โทเค็น และคีย์ แล้วตรวจย้อนหลังว่าเขาทำอะไรไปบ้าง",
+     "lesson": "When an account is hijacked, you must cut the attacker off from every access point — active sessions, tokens, and keys — not just change the password. Then audit everything they did.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนรหัสผ่านอย่างเดียวแล้วเปิดแอปต่อ",
+     "label": "Change the password only, then reopen the app.",
      "q": "bad",
-     "out": "ผู้โจมตียังล็อกอินค้างอยู่ เขากลับเข้ามาอีกคืนหนึ่งและส่งข้อความหลอกลวงรอบใหม่",
+     "out": "The attacker is still logged in on their device. They come back the next night and send another round of scam messages.",
      "u": [
       [
        -40,
-       "ปิดแอปสั้นๆ เพื่อเปลี่ยนรหัสผ่าน"
+       "Brief downtime to change the password."
       ],
       [
        -150,
-       "ผู้โจมตีกลับเข้ามาทางการล็อกอินที่ค้างไว้"
+       "Attacker returns via the still-active session."
       ]
      ],
      "trust": -10,
@@ -630,18 +630,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "เปลี่ยนรหัสผ่านอย่างเดียวไม่พอ ถ้าผู้โจมตียังล็อกอินค้างอยู่ ต้องสั่งออกจากระบบทุกเครื่องด้วย",
+     "lesson": "Changing the password alone isn't enough. If the attacker still has an active session, they can keep coming back. You must log them out of every device.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "จ้างทีมผู้เชี่ยวชาญภายนอกตรวจหลังบ้านทั้งระบบ แล้วทำตามคำแนะนำ",
+     "label": "Hire an external security team to audit the entire backend, then follow their recommendations.",
      "q": "mid",
-     "out": "ทีมตรวจพบว่าผู้โจมตีสร้างบัญชีทีมงานลับไว้ ช่วยลบออกและตั้ง 2-step ให้ ผู้ใช้ได้รับแจ้ง ต้นทุนสูงแต่ปลอดภัย",
+     "out": "The team discovers the attacker created a hidden team account. They remove it, set up 2-step, and users are notified. Costly, but thorough.",
      "u": [
       [
        -150,
-       "ปิดแอปนานและเสียค่าตรวจ ผู้ใช้บางส่วนไม่รอ"
+       "Extended downtime and audit fees — some users don't wait."
       ]
      ],
      "trust": 10,
@@ -655,38 +655,38 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้โจมตีมักทิ้ง \"ประตูหลัง\" ไว้ ผู้ชำนาญช่วยหาสิ่งที่เรามองไม่เห็น แต่ต้องแลกกับเวลาและเงิน",
+     "lesson": "Attackers often leave a \"backdoor\" behind. Expert eyes can find things you'd miss — but it comes at a cost in time and money.",
      "next": "END"
     }
    ]
   },
   "news": {
-   "title": "ข่าวหลุดในโซเชียล",
-   "tag": "ผลของการปิดบัง",
+   "title": "The Story Breaks on Social Media",
+   "tag": "The Cost of Staying Silent",
    "best": "a",
-   "bestWhy": "ถ้าพลาดเรื่องการแจ้ง ให้ยอมรับและแก้ทันทีที่รู้ตัว ยิ่งเงียบนาน ความเชื่อใจยิ่งเสียมาก",
-   "text": "นักเรียนคนหนึ่งโพสต์ว่าบัญชีโซเชียลของเขาถูกแฮก และพบว่ารหัสที่ใช้ตรงกับรหัสในแอปของคุณ ซึ่งถูกโพสต์ในฟอรัมแฮกเกอร์ โพสต์ถูกแชร์หลายพันครั้งภายในคืนเดียว และคนเริ่มถามว่าแอปรู้เรื่องนี้ไหม",
+   "bestWhy": "If you missed the disclosure window, admit it and act as soon as you realize. The longer you stay silent, the more trust you lose.",
+   "text": "A student posts that their social media account was hacked, and they traced the leaked password back to your app — which they found posted on a hacker forum. The post is shared thousands of times overnight and people start asking whether the app knew about this.",
    "enter": {
     "u": [
      [
       -200,
-      "ข่าวหลุดว่าแอปเคยปิดบังเหตุ"
+      "News breaks that the app covered up the incident."
      ]
     ],
     "trust": -30,
     "damage": 20
    },
-   "source": "EU GDPR มาตรา 34 (แจ้งผู้ได้รับผลกระทบ); Have I Been Pwned",
+   "source": "EU GDPR Article 34 (notification of affected individuals); Have I Been Pwned",
    "choices": [
     {
      "id": "a",
-     "label": "ออกแถลงการณ์ยอมรับ บอกว่าอะไรหลุด แก้อะไรแล้ว และแนะนำให้ทุกคนเปลี่ยนรหัสในทุกที่ที่ใช้ซ้ำ",
+     "label": "Issue a public statement acknowledging what happened, what data was exposed, what has been fixed, and recommend that everyone change their password on every site where they reused it.",
      "q": "good",
-     "out": "คุณยอมรับว่ารู้เรื่องมาก่อนแล้วไม่ได้แจ้ง ถูกวิจารณ์หนัก แต่ข้อมูลที่ชัดเจนช่วยให้ผู้ใช้ป้องกันบัญชีอื่นทัน และบางส่วนยังอยู่",
+     "out": "You admit you knew earlier and didn't notify anyone. The criticism is heavy — but the clear information helps users protect their other accounts in time, and some still stay.",
      "u": [
       [
        -100,
-       "ผู้ใช้บางส่วนเลิกใช้หลังรู้ว่าถูกปิดบัง"
+       "Some users leave after learning they were kept in the dark."
       ]
      ],
      "trust": 20,
@@ -697,18 +697,18 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ถ้าพลาดเรื่องการแจ้ง ให้แก้ทันทีที่รู้ตัว ความโปร่งใสที่มาช้ายังดีกว่าไม่มาเลย",
+     "lesson": "If you missed the disclosure, fix it the moment you realize. Late transparency is still better than none.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "บอกว่าข้อมูลไม่ได้หลุดจากแอปเรา",
+     "label": "Say the data didn't come from our app.",
      "q": "bad",
-     "out": "ผู้ใช้หลายคนเทียบข้อมูลแล้วพบว่าตรงกับที่ใช้ในแอปคุณเท่านั้น การปฏิเสธถูกแชร์ต่อเป็นตัวอย่างของแอปที่ไม่รับผิดชอบ",
+     "out": "Multiple users cross-reference the data and find it matches only what they used in your app. The denial gets shared as a textbook example of an irresponsible app.",
      "u": [
       [
        -350,
-       "ถูกจับได้ว่าปฏิเสธข้อเท็จจริง"
+       "Caught denying verifiable facts."
       ]
      ],
      "trust": -30,
@@ -716,18 +716,18 @@
       "open": -2,
       "long": -2
      },
-     "lesson": "การปฏิเสธข้อเท็จจริงที่ตรวจสอบได้ ทำให้ความเสียหายกลายเป็นวิกฤตความน่าเชื่อถือ",
+     "lesson": "Denying verifiable facts turns a data incident into a full-blown credibility crisis.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "ปิดแอปตรวจสอบสามวันก่อนออกแถลงการณ์",
+     "label": "Take the app down for three days to investigate before issuing any statement.",
      "q": "mid",
-     "out": "คุณยืนยันขอบเขตความเสียหายได้ครบแล้วค่อยประกาศ แต่ช่วงสามวันนั้นข่าวลือแพร่ไปไกลกว่า และผู้ใช้หลายคนโดนแฮกบัญชีอื่นเพิ่ม",
+     "out": "You confirm the full scope of the damage before speaking — but during those three silent days, the rumours travel further, and many users get other accounts hacked in the meantime.",
      "u": [
       [
        -150,
-       "เงียบสามวัน ข่าวลือแพร่"
+       "Three days of silence — rumours spread."
       ]
      ],
      "trust": 5,
@@ -739,41 +739,41 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ตรวจให้แน่ใจก่อนพูดเป็นเรื่องดี แต่ถ้าเงียบนานเกินไป ข่าวลือจะเล่าเรื่องแทนคุณ",
+     "lesson": "Verifying before speaking is good — but if you go silent too long, rumours will tell the story for you.",
      "next": "wave2"
     }
    ]
   },
   "wave2_blocked": {
-   "title": "ฟิชชิ่งที่ไม่ได้ผล",
-   "tag": "ฟิชชิ่ง (ถูกสกัด)",
+   "title": "Phishing That Failed",
+   "tag": "Phishing (Blocked)",
    "best": "a",
    "bestWhy": "—",
-   "text": "สัปดาห์ต่อมา หน้าล็อกอินปลอมของแอปคุณถูกแชร์ในโซเชียล ผู้ช่วยดูแลแอปคนหนึ่งกรอกรหัสลงไปแล้ว แต่ผู้โจมตีเข้าบัญชีไม่ได้ เพราะทุกบัญชีทีมงานมี 2-step และคุณได้รับแจ้งเตือนว่ามีการล็อกอินจากอุปกรณ์แปลก",
+   "text": "The following week, a fake login page for your app circulates on social media. One moderator already entered their password on the fake page — but the attacker can't get into the account, because every team account has 2-step enabled. You receive an alert about a login attempt from an unknown device.",
    "enter": {
     "u": [
      [
       30,
-      "ผู้ใช้เห็นแอปนิ่ง ไม่มีเหตุ"
+      "Users see the app running smoothly — no incidents."
      ]
     ],
     "trust": 5
    },
-   "source": "Microsoft Security: MFA หยุดการยึดบัญชีอัตโนมัติได้เกือบทั้งหมด",
+   "source": "Microsoft Security: MFA blocks nearly all automated account takeovers",
    "choices": [
     {
      "id": "a",
-     "label": "ดูบทสรุป",
+     "label": "View summary",
      "q": "good",
-     "out": "คุณเปลี่ยนรหัสของผู้ช่วยคนนั้น แจ้งลบหน้าปลอม และเตือนทีมอีกครั้ง ไม่มีความเสียหายเกิดขึ้น",
+     "out": "You change that moderator's password, report the fake page for takedown, and remind the team to stay alert. No damage is done.",
      "u": [
       [
        0,
-       "ไม่มีความเสียหาย"
+       "No damage."
       ]
      ],
      "axes": {},
-     "lesson": "ด่านที่สองทำให้ความผิดพลาดของคนเดียวไม่กลายเป็นหายนะของทั้งแอป",
+     "lesson": "A second factor means one person's mistake doesn't become a disaster for the whole app.",
      "next": "END"
     }
    ]
@@ -781,91 +781,91 @@
  },
  "ENDINGS": {
   "root": {
-   "title": "ผู้สร้างแอปที่ไว้ใจได้",
+   "title": "A Trustworthy App Builder",
    "tone": "good",
-   "desc": "คุณปิดการลองรหัส เก็บรหัสผ่านอย่างปลอดภัย ปิดด่านหลายชั้น และแอปยังมีผู้ใช้เกือบเท่าเดิม"
+   "desc": "You stopped credential stuffing, stored passwords securely, layered your defences, and the app still has nearly as many users as before."
   },
   "rebuilder": {
-   "title": "สถาปนิกผู้สร้างใหม่",
+   "title": "The Architect Who Started Over",
    "tone": "good",
-   "desc": "คุณเลือกเส้นทางที่แพงที่สุด คือเขียนแอปใหม่ทั้งหมด แล้วอุดช่องใหม่จากการเร่งทำได้ทัน แอปปลอดภัย แต่ผู้ใช้ไม่เหมือนเดิม"
+   "desc": "You took the most expensive path — a full rewrite — and still caught the new vulnerabilities that came with the rush. The app is secure, but the user base is not the same."
   },
   "honest": {
-   "title": "ซื่อสัตย์แต่บอบช้ำ",
+   "title": "Honest but Bruised",
    "tone": "mid",
-   "desc": "แอปเจ็บหนัก แต่คุณบอกความจริงกับผู้ใช้ ความเชื่อใจที่เหลืออยู่คือฐานให้แอปกลับมาได้"
+   "desc": "The app took a serious hit, but you told users the truth. The trust that remains is the foundation for a comeback."
   },
   "survivor": {
-   "title": "ผู้รอดที่เรียนรู้",
+   "title": "A Survivor Who Learned",
    "tone": "mid",
-   "desc": "แอปยังเปิดอยู่และปิดช่องสำคัญได้แล้ว แม้ระหว่างทางจะมีผลที่ต้องแลกมา"
+   "desc": "The app is still running and the critical holes are closed — even if there were costs along the way."
   },
   "nomfa": {
-   "title": "แก้เก่ง แต่ลืมด่านสอง",
+   "title": "Strong on Fixes, Forgot the Second Layer",
    "tone": "mid",
-   "desc": "ระบบล็อกอินและการเก็บรหัสผ่านถูกแก้แล้ว แต่บัญชีทีมงานยังพึ่งรหัสผ่านอย่างเดียว ความเสี่ยงที่เหลือคือเรื่องของคน"
+   "desc": "The login system and password storage are fixed, but team accounts still rely on a password alone. The remaining risk is a human one."
   },
   "cover": {
-   "title": "ปิดบังจนเสียความเชื่อใจ",
+   "title": "Covered It Up and Lost the Trust",
    "tone": "bad",
-   "desc": "ระบบอาจถูกแก้แล้ว แต่การไม่บอกผู้ใช้ทำให้เขาโดนแฮกบัญชีอื่นต่อ และความเสียหายกลับมาแรงกว่าเดิม"
+   "desc": "The system may have been fixed — but not telling users let them get other accounts hacked, and the damage came back harder."
   },
   "scarred": {
-   "title": "แผลลึกแต่ยังยืน",
+   "title": "Deep Wounds, Still Standing",
    "tone": "bad",
-   "desc": "ข้อมูลผู้ใช้เสียหายหนัก แอปยังอยู่ แต่ต้องใช้เวลานานกว่าผู้ใช้จะกลับมาไว้ใจ"
+   "desc": "User data took serious damage. The app is still alive, but rebuilding user trust will take a long time."
   },
   "bleeding": {
-   "title": "เลือดไหลไม่หยุด",
+   "title": "Bleeding Out",
    "tone": "bad",
-   "desc": "คุณดึงผู้ใช้ด้วยของฟรีโดยไม่แก้ระบบ ผู้โจมตียึดบัญชีใหม่ได้ทุกวัน แอปค่อยๆ ล่มโดยไม่มีวันจบเหตุ"
+   "desc": "You attracted users with free rewards instead of fixing the system. The attacker hijacks new accounts every day. The app is slowly collapsing with no end to the incident in sight."
   },
   "collapse": {
-   "title": "แอปต้องปิดตัว",
+   "title": "The App Had to Shut Down",
    "tone": "bad",
-   "desc": "ผู้ใช้เหลือน้อยเกินกว่าแอปจะอยู่ต่อได้ ลองย้อนดูว่าการตัดสินใจครั้งไหนทำให้ผู้ใช้หายมากที่สุด"
+   "desc": "The user count dropped too low for the app to survive. Look back and see which decision caused the biggest drop."
   }
  },
  "AXES": [
   {
    "k": "sec",
-   "L": "ความต่อเนื่องของบริการ",
-   "R": "ความปลอดภัย",
+   "L": "Service Continuity",
+   "R": "Security",
    "letL": "B",
    "letR": "S",
-   "dL": "คุณมักรักษาให้แอปเปิดต่อก่อน แม้ความเสี่ยงยังไม่หมด",
-   "dR": "คุณยอมเสียผู้ใช้ระยะสั้นเพื่อให้ระบบปลอดภัยก่อน",
-   "dM": "คุณชั่งน้ำหนักระหว่างความปลอดภัยกับการให้แอปเปิดต่อได้ค่อนข้างสมดุล"
+   "dL": "You tend to keep the app running first, even when risk remains.",
+   "dR": "You're willing to lose users in the short term to secure the system first.",
+   "dM": "You strike a reasonable balance between security and keeping the app running."
   },
   {
    "k": "speed",
-   "L": "รอบคอบ",
-   "R": "ลงมือเร็ว",
+   "L": "Methodical",
+   "R": "Act Fast",
    "letL": "C",
    "letR": "F",
-   "dL": "คุณชอบตรวจให้แน่ใจก่อนลงมือ ข้อดีคือแม่น ข้อระวังคือช้า",
-   "dR": "คุณตัดสินใจไว ข้อดีคือหยุดเหตุเร็ว ข้อระวังคือแก้ไม่ครบ",
-   "dM": "คุณปรับจังหวะเร็ว/ช้าตามสถานการณ์ได้ดี"
+   "dL": "You prefer to verify before acting. The upside is precision; the downside is speed.",
+   "dR": "You decide quickly. The upside is stopping incidents fast; the downside is missing things.",
+   "dM": "You adjust your pace well to the demands of each situation."
   },
   {
    "k": "open",
-   "L": "รักษาภาพลักษณ์",
-   "R": "โปร่งใส",
+   "L": "Image First",
+   "R": "Transparent",
    "letL": "I",
    "letR": "T",
-   "dL": "คุณมักกังวลเรื่องภาพลักษณ์ ซึ่งมักทำให้ผู้ใช้เสียความเชื่อใจทีหลัง",
-   "dR": "คุณบอกความจริงกับผู้ใช้ แม้เจ็บในระยะสั้น",
-   "dM": "คุณยังไม่ได้เจอจังหวะที่ต้องเลือกเรื่องการสื่อสารมากนัก"
+   "dL": "You tend to prioritize image — which often erodes user trust later.",
+   "dR": "You tell users the truth, even when it stings in the short term.",
+   "dM": "You haven't faced many situations that forced a clear communication choice yet."
   },
   {
    "k": "long",
-   "L": "แก้เฉพาะหน้า",
-   "R": "มองระยะยาว",
+   "L": "Quick Patch",
+   "R": "Long-Term Thinking",
    "letL": "N",
    "letR": "L",
-   "dL": "คุณมักเลือกทางที่ได้ผลเร็ว ซึ่งบางครั้งทิ้งต้นเหตุไว้",
-   "dR": "คุณมองถึงต้นเหตุและผลระยะยาว",
-   "dM": "คุณผสมการแก้เฉพาะหน้ากับการแก้ที่ต้นเหตุ"
+   "dL": "You tend to choose the fast fix, which sometimes leaves the root cause untouched.",
+   "dR": "You think about root causes and long-term consequences.",
+   "dM": "You mix quick patches with root-cause fixes."
   }
  ]
 }

@@ -1,26 +1,26 @@
 {
- "title": "เว็บลงทะเบียนกิจกรรมของชมรม",
+ "title": "The Club Activity Registration Website",
  "START_USERS": 1000,
  "DEAD": 200,
  "MAXU": 1200,
  "NODES": {
   "start": {
-   "title": "ไฟล์ทั้งชมรมถูกล็อก",
-   "tag": "แรนซัมแวร์ (ransomware)",
+   "title": "Every Club File Is Locked",
+   "tag": "Ransomware",
    "best": "a",
-   "bestWhy": "ตัดเครื่องที่ติดออกจากเครือข่ายก่อน เพื่อไม่ให้ลามไปไฟล์อื่น แล้วหาต้นเหตุจากหลักฐาน ไม่จ่ายค่าไถ่",
-   "text": "เช้าวันจันทร์ คุณเปิดเว็บลงทะเบียนกิจกรรมของชมรมที่คุณดูแล แล้วพบว่าไฟล์ทั้งหมดในเครื่องเซิร์ฟเวอร์ของชมรมเปิดไม่ได้ รายชื่อสมาชิก 1,000 คนและแบบฟอร์มสมัครค่ายถูกเข้ารหัสล็อกไว้ หน้าจอมีข้อความเรียกค่าไถ่ 50,000 บาทภายใน 48 ชั่วโมงเพื่อแลกกับกุญแจปลดล็อก และค่ายของชมรมจะเริ่มในอีกสามวัน คุณจะทำอะไรก่อน?",
+   "bestWhy": "Disconnect the infected machine from the network immediately to stop the spread, then find the root cause from evidence. Do not pay the ransom.",
+   "text": "Monday morning. You open the club activity registration website you manage, and find that every file on the club's server is inaccessible. The member list of 1,000 people and the camp application forms are all encrypted and locked. A ransom note on screen demands 50,000 baht within 48 hours in exchange for the decryption key. The club camp starts in three days. What do you do first?",
    "source": "CISA #StopRansomware Guide; UK NCSC: Mitigating malware and ransomware attacks",
    "choices": [
     {
      "id": "a",
-     "label": "ตัดเครื่องที่ติดออกจากอินเทอร์เน็ตและเครือข่ายทันที เก็บหลักฐานไว้ แล้วตรวจว่าเกิดจากอะไร",
+     "label": "Immediately disconnect the infected machine from the internet and the local network, preserve the evidence, then investigate what happened.",
      "q": "good",
-     "out": "คุณปิดเว็บลงทะเบียนราวหนึ่งวัน สมาชิกบางคนสมัครค่ายไม่ทัน แต่ไวรัสไม่ลามไปเครื่องอื่นของชมรม และคุณมีหลักฐานครบสำหรับหาต้นเหตุ",
+     "out": "You take the registration website offline for about a day. Some members can't apply for the camp in time, but the ransomware doesn't spread to other club machines and you have the evidence needed to find the root cause.",
      "u": [
       [
        -60,
-       "ปิดเว็บหนึ่งวัน สมาชิกบางส่วนสมัครค่ายไม่ทัน"
+       "Website down for a day — some members miss the camp application window."
       ]
      ],
      "trust": 5,
@@ -29,18 +29,18 @@
       "speed": -1,
       "long": 1
      },
-     "lesson": "กักกันก่อน: แรนซัมแวร์ลามผ่านเครือข่ายได้ การตัดเครื่องที่ติดออกเร็วช่วยจำกัดความเสียหาย แล้วค่อยหาต้นเหตุจากหลักฐาน",
+     "lesson": "Contain first: ransomware spreads across networks. Disconnecting the infected machine quickly limits the damage. Then find the root cause from evidence.",
      "next": "investigate"
     },
     {
      "id": "b",
-     "label": "จ่ายค่าไถ่ เพื่อให้ได้ไฟล์คืนเร็วที่สุดก่อนค่ายเริ่ม",
+     "label": "Pay the ransom to get the files back as fast as possible before the camp starts.",
      "q": "bad",
-     "out": "คุณได้กุญแจมา แต่ปลดล็อกได้แค่บางไฟล์ และผู้โจมตียังมีทางเข้าระบบเดิมอยู่",
+     "out": "You receive a key, but it only decrypts some of the files — and the attacker still has access through the original entry point.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -48,18 +48,18 @@
       "speed": 2,
       "long": -1
      },
-     "lesson": "การจ่ายค่าไถ่ไม่รับประกันว่าจะได้ไฟล์คืน และไม่ได้ปิดช่องที่ผู้โจมตีใช้เข้ามา หน่วยงานไซเบอร์ระดับสากลแนะนำว่าไม่ควรจ่าย",
+     "lesson": "Paying the ransom doesn't guarantee you'll get your files back, and it doesn't close the hole the attacker used to get in. International cybersecurity agencies advise against paying.",
      "next": "repeat"
     },
     {
      "id": "c",
-     "label": "รีเซ็ตรหัสผ่านทุกบัญชีของชมรม เพราะคิดว่าแค่รหัสหลุด",
+     "label": "Reset passwords on all club accounts — you think it was just a credential leak.",
      "q": "mid",
-     "out": "สมาชิกต้องตั้งรหัสใหม่กันวุ่นวาย แต่ไฟล์ยังถูกล็อกอยู่ และ log ที่อ่านทีหลังบอกว่าผู้โจมตีเข้ามาทางบัญชีที่ไม่มีใครใช้แล้ว",
+     "out": "Members scramble to set new passwords, but the files are still encrypted. The logs you read later reveal the attacker entered through an account nobody was using anymore.",
      "u": [
       [
        -20,
-       "บังคับตั้งรหัสใหม่ สมาชิกบางส่วนเลิกใช้"
+       "Forced password reset — some members stop engaging."
       ]
      ],
      "axes": {
@@ -69,18 +69,18 @@
      "set": {
       "wrongDx": true
      },
-     "lesson": "ตั้งสมมติฐานจากหลักฐาน ไม่ใช่การเดา การแก้ผิดจุดทำให้เสียเวลาในขณะที่ผู้โจมตียังอยู่ในระบบ",
+     "lesson": "Base your hypothesis on evidence, not guesses. Fixing the wrong thing wastes time while the attacker is still inside the system.",
      "next": "repeat"
     },
     {
      "id": "d",
-     "label": "ลบทุกอย่างทิ้ง แล้วสร้างเว็บและระบบของชมรมใหม่ทั้งหมด",
+     "label": "Delete everything and rebuild the entire club website and system from scratch.",
      "q": "mid",
-     "out": "คุณใช้เวลาสองสัปดาห์สร้างใหม่ ค่ายต้องเลื่อน สมาชิกจำนวนมากหายไประหว่างรอ แต่ระบบใหม่ไม่มีไวรัสตัวเดิมแน่นอน",
+     "out": "You spend two weeks rebuilding. The camp has to be postponed and many members drift away during the wait — but the new system definitely won't have the old ransomware on it.",
      "u": [
       [
        -300,
-       "ค่ายเลื่อน สมาชิกจำนวนมากหายไป"
+       "Camp postponed — many members lost."
       ]
      ],
      "trust": -5,
@@ -92,28 +92,28 @@
      "set": {
       "rewrote": true
      },
-     "lesson": "เริ่มใหม่ทั้งหมดดูปลอดภัยแต่แพงมาก และถ้าไม่รู้ว่าผู้โจมตีเข้ามาทางไหน ระบบใหม่ก็อาจโดนทางเดิมได้อีก",
+     "lesson": "Starting fresh looks safe but is extremely costly. And if you don't know how the attacker got in, the new system could be compromised the same way.",
      "next": "rewrite"
     }
    ]
   },
   "investigate": {
-   "title": "ผู้โจมตีเข้ามาทางไหน",
-   "tag": "วิเคราะห์เหตุ",
+   "title": "How Did the Attacker Get In?",
+   "tag": "Incident Analysis",
    "best": "a",
-   "bestWhy": "ต้นเหตุมีสองจุด ต้องปิดทั้งสอง: ปิดบัญชีที่ไม่ใช้แล้ว และทำสำรองข้อมูลแยกไว้ต่างหาก",
-   "text": "จาก log (บันทึกการใช้งานของระบบ) คุณพบว่าผู้โจมตีล็อกอินด้วยบัญชีของรุ่นพี่ที่จบไปแล้วเมื่อปีก่อน บัญชีนี้ยังเปิดอยู่และใช้รหัสผ่านเดียวกับที่เคยหลุดจากเว็บอื่น ต้นเหตุมีสองจุด (1) บัญชีเก่าไม่เคยถูกปิด และทุกบัญชีมีสิทธิ์แอดมินเต็ม และ (2) ไฟล์สำรองข้อมูล (backup) เก็บไว้ในเครื่องเดียวกัน จึงถูกล็อกไปด้วย เหลือแค่สำเนาเก่าสองสัปดาห์ในฮาร์ดดิสก์ที่ถอดเก็บไว้ คุณจะแก้อย่างไร?",
-   "source": "NIST Cybersecurity Framework (Protect: จัดการสิทธิ์และบัญชี); CISA: 3-2-1 backup",
+   "bestWhy": "There are two root causes — both must be closed: disable unused accounts, and keep backups on a separate system.",
+   "text": "From the logs (system activity records) you find that the attacker logged in using an account belonging to a senior member who graduated the previous year. That account was still active and used the same password as one leaked from another website. There are two root causes: (1) old accounts were never disabled, and every account had full admin privileges; and (2) the backup files were stored on the same machine, so they were encrypted too. Only a copy from two weeks ago survives on a disconnected external drive. How do you fix this?",
+   "source": "NIST Cybersecurity Framework (Protect: access and account management); CISA: 3-2-1 backup",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดบัญชีที่ไม่ใช้ ให้สิทธิ์แอดมินเฉพาะคนที่จำเป็น กู้ข้อมูลจากสำเนาที่ถอดเก็บไว้ และตั้งระบบสำรองข้อมูลแยกเครื่องที่ทดสอบกู้คืนได้จริง",
+     "label": "Disable all unused accounts, grant admin privileges only to those who need them, restore data from the disconnected backup, and set up an automated backup system on a separate machine that you actually test.",
      "q": "good",
-     "out": "คุณใช้เวลาหนึ่งวันกู้ข้อมูล ให้สมาชิกกรอกข้อมูลสองสัปดาห์ล่าสุดใหม่ ปิดบัญชีเก่า 14 บัญชี และตั้งสำรองข้อมูลอัตโนมัติไปเก็บอีกที่ แล้วลองกู้คืนดู ใช้ได้จริง",
+     "out": "You spend one day restoring data, ask members to re-enter the last two weeks of registrations, close 14 old accounts, and set up automated backups to a separate location — then test the restore. It works.",
      "u": [
       [
        -20,
-       "สมาชิกต้องกรอกข้อมูลบางส่วนใหม่"
+       "Members need to re-enter some of their information."
       ]
      ],
      "trust": 10,
@@ -126,18 +126,18 @@
       "rulesFixed": true,
       "serverMoney": true
      },
-     "lesson": "สองหลักสำคัญ: ให้สิทธิ์เท่าที่จำเป็น (least privilege) และปิดบัญชีทันทีเมื่อคนออก ส่วนสำรองข้อมูลต้องเก็บแยกจากระบบหลัก และต้องลองกู้คืนจริง",
+     "lesson": "Two key principles: grant only the minimum necessary access (least privilege) and disable accounts immediately when someone leaves. Backups must be stored separately from the main system — and you must actually test restoring them.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "ปิดบัญชีเก่าก่อน ส่วนระบบสำรองข้อมูลไว้ค่อยทำหลังค่าย",
+     "label": "Disable old accounts first — set up a proper backup system after the camp.",
      "q": "mid",
-     "out": "บัญชีเก่าถูกปิดแล้ว เว็บกลับมาเร็ว แต่ไฟล์สำรองข้อมูลยังเก็บอยู่ในเครื่องเดียวกับระบบหลัก",
+     "out": "Old accounts are closed and the website is back up quickly, but backup files are still stored on the same machine as the main system.",
      "u": [
       [
        -10,
-       "ปิดเว็บสั้นๆ"
+       "Brief website outage."
       ]
      ],
      "trust": 5,
@@ -149,18 +149,18 @@
      "set": {
       "rulesFixed": true
      },
-     "lesson": "การแก้ครึ่งทางทำให้รู้สึกปลอดภัยแล้ว ทั้งที่ถ้าโดนอีกครั้งก็ไม่มีอะไรช่วยกู้คืน",
+     "lesson": "A half-fix creates a false sense of security. If you get hit again, there's nothing to restore from.",
      "next": "partialClient"
     },
     {
      "id": "c",
-     "label": "กู้ข้อมูลและตั้งระบบสำรองข้อมูลแยกเครื่องก่อน ส่วนบัญชีเก่าปล่อยไว้ เพราะไม่รู้ว่าเป็นของใคร",
+     "label": "Restore data and set up a separate backup first — leave the old accounts alone because you're not sure who they belong to.",
      "q": "mid",
-     "out": "ข้อมูลกลับมาและมีสำรองแยกแล้ว แต่บัญชีของรุ่นพี่ที่ผู้โจมตีใช้ยังเปิดอยู่",
+     "out": "Data is restored and you have a separate backup now — but the senior member's account that the attacker used is still active.",
      "u": [
       [
        -10,
-       "ปิดเว็บสั้นๆ"
+       "Brief website outage."
       ]
      ],
      "axes": {
@@ -170,22 +170,22 @@
      "set": {
       "serverMoney": true
      },
-     "lesson": "การไม่รู้ว่าบัญชีเป็นของใครคือสัญญาณว่าควรปิด ไม่ใช่เหตุผลให้ปล่อยไว้",
+     "lesson": "Not knowing who an account belongs to is a reason to disable it, not a reason to leave it open.",
      "next": "partialRules"
     }
    ]
   },
   "partialClient": {
-   "title": "โดนซ้ำ ไม่มีอะไรให้กู้",
-   "tag": "โจมตีซ้ำ: ไม่มีสำรองข้อมูลแยก",
+   "title": "Hit Again — Nothing to Restore",
+   "tag": "Repeat Attack: No Separate Backup",
    "best": "a",
-   "bestWhy": "สำรองข้อมูลต้องแยกจากระบบหลักและทดสอบกู้คืนได้ ไม่อย่างนั้นโดนครั้งเดียวก็เสียทุกอย่าง",
-   "text": "ห้าวันต่อมา กรรมการชมรมคนหนึ่งเปิดไฟล์แนบในอีเมลที่ดูเหมือนใบเสนอราคาเสื้อค่าย แรนซัมแวร์ตัวใหม่ล็อกไฟล์อีกครั้ง รวมถึงไฟล์สำรองที่อยู่ในเครื่องเดียวกัน ข้อมูลการสมัครค่ายหายทั้งหมด",
+   "bestWhy": "Backups must be separate from the main system and actually tested. Otherwise one attack wipes out everything.",
+   "text": "Five days later, a committee member opens an attachment in an email that looks like a camp T-shirt price quote. A new ransomware strain encrypts the files again — including the backup that was stored on the same machine. All camp registration data is gone.",
    "enter": {
     "u": [
      [
       -90,
-      "ข้อมูลสมัครค่ายหาย สมาชิกต้องสมัครใหม่"
+      "Camp registration data lost — members must register again."
      ]
     ],
     "damage": 10
@@ -194,13 +194,13 @@
    "choices": [
     {
      "id": "a",
-     "label": "ตั้งระบบสำรองข้อมูลอัตโนมัติไปเก็บอีกที่ เก็บไว้หลายเวอร์ชัน และทดสอบกู้คืน แล้วสอนกรรมการให้ระวังไฟล์แนบ",
+     "label": "Set up automated backups to a separate location with multiple versions and test the restore — then teach committee members to be cautious with email attachments.",
      "q": "good",
-     "out": "ครั้งนี้คุณต้องให้สมาชิกสมัครใหม่ทั้งหมด แต่หลังจากนี้ต่อให้โดนล็อกอีก ก็กู้กลับได้ภายในชั่วโมงเดียว",
+     "out": "This time you have to ask all members to register again, but from now on, even if the files get locked again, you can restore everything within an hour.",
      "u": [
       [
        -15,
-       "ปิดเว็บเพื่อแก้ไข"
+       "Website taken down to apply the fix."
       ]
      ],
      "trust": 5,
@@ -211,18 +211,18 @@
      "set": {
       "serverMoney": true
      },
-     "lesson": "กฎ 3-2-1: เก็บข้อมูล 3 ชุด ในสื่อ 2 แบบ และอย่างน้อย 1 ชุดอยู่นอกระบบหลัก สำรองที่ไม่เคยลองกู้คืน ก็ยังไม่ใช่สำรองที่เชื่อได้",
+     "lesson": "The 3-2-1 rule: keep 3 copies of data, on 2 different media types, with at least 1 copy off-site. A backup you've never tested isn't a backup you can trust.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "ก๊อปไฟล์ใส่แฟลชไดรฟ์ที่เสียบไว้กับเครื่องเซิร์ฟเวอร์ตลอดเวลา",
+     "label": "Copy files to a flash drive plugged permanently into the server.",
      "q": "bad",
-     "out": "ดูเหมือนมีสำรองแล้ว แต่แฟลชไดรฟ์ที่เสียบค้างไว้ก็เป็นส่วนหนึ่งของเครื่อง แรนซัมแวร์ตัวต่อไปล็อกมันไปพร้อมกัน",
+     "out": "It looks like you have a backup — but a drive that stays plugged in is part of the machine. The next ransomware strain encrypts it along with everything else.",
      "u": [
       [
        -30,
-       "สำรองข้อมูลถูกล็อกไปด้วย"
+       "Backup gets encrypted too."
       ]
      ],
      "damage": 5,
@@ -231,38 +231,38 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "สำรองที่ต่อกับเครื่องตลอดเวลา จะโดนไปพร้อมกับเครื่อง ต้องแยกออกจริงๆ",
+     "lesson": "A backup that's always connected to the machine will go down with the machine. It must be genuinely separate.",
      "next": "repeat"
     }
    ]
   },
   "partialRules": {
-   "title": "รายชื่อสมาชิกหลุด",
-   "tag": "โจมตีซ้ำ: บัญชีเก่ายังเปิดอยู่",
+   "title": "Member List Leaked",
+   "tag": "Repeat Attack: Old Account Still Active",
    "best": "a",
-   "bestWhy": "ปิดช่องให้ครบทันที ตรวจว่าข้อมูลอะไรหลุด และแจ้งสมาชิก เพื่อให้เขาป้องกันตัวเองได้",
-   "text": "ห้าวันต่อมา ผู้โจมตีกลับเข้ามาทางบัญชีรุ่นพี่ที่ยังเปิดอยู่ ครั้งนี้ไม่ล็อกไฟล์ แต่คัดลอกรายชื่อ เบอร์โทร และชื่อโรงเรียนของสมาชิก 1,000 คนออกไป แล้วขู่ว่าจะเปิดเผยถ้าไม่จ่ายเงิน สมาชิกบางคนเริ่มได้รับสายแปลกๆ",
+   "bestWhy": "Close the hole completely right away, check what data leaked, and notify members so they can protect themselves.",
+   "text": "Five days later, the attacker returns through the senior member's account that's still active. This time they don't lock files — they copy out the names, phone numbers, and school names of all 1,000 members, then threaten to publish the data unless they're paid. Some members start receiving strange calls.",
    "enter": {
     "u": [
      [
       -120,
-      "สมาชิกที่ได้รับสายแปลกๆ ส่วนหนึ่งลาออก"
+      "Members receiving strange calls — some leave the club."
      ]
     ],
     "trust": -20,
     "damage": 35
    },
-   "source": "EU GDPR มาตรา 33–34 (การแจ้งเหตุข้อมูลรั่ว); CISA #StopRansomware (การขู่เปิดเผยข้อมูล)",
+   "source": "EU GDPR Articles 33–34 (data breach notification); CISA #StopRansomware (extortion threats)",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดบัญชีที่ไม่ใช้ทั้งหมด ตรวจ log ว่าข้อมูลใดหลุด แจ้งสมาชิกและครูที่ปรึกษาตรงๆ พร้อมบอกวิธีระวังมิจฉาชีพ",
+     "label": "Disable all unused accounts, check the logs to see what data was taken, then notify members and the faculty advisor directly — including advice on how to watch out for scammers.",
      "q": "good",
-     "out": "คุณส่งข้อความแจ้งสมาชิกทุกคนว่าข้อมูลอะไรหลุด และให้ระวังสายที่อ้างชื่อชมรม ผู้ปกครองบางคนไม่พอใจ แต่หลายคนขอบคุณที่บอกเร็ว",
+     "out": "You message every member explaining what data leaked and warning them about calls claiming to be from the club. Some parents are upset, but many thank you for telling them quickly.",
      "u": [
       [
        -60,
-       "สมาชิกบางส่วนลาออกหลังรับแจ้ง"
+       "Some members leave after being notified."
       ]
      ],
      "trust": 15,
@@ -275,18 +275,18 @@
       "rulesFixed": true,
       "disclosed": "yes"
      },
-     "lesson": "การแจ้งผู้ได้รับผลกระทบเร็วๆ ช่วยให้เขาระวังมิจฉาชีพได้ทัน (กฎหมายคุ้มครองข้อมูลระดับสากลอย่าง GDPR ของสหภาพยุโรป กำหนดให้แจ้งผู้ได้รับผลกระทบเมื่อมีความเสี่ยงสูง)",
+     "lesson": "Notifying affected people quickly gives them a chance to watch out for scammers. (International data protection law such as the EU's GDPR requires notifying affected individuals when the risk is high.)",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "ปิดบัญชีเก่าเงียบๆ ไม่บอกใคร เพราะกลัวชมรมเสียชื่อ",
+     "label": "Quietly disable the old account and don't tell anyone — you don't want the club's reputation to suffer.",
      "q": "bad",
-     "out": "ช่วงแรกทุกอย่างดูปกติ แต่สมาชิกที่ได้รับสายแปลกๆ ไม่รู้ว่าข้อมูลหลุดจากไหน จึงไม่ได้ระวังตัว",
+     "out": "Things look normal at first, but members receiving strange calls have no idea where their data came from, so they can't protect themselves.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -300,18 +300,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การเงียบไม่ได้ทำให้ข้อมูลกลับมา มันแค่ทำให้ผู้ได้รับผลกระทบไม่ได้ป้องกันตัว และความจริงมักถูกเปิดเผยทีหลัง",
+     "lesson": "Staying silent doesn't bring the data back — it just leaves affected people without the ability to protect themselves, and the truth will come out eventually.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "ปิดเว็บ แล้วขอให้ฝ่ายไอทีของโรงเรียนหรือผู้เชี่ยวชาญตรวจทั้งระบบก่อนประกาศ",
+     "label": "Take the website down and ask the school's IT department or an external expert to audit the whole system before making any announcement.",
      "q": "mid",
-     "out": "ผู้เชี่ยวชาญพบบัญชีเก่าอีกสองบัญชีที่ไม่ปลอดภัย และยืนยันได้ว่าข้อมูลใดหลุด คุณประกาศพร้อมแผนแก้ที่ชัดเจน แต่เว็บต้องปิดนาน",
+     "out": "The expert finds two more insecure accounts and confirms exactly what data was taken. You announce with a clear remediation plan — but the website has to stay down for a long time.",
      "u": [
       [
        -150,
-       "ปิดเว็บนาน สมาชิกบางส่วนไม่รอ"
+       "Extended website outage — some members don't wait."
       ]
      ],
      "trust": 10,
@@ -324,28 +324,28 @@
       "rulesFixed": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้เชี่ยวชาญช่วยได้มากเมื่อไม่แน่ใจขอบเขตความเสียหาย แต่ต้องชั่งน้ำหนักกับเวลาที่บริการต้องหยุด",
+     "lesson": "External experts are valuable when you're unsure of the damage scope — but you need to weigh that against the time your service has to stay down.",
      "next": "wave2"
     }
    ]
   },
   "repeat": {
-   "title": "โดนอีกรอบ",
-   "tag": "ต้นเหตุยังไม่ถูกแก้",
+   "title": "Hit Again",
+   "tag": "Root Cause Still Not Fixed",
    "best": "a",
-   "bestWhy": "เมื่อโดนซ้ำ แปลว่าต้นเหตุยังอยู่ ต้องหยุด แก้ให้ครบ และสื่อสารตรงๆ",
-   "text": "ไม่ถึงสัปดาห์ ไฟล์ของชมรมถูกล็อกอีกครั้ง และผู้โจมตีส่งตัวอย่างรายชื่อสมาชิกมาขู่ด้วย แปลว่าทางเข้าเดิมยังเปิดอยู่ และข้อมูลอาจหลุดออกไปแล้ว คุณจะทำอย่างไร?",
-   "source": "NIST SP 800-61 (การรับมือเหตุ); CISA #StopRansomware Guide",
+   "bestWhy": "Being hit again means the root cause is still there. Stop, fix everything properly, and communicate honestly.",
+   "text": "Less than a week later, the club's files are locked again, and the attacker sends a sample of the member list as a threat. The original entry point is still open, and data may already be out. What do you do?",
+   "source": "NIST SP 800-61 (incident response); CISA #StopRansomware Guide",
    "choices": [
     {
      "id": "a",
-     "label": "ปิดเว็บชั่วคราว ปิดบัญชีที่ไม่ใช้ ตั้งสำรองข้อมูลแยกเครื่อง แล้วประกาศกับสมาชิกตรงๆ ว่าเกิดอะไรขึ้น",
+     "label": "Temporarily take the website down, disable unused accounts, set up a separate backup, then announce honestly to members what happened.",
      "q": "good",
-     "out": "คุณแก้ทั้งสองจุดจนครบ และประกาศตรงๆ สมาชิกเสียใจ แต่ส่วนใหญ่เห็นว่าคุณรับผิดชอบ",
+     "out": "You fix both root causes completely and announce the situation honestly. Members are upset, but most see that you're taking responsibility.",
      "u": [
       [
        -90,
-       "ปิดเว็บและเสียสมาชิกบางส่วนจากข่าว"
+       "Website down — some members lost from the news."
       ]
      ],
      "trust": 15,
@@ -360,18 +360,18 @@
       "serverMoney": true,
       "disclosed": "yes"
      },
-     "lesson": "โดนซ้ำแปลว่ารอบแรกยังไม่ได้แก้ที่ต้นเหตุ ให้หยุด ทบทวนหลักฐาน แล้วแก้ให้ครบพร้อมสื่อสารตรงไปตรงมา",
+     "lesson": "Being hit again means the first round didn't fix the root cause. Stop, review the evidence, fix everything completely, and communicate straightforwardly.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "แก้ระบบให้ครบ แต่ไม่บอกสมาชิก ไม่อยากให้ตกใจก่อนค่าย",
+     "label": "Fix the system completely but don't tell members — you don't want to alarm them before the camp.",
      "q": "bad",
-     "out": "ระบบปลอดภัยขึ้นจริง แต่สมาชิกที่ข้อมูลหลุดไม่รู้ตัวและไม่ได้ระวังมิจฉาชีพ",
+     "out": "The system is genuinely more secure — but members whose data leaked don't know, and aren't watching out for scammers.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "trust": -10,
@@ -386,18 +386,18 @@
       "disclosed": "no",
       "covered": true
      },
-     "lesson": "การซ่อนเหตุไม่ได้ปกป้องใคร มันแค่เลื่อนวันที่ความจริงถูกเปิดเผย",
+     "lesson": "Concealing an incident doesn't protect anyone — it only delays the day the truth comes out.",
      "next": "news"
     },
     {
      "id": "c",
-     "label": "ย้ายไปรับสมัครด้วยกระดาษแทน แล้วปล่อยเว็บไว้อย่างนั้นก่อน",
+     "label": "Switch to paper-based registration and leave the website as-is for now.",
      "q": "bad",
-     "out": "ค่ายเดินหน้าต่อได้ แต่เว็บที่ยังเปิดอยู่กลายเป็นทางเข้าให้ผู้โจมตีกลับมาซ้ำ และข้อมูลเก่าในนั้นก็ยังหลุดต่อเนื่อง",
+     "out": "The camp can proceed, but the still-open website remains an entry point for the attacker to return — and the old data in it continues leaking.",
      "u": [
       [
        60,
-       "สมาชิกบางส่วนกลับมาสมัครด้วยกระดาษ"
+       "Some members register on paper."
       ]
      ],
      "trust": -10,
@@ -406,22 +406,22 @@
       "speed": 2,
       "long": -2
      },
-     "lesson": "เลี่ยงปัญหาโดยไม่แก้ระบบ คือการทิ้งประตูเปิดไว้ให้ผู้โจมตี",
+     "lesson": "Avoiding the problem without fixing the system is leaving the door open for the attacker.",
      "next": "END:bleeding"
     }
    ]
   },
   "rewrite": {
-   "title": "เว็บใหม่ ช่องใหม่",
-   "tag": "ช่องโหว่ใหม่จากการเร่งทำ",
+   "title": "New Site, New Holes",
+   "tag": "New Vulnerabilities from a Rushed Build",
    "best": "a",
-   "bestWhy": "ปิดช่องแอดมินก่อนเปิดใช้จริง หลายชั้น (จำกัดการลองรหัส + ด่านที่สอง) ปลอดภัยกว่ารอให้เกิดเหตุ",
-   "text": "สองสัปดาห์ต่อมา เว็บใหม่ของชมรมเปิดใช้ ทุกคนมีบัญชีของตัวเองและมีสำรองข้อมูลแยกเครื่องแล้ว สมาชิกบางส่วนกลับมาสมัครค่ายรอบใหม่ แต่ตอนเร่งทำ คุณลืมเปลี่ยนรหัสผ่านเริ่มต้นของหน้าแอดมิน (admin / 1234) และไม่ได้จำกัดจำนวนครั้งที่ล็อกอินผิด ตอนนี้มีบอท (โปรแกรมอัตโนมัติ) ลองรหัสผ่านหน้าแอดมินราว 3,000 ครั้งต่อชั่วโมง",
+   "bestWhy": "Close the admin panel vulnerabilities before going live — multiple layers (login rate limiting + a second factor) are safer than waiting for something to go wrong.",
+   "text": "Two weeks later the new club website launches. Everyone has their own account, and there's a separate backup system. Some members return to register for the new camp round — but in the rush, you forgot to change the admin panel's default password (admin / 1234) and didn't limit failed login attempts. A bot (automated program) is now trying to guess the admin password about 3,000 times per hour.",
    "enter": {
     "u": [
      [
       120,
-      "สมาชิกบางส่วนกลับมาสมัครรอบใหม่"
+      "Some members return to register for the new round."
      ]
     ],
     "trust": 10,
@@ -430,17 +430,17 @@
      "serverMoney": true
     }
    },
-   "source": "CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น); NIST SP 800-63B (จำกัดการลองรหัส)",
+   "source": "CISA Secure by Design (no default passwords); NIST SP 800-63B (limit login attempts)",
    "choices": [
     {
      "id": "a",
-     "label": "เปลี่ยนรหัสเริ่มต้น เปิดยืนยันตัวตนสองขั้นตอน (2-step) ให้แอดมิน และจำกัดจำนวนครั้งที่ล็อกอินผิด",
+     "label": "Change the default password, enable two-factor authentication (2-step) for the admin account, and limit failed login attempts.",
      "q": "good",
-     "out": "บอทยังพยายามอยู่ แต่ถูกบล็อกหลังพยายามผิดไม่กี่ครั้ง และต่อให้เดารหัสถูกก็เข้าไม่ได้ถ้าไม่มีรหัสจากโทรศัพท์ของคุณ",
+     "out": "The bot keeps trying but gets blocked after just a few failed attempts — and even if it guesses the password right, it still can't get in without the code from your phone.",
      "u": [
       [
        20,
-       "สมาชิกมั่นใจเมื่อเว็บนิ่ง"
+       "Members feel confident as the website stays stable."
       ]
      ],
      "axes": {
@@ -450,18 +450,18 @@
      "set": {
       "mfa": true
      },
-     "lesson": "ป้องกันหลายชั้น (defence in depth): จำกัดการลองรหัส + ด่านที่สอง ทำให้รหัสผ่านที่อ่อนหรือหลุดไม่ใช่จุดพังจุดเดียว",
+     "lesson": "Defence in depth: rate limiting + a second factor means a weak or leaked password is no longer a single point of failure.",
      "next": "wave2_blocked"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนเฉพาะรหัสเริ่มต้นเป็นรหัสที่ยาวขึ้น",
+     "label": "Only change the default password to a longer one.",
      "q": "mid",
-     "out": "รหัสยาวช่วยได้มาก แต่บอทยังลองได้ไม่จำกัด และยังไม่มีด่านที่สองถ้ารหัสถูกหลอกขอไป",
+     "out": "A longer password helps a lot, but the bot can still try an unlimited number of times — and there's still no second factor if the password is phished.",
      "u": [
       [
        0,
-       "ไม่มีผลทันที"
+       "No immediate effect."
       ]
      ],
      "axes": {
@@ -469,18 +469,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "รหัสผ่านที่แข็งแรงเป็นด่านแรกที่ดี แต่ไม่ควรเป็นด่านเดียว",
+     "lesson": "A strong password is a good first layer — but it shouldn't be the only layer.",
      "next": "wave2"
     },
     {
      "id": "c",
-     "label": "ยังไม่ทำตอนนี้ ต้องรีบประชาสัมพันธ์ค่ายก่อน",
+     "label": "Don't do it right now — need to promote the camp first.",
      "q": "bad",
-     "out": "ยอดสมัครวันแรกดีมาก แต่คืนนั้นบอทเดารหัสแอดมินสำเร็จ",
+     "out": "First-day registrations are great — but that night the bot successfully guesses the admin password.",
      "u": [
       [
        60,
-       "ประชาสัมพันธ์ได้ผล"
+       "Promotion pays off."
       ]
      ],
      "axes": {
@@ -491,28 +491,28 @@
      "set": {
       "adminWeak": true
      },
-     "lesson": "ความเสี่ยงที่ยังไม่เกิดไม่ใช่ความเสี่ยงที่ไม่มี บอทที่ลองรหัสอยู่แล้วคือหลักฐานว่าเว็บกำลังถูกเล็ง",
+     "lesson": "A risk that hasn't materialized yet is not a risk that doesn't exist. A bot actively guessing passwords is clear evidence the website is already being targeted.",
      "next": "takeover"
     }
    ]
   },
   "wave2": {
-   "title": "ข้อความจากครูปลอม",
-   "tag": "ฟิชชิ่ง",
+   "title": "A Message from a Fake Teacher",
+   "tag": "Phishing",
    "best": "a",
-   "bestWhy": "ยืนยันจากช่องทางที่คุณรู้จักเอง ไม่ใช่ลิงก์ในข้อความ และเพิ่มด่านที่สองให้บัญชีสำคัญ",
-   "text": "ผ่านไปราวหนึ่งสัปดาห์ ทางเข้าเดิมถูกปิดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี คุณได้รับข้อความในแชตจากบัญชีที่ใช้รูปและชื่อครูที่ปรึกษา บอกว่า \"ครูต้องอนุมัติงบค่ายด่วนภายในวันนี้ ช่วยล็อกอินผ่านลิงก์นี้ให้หน่อย\" ลิงก์หน้าตาเหมือนหน้าล็อกอินของเว็บชมรมทุกอย่าง",
+   "bestWhy": "Verify through a channel you know yourself — not a link in the message — and add a second factor to important accounts.",
+   "text": "About a week passes. The previous entry points are closed, but the attacker changes tactics. You receive a chat message from an account using the faculty advisor's photo and name, saying: \"I need to approve the camp budget urgently today — can you log in through this link for me?\" The link looks exactly like the club website's login page.",
    "source": "CISA Secure Our World: Recognize and Report Phishing; UK NCSC: Phishing attacks",
    "choices": [
     {
      "id": "a",
-     "label": "ไม่กดลิงก์ โทรหาครูที่เบอร์ที่รู้อยู่แล้วเพื่อถามตรงๆ และเปิด 2-step ให้ทุกบัญชีแอดมิน",
+     "label": "Don't click the link. Call the advisor directly at their known number to confirm, and enable 2-step for all admin accounts.",
      "q": "good",
-     "out": "ครูไม่ได้ส่งข้อความนั้น คุณรู้ว่าเป็นฟิชชิ่ง จึงเปิด 2-step ให้แอดมินทุกคน และเตือนกรรมการชมรมไม่ให้กดลิงก์แบบนี้",
+     "out": "The advisor never sent that message. You recognize it as phishing, enable 2-step for all admins, and warn the committee not to click links like this.",
      "u": [
       [
        40,
-       "เว็บนิ่ง สมาชิกกลับมาใช้"
+       "Website stable — members return."
       ]
      ],
      "trust": 5,
@@ -524,74 +524,74 @@
      "set": {
       "mfa": true
      },
-     "lesson": "ข้อความที่เร่งให้รีบทำ + อ้างเป็นคนที่เราเชื่อใจ + ลิงก์ คือสัญญาณฟิชชิ่งคลาสสิก ให้ยืนยันผ่านช่องทางที่เรารู้จักเอง",
+     "lesson": "A message creating urgency + claiming to be someone you trust + a link is the classic phishing signal. Always verify through a channel you already know.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "กดลิงก์แล้วล็อกอินให้ เพราะเป็นครูขอมา",
+     "label": "Click the link and log in — it's the advisor asking.",
      "q": "bad",
-     "out": "หน้านั้นเป็นหน้าปลอมที่เก็บรหัสผ่านของคุณ ไม่กี่ชั่วโมงต่อมามีคนล็อกอินเข้าหลังบ้านของเว็บชมรมด้วยรหัสของคุณ",
+     "out": "That page is a fake that captures your password. A few hours later someone logs into the club website's admin panel using your credentials.",
      "u": [
       [
        0,
-       "ยังไม่เห็นผลทันที"
+       "No visible effect yet."
       ]
      ],
      "axes": {
       "sec": -2,
       "speed": 2
      },
-     "lesson": "ผู้โจมตีชอบปลอมเป็นคนที่เราเกรงใจหรือเชื่อใจ เพราะเราจะไม่ทันคิดก่อนทำตาม",
+     "lesson": "Attackers love impersonating people we respect or trust — because we act before we think.",
      "next": "takeover"
     },
     {
      "id": "c",
-     "label": "ไม่ตอบข้อความ แล้วลบทิ้ง",
+     "label": "Ignore the message and delete it.",
      "q": "mid",
-     "out": "คุณรอดครั้งนี้ แต่ไม่ได้เตือนกรรมการคนอื่น และยังไม่มีด่านที่สอง ถ้ามีคนหลงกดก็ไม่มีอะไรช่วย",
+     "out": "You dodge this one — but you didn't warn anyone else on the committee, and there's still no second factor. If someone else falls for it, there's nothing to stop the attacker.",
      "u": [
       [
        10,
-       "ไม่มีเหตุเพิ่ม"
+       "No additional incidents."
       ]
      ],
      "axes": {
       "speed": 1,
       "long": -1
      },
-     "lesson": "ไม่โดนหลอกครั้งนี้ไม่ได้แปลว่าทีมปลอดภัย ควรเตือนคนอื่นและเพิ่มด่านที่สอง",
+     "lesson": "Not being fooled this time doesn't mean the team is safe. Warn others and add a second factor.",
      "next": "END"
     }
    ]
   },
   "takeover": {
-   "title": "บัญชีแอดมินถูกยึด",
-   "tag": "ยึดบัญชี",
+   "title": "Admin Account Hijacked",
+   "tag": "Account Takeover",
    "best": "a",
-   "bestWhy": "ต้องตัดผู้โจมตีออกจากทุกทาง ไม่ใช่แค่เปลี่ยนรหัสผ่าน แล้วตรวจย้อนหลังว่าเขาแก้อะไร และเตือนสมาชิกทันที",
-   "text": "ผู้โจมตีเข้าหลังบ้านของเว็บชมรมด้วยบัญชีแอดมินจริง เขาเปลี่ยนลิงก์ชำระค่าสมัครค่ายเป็นบัญชีธนาคารของตัวเอง และเปิดดูข้อมูลสมาชิก นักเรียนหลายคนโอนเงินค่าค่ายไปแล้ว",
+   "bestWhy": "You need to cut the attacker off from every access point — not just change the password. Then audit what they changed, and warn members immediately.",
+   "text": "The attacker is inside the club website's admin panel using a legitimate admin account. They changed the camp payment link to their own bank account and viewed member data. Several students have already transferred money.",
    "enter": {
     "u": [
      [
       -250,
-      "ลิงก์ชำระเงินถูกเปลี่ยน สมาชิกจำนวนมากหายไป"
+      "Payment link altered — many members lost."
      ]
     ],
     "trust": -20,
     "damage": 40
    },
-   "source": "NIST SP 800-61 (การรับมือเหตุ); OWASP Session Management Cheat Sheet",
+   "source": "NIST SP 800-61 (incident response); OWASP Session Management Cheat Sheet",
    "choices": [
     {
      "id": "a",
-     "label": "สั่งออกจากระบบทุกเครื่อง เปลี่ยนรหัสทุกบัญชี เปิด 2-step ตรวจ log ว่าอะไรถูกแก้ แก้ลิงก์ชำระเงินคืน และเตือนสมาชิกทันทีว่าอย่าโอน",
+     "label": "Log out every active session on all devices, change passwords on all accounts, enable 2-step, audit the logs for what was changed, restore the payment link, and warn members immediately not to transfer money.",
      "q": "good",
-     "out": "คุณไล่แก้ทุกจุดที่ถูกเปลี่ยน ปิดทางเข้าครบ และแจ้งสมาชิกกับครูทันที ความเสียหายหยุดอยู่แค่นั้น",
+     "out": "You go through every change, close every access point, and immediately notify members and the advisor. The damage stops there.",
      "u": [
       [
        -80,
-       "ปิดเว็บแก้ไข สมาชิกบางส่วนเลิกใช้หลังรับแจ้ง"
+       "Website down for remediation — some members leave after being notified."
       ]
      ],
      "trust": 15,
@@ -605,22 +605,22 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "เมื่อบัญชีถูกยึด ต้องตัดผู้โจมตีออกทุกทาง รวมถึงเซสชัน (การล็อกอินที่ค้างอยู่) แล้วเตือนผู้ใช้ให้เร็วที่สุด",
+     "lesson": "When an account is hijacked, you must cut the attacker off from every access point — including active sessions (logins still in progress). Then warn users as fast as possible.",
      "next": "END"
     },
     {
      "id": "b",
-     "label": "เปลี่ยนรหัสผ่านอย่างเดียวแล้วเปิดเว็บต่อ",
+     "label": "Change the password only, then reopen the website.",
      "q": "bad",
-     "out": "ผู้โจมตียังล็อกอินค้างอยู่ในเครื่องของเขา เขากลับมาแก้ลิงก์ชำระเงินอีกครั้งในคืนต่อมา",
+     "out": "The attacker is still logged in on their device. They come back the next night and change the payment link again.",
      "u": [
       [
        -40,
-       "ปิดเว็บสั้นๆ เพื่อเปลี่ยนรหัสผ่าน"
+       "Brief downtime to change the password."
       ],
       [
        -150,
-       "ผู้โจมตีกลับเข้ามาทางการล็อกอินที่ค้างไว้"
+       "Attacker returns via the still-active session."
       ]
      ],
      "trust": -10,
@@ -630,18 +630,18 @@
       "speed": 1,
       "long": -1
      },
-     "lesson": "เปลี่ยนรหัสผ่านอย่างเดียวไม่พอ ถ้าผู้โจมตียังล็อกอินค้างอยู่ ต้องสั่งออกจากระบบทุกเครื่องด้วย",
+     "lesson": "Changing the password alone isn't enough. If the attacker still has an active session, they can keep coming back. You must log them out of every device.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "ขอให้ฝ่ายไอทีของโรงเรียนหรือผู้เชี่ยวชาญตรวจหลังบ้านทั้งระบบ แล้วทำตามคำแนะนำ",
+     "label": "Ask the school's IT department or an external expert to audit the entire backend, then follow their recommendations.",
      "q": "mid",
-     "out": "ทีมตรวจพบว่าผู้โจมตีสร้างบัญชีแอดมินลับไว้ ช่วยลบออกและตั้ง 2-step ให้ สมาชิกได้รับแจ้ง ช้าแต่ปลอดภัย",
+     "out": "The team discovers the attacker created a hidden admin account. They remove it, set up 2-step, and members are notified. Slow, but thorough.",
      "u": [
       [
        -150,
-       "ปิดเว็บนาน สมาชิกบางส่วนไม่รอ"
+       "Extended outage — some members don't wait."
       ]
      ],
      "trust": 10,
@@ -655,38 +655,38 @@
       "mfa": true,
       "disclosed": "yes"
      },
-     "lesson": "ผู้โจมตีมักทิ้ง \"ประตูหลัง\" ไว้ ผู้ชำนาญช่วยหาสิ่งที่เรามองไม่เห็น แต่ต้องแลกกับเวลา",
+     "lesson": "Attackers often leave a \"backdoor\" behind. Expert eyes can find things you'd miss — but it comes at a cost in time.",
      "next": "END"
     }
    ]
   },
   "news": {
-   "title": "เรื่องแดงในกลุ่มนักเรียน",
-   "tag": "ผลของการปิดบัง",
+   "title": "The Story Spreads Through the Student Group",
+   "tag": "The Cost of Staying Silent",
    "best": "a",
-   "bestWhy": "ถ้าพลาดเรื่องการแจ้ง ให้ยอมรับและแก้ทันทีที่รู้ตัว ยิ่งเงียบนาน ความเชื่อใจยิ่งเสียมาก",
-   "text": "นักเรียนคนหนึ่งโพสต์ว่ามีคนโทรมาอ้างชื่อชมรม รู้ทั้งชื่อ เบอร์ และโรงเรียนของเขา แล้วหลอกให้โอนเงิน โพสต์ถูกแชร์ในกลุ่มนักเรียนหลายพันครั้ง และทุกคนเริ่มถามว่าชมรมรู้เรื่องนี้ไหม",
+   "bestWhy": "If you missed the disclosure window, admit it and act as soon as you realize. The longer you stay silent, the more trust you lose.",
+   "text": "A student posts that someone called them claiming to be from the club, knowing their name, phone number, and school — and tried to trick them into transferring money. The post spreads through student chat groups thousands of times, and everyone starts asking whether the club knew about this.",
    "enter": {
     "u": [
      [
       -200,
-      "ข่าวหลุดว่าชมรมเคยปิดบังเหตุ"
+      "News breaks that the club covered up the incident."
      ]
     ],
     "trust": -30,
     "damage": 20
    },
-   "source": "EU GDPR มาตรา 34 (แจ้งผู้ได้รับผลกระทบ)",
+   "source": "EU GDPR Article 34 (notification of affected individuals)",
    "choices": [
     {
      "id": "a",
-     "label": "ประกาศยอมรับ บอกว่าข้อมูลอะไรหลุด แก้อะไรแล้ว และเตือนให้ระวังมิจฉาชีพ",
+     "label": "Issue a public statement acknowledging the incident, explaining what data leaked, what has been fixed, and warning members to watch out for scammers.",
      "q": "good",
-     "out": "คุณยอมรับว่ารู้มาก่อนแต่ไม่ได้แจ้ง ถูกวิจารณ์หนัก แต่ข้อมูลที่ชัดเจนช่วยให้สมาชิกระวังตัว และบางส่วนยังอยู่ต่อ",
+     "out": "You admit you knew earlier and didn't notify anyone. The criticism is heavy — but the clear information helps members protect themselves, and some still stay.",
      "u": [
       [
        -100,
-       "สมาชิกบางส่วนลาออกหลังรู้ว่าถูกปิดบัง"
+       "Some members leave after learning they were kept in the dark."
       ]
      ],
      "trust": 20,
@@ -697,18 +697,18 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ถ้าพลาดเรื่องการแจ้ง ให้แก้ทันทีที่รู้ตัว ความโปร่งใสที่มาช้ายังดีกว่าไม่มาเลย",
+     "lesson": "If you missed the disclosure, fix it the moment you realize. Late transparency is still better than none.",
      "next": "wave2"
     },
     {
      "id": "b",
-     "label": "บอกว่าไม่เกี่ยวกับชมรม",
+     "label": "Say it has nothing to do with the club.",
      "q": "bad",
-     "out": "นักเรียนเทียบข้อมูลแล้วพบว่าตรงกับแบบฟอร์มสมัครค่ายของชมรม การปฏิเสธถูกแชร์ต่อเป็นตัวอย่างของความไม่รับผิดชอบ",
+     "out": "Students cross-reference the details and find they match the club's camp registration form. The denial gets shared as an example of irresponsibility.",
      "u": [
       [
        -350,
-       "ถูกจับได้ว่าปฏิเสธข้อเท็จจริง"
+       "Caught denying verifiable facts."
       ]
      ],
      "trust": -30,
@@ -716,18 +716,18 @@
       "open": -2,
       "long": -2
      },
-     "lesson": "การปฏิเสธข้อเท็จจริงที่ตรวจสอบได้ ทำให้ความเสียหายกลายเป็นวิกฤตความน่าเชื่อถือ",
+     "lesson": "Denying verifiable facts turns a data incident into a full-blown credibility crisis.",
      "next": "END"
     },
     {
      "id": "c",
-     "label": "ปิดเว็บตรวจสอบสามวันก่อนประกาศ",
+     "label": "Take the website down for three days to investigate before making any announcement.",
      "q": "mid",
-     "out": "คุณยืนยันขอบเขตความเสียหายได้ครบแล้วค่อยประกาศ แต่ช่วงสามวันนั้นข่าวลือแพร่ไปไกลกว่า",
+     "out": "You confirm the full scope of the damage before speaking — but during those three silent days, the rumours spread further than the facts.",
      "u": [
       [
        -150,
-       "เงียบสามวัน ข่าวลือแพร่"
+       "Three days of silence — rumours spread."
       ]
      ],
      "trust": 5,
@@ -739,41 +739,41 @@
      "set": {
       "disclosed": "yes"
      },
-     "lesson": "ตรวจให้แน่ใจก่อนพูดเป็นเรื่องดี แต่ถ้าเงียบนานเกินไป ข่าวลือจะเล่าเรื่องแทนคุณ",
+     "lesson": "Verifying before speaking is good — but if you go silent too long, rumours will tell the story for you.",
      "next": "wave2"
     }
    ]
   },
   "wave2_blocked": {
-   "title": "ฟิชชิ่งที่ไม่ได้ผล",
-   "tag": "ฟิชชิ่ง (ถูกสกัด)",
+   "title": "Phishing That Failed",
+   "tag": "Phishing (Blocked)",
    "best": "a",
    "bestWhy": "—",
-   "text": "สัปดาห์ต่อมา ข้อความปลอมที่อ้างเป็นครูที่ปรึกษามาถึงกรรมการชมรม มีกรรมการคนหนึ่งกรอกรหัสผ่านลงหน้าปลอมไปแล้ว แต่ผู้โจมตีเข้าบัญชีไม่ได้ เพราะทุกบัญชีแอดมินมี 2-step และคุณได้รับแจ้งเตือนว่ามีการล็อกอินจากเครื่องแปลก",
+   "text": "The following week, a fake message impersonating the faculty advisor reaches club committee members. One committee member already entered their password on the fake page — but the attacker can't get into the account, because every admin account has 2-step enabled. You receive an alert about a login attempt from an unknown device.",
    "enter": {
     "u": [
      [
       30,
-      "สมาชิกเห็นเว็บนิ่ง ไม่มีเหตุ"
+      "Members see the website running smoothly — no incidents."
      ]
     ],
     "trust": 5
    },
-   "source": "Microsoft Security: MFA หยุดการยึดบัญชีอัตโนมัติได้เกือบทั้งหมด; CISA Secure Our World",
+   "source": "Microsoft Security: MFA blocks nearly all automated account takeovers; CISA Secure Our World",
    "choices": [
     {
      "id": "a",
-     "label": "ดูบทสรุป",
+     "label": "View summary",
      "q": "good",
-     "out": "คุณเปลี่ยนรหัสของกรรมการคนนั้นและเตือนทีมอีกครั้ง ไม่มีความเสียหายเกิดขึ้น",
+     "out": "You change that committee member's password and remind the team to stay alert. No damage is done.",
      "u": [
       [
        0,
-       "ไม่มีความเสียหาย"
+       "No damage."
       ]
      ],
      "axes": {},
-     "lesson": "ด่านที่สองทำให้ความผิดพลาดของคนเดียวไม่กลายเป็นหายนะของทั้งชมรม",
+     "lesson": "A second factor means one person's mistake doesn't become a disaster for the whole club.",
      "next": "END"
     }
    ]
@@ -781,91 +781,91 @@
  },
  "ENDINGS": {
   "root": {
-   "title": "ผู้ดูแลชมรมที่ไว้ใจได้",
+   "title": "A Trustworthy Club Admin",
    "tone": "good",
-   "desc": "คุณแก้ถึงต้นเหตุ ปิดบัญชีเก่า มีสำรองข้อมูลที่กู้ได้จริง และชมรมยังมีสมาชิกเกือบเท่าเดิม"
+   "desc": "You fixed the root causes, disabled old accounts, have a working backup, and the club still has nearly as many members as before."
   },
   "rebuilder": {
-   "title": "สถาปนิกผู้สร้างใหม่",
+   "title": "The Architect Who Started Over",
    "tone": "good",
-   "desc": "คุณเลือกเส้นทางที่แพงที่สุด คือสร้างใหม่ทั้งหมด แล้วอุดช่องใหม่จากการเร่งทำได้ทัน ระบบปลอดภัย แต่สมาชิกไม่เหมือนเดิม"
+   "desc": "You took the most expensive path — a full rebuild — and still caught the new vulnerabilities that came with the rush. The system is secure, but membership is not the same."
   },
   "honest": {
-   "title": "ซื่อสัตย์แต่บอบช้ำ",
+   "title": "Honest but Bruised",
    "tone": "mid",
-   "desc": "ชมรมเจ็บหนัก แต่คุณบอกความจริงกับสมาชิก ความเชื่อใจที่เหลืออยู่คือฐานให้ชมรมกลับมาได้"
+   "desc": "The club took a serious hit, but you told members the truth. The trust that remains is the foundation for a comeback."
   },
   "survivor": {
-   "title": "ผู้รอดที่เรียนรู้",
+   "title": "A Survivor Who Learned",
    "tone": "mid",
-   "desc": "เว็บชมรมยังเปิดอยู่และปิดช่องสำคัญได้แล้ว แม้ระหว่างทางจะมีผลที่ต้องแลกมา"
+   "desc": "The club website is still running and the critical holes are closed — even if there were costs along the way."
   },
   "nomfa": {
-   "title": "แก้เก่ง แต่ลืมด่านสอง",
+   "title": "Strong on Fixes, Forgot the Second Layer",
    "tone": "mid",
-   "desc": "บัญชีเก่าและสำรองข้อมูลจัดการแล้ว แต่บัญชีแอดมินยังพึ่งรหัสผ่านอย่างเดียว ความเสี่ยงที่เหลือคือเรื่องของคน"
+   "desc": "Old accounts and backups are handled, but admin accounts still rely on a password alone. The remaining risk is a human one."
   },
   "cover": {
-   "title": "ปิดบังจนเสียความเชื่อใจ",
+   "title": "Covered It Up and Lost the Trust",
    "tone": "bad",
-   "desc": "ระบบอาจถูกแก้แล้ว แต่การไม่บอกสมาชิกทำให้ความเสียหายถูกเลื่อนไปเกิดทีหลังและแรงกว่าเดิม"
+   "desc": "The system may have been fixed — but not telling members only delayed the damage, and when it hit, it hit harder."
   },
   "scarred": {
-   "title": "แผลลึกแต่ยังยืน",
+   "title": "Deep Wounds, Still Standing",
    "tone": "bad",
-   "desc": "ข้อมูลและเงินของชมรมเสียหายหนัก ชมรมยังอยู่ แต่ต้องใช้เวลานานกว่าสมาชิกจะกลับมาไว้ใจ"
+   "desc": "The club's data and funds took serious damage. It's still going, but rebuilding member trust will take a long time."
   },
   "bleeding": {
-   "title": "เลือดไหลไม่หยุด",
+   "title": "Bleeding Out",
    "tone": "bad",
-   "desc": "คุณเลี่ยงปัญหาโดยไม่แก้ระบบ ผู้โจมตีกลับมาซ้ำเรื่อยๆ ชมรมค่อยๆ เสียสมาชิกโดยไม่มีวันจบเหตุ"
+   "desc": "You avoided the problem without fixing the system. The attacker keeps coming back. The club is slowly losing members with no end to the incident in sight."
   },
   "collapse": {
-   "title": "ชมรมต้องยุบ",
+   "title": "The Club Had to Disband",
    "tone": "bad",
-   "desc": "สมาชิกเหลือน้อยเกินกว่าชมรมจะอยู่ต่อได้ ลองย้อนดูว่าการตัดสินใจครั้งไหนทำให้สมาชิกหายมากที่สุด"
+   "desc": "Membership dropped too low for the club to continue. Look back and see which decision caused the biggest drop."
   }
  },
  "AXES": [
   {
    "k": "sec",
-   "L": "ความต่อเนื่องของบริการ",
-   "R": "ความปลอดภัย",
+   "L": "Service Continuity",
+   "R": "Security",
    "letL": "B",
    "letR": "S",
-   "dL": "คุณมักรักษาให้เว็บชมรมเปิดต่อก่อน แม้ความเสี่ยงยังไม่หมด",
-   "dR": "คุณยอมเสียผู้ใช้ระยะสั้นเพื่อให้ระบบปลอดภัยก่อน",
-   "dM": "คุณชั่งน้ำหนักระหว่างความปลอดภัยกับการให้เว็บชมรมเปิดต่อได้ค่อนข้างสมดุล"
+   "dL": "You tend to keep the club website running first, even when risk remains.",
+   "dR": "You're willing to lose users in the short term to secure the system first.",
+   "dM": "You strike a reasonable balance between security and keeping the club website running."
   },
   {
    "k": "speed",
-   "L": "รอบคอบ",
-   "R": "ลงมือเร็ว",
+   "L": "Methodical",
+   "R": "Act Fast",
    "letL": "C",
    "letR": "F",
-   "dL": "คุณชอบตรวจให้แน่ใจก่อนลงมือ ข้อดีคือแม่น ข้อระวังคือช้า",
-   "dR": "คุณตัดสินใจไว ข้อดีคือหยุดเหตุเร็ว ข้อระวังคือแก้ไม่ครบ",
-   "dM": "คุณปรับจังหวะเร็ว/ช้าตามสถานการณ์ได้ดี"
+   "dL": "You prefer to verify before acting. The upside is precision; the downside is speed.",
+   "dR": "You decide quickly. The upside is stopping incidents fast; the downside is missing things.",
+   "dM": "You adjust your pace well to the demands of each situation."
   },
   {
    "k": "open",
-   "L": "รักษาภาพลักษณ์",
-   "R": "โปร่งใส",
+   "L": "Image First",
+   "R": "Transparent",
    "letL": "I",
    "letR": "T",
-   "dL": "คุณมักกังวลเรื่องภาพลักษณ์ ซึ่งมักทำให้ผู้ใช้เสียความเชื่อใจทีหลัง",
-   "dR": "คุณบอกความจริงกับผู้ใช้ แม้เจ็บในระยะสั้น",
-   "dM": "คุณยังไม่ได้เจอจังหวะที่ต้องเลือกเรื่องการสื่อสารมากนัก"
+   "dL": "You tend to prioritize image — which often erodes user trust later.",
+   "dR": "You tell users the truth, even when it stings in the short term.",
+   "dM": "You haven't faced many situations that forced a clear communication choice yet."
   },
   {
    "k": "long",
-   "L": "แก้เฉพาะหน้า",
-   "R": "มองระยะยาว",
+   "L": "Quick Patch",
+   "R": "Long-Term Thinking",
    "letL": "N",
    "letR": "L",
-   "dL": "คุณมักเลือกทางที่ได้ผลเร็ว ซึ่งบางครั้งทิ้งต้นเหตุไว้",
-   "dR": "คุณมองถึงต้นเหตุและผลระยะยาว",
-   "dM": "คุณผสมการแก้เฉพาะหน้ากับการแก้ที่ต้นเหตุ"
+   "dL": "You tend to choose the fast fix, which sometimes leaves the root cause untouched.",
+   "dR": "You think about root causes and long-term consequences.",
+   "dM": "You mix quick patches with root-cause fixes."
   }
  ]
 }
