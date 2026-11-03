@@ -87,28 +87,26 @@ Built with **Hono**. All routes under the Cloudflare Worker; static assets serve
 
 | Method | Path | Description |
 |---|---|---|
-| `GET` | `/api/me` | Returns the logged-in user object from the JWT cookie, or 401 |
-| `GET` | `/api/auth/google` | Redirects to Google OAuth consent screen |
-| `GET` | `/api/auth/google/callback` | Exchanges code for tokens, upserts user in D1, sets JWT cookie |
+| `GET` | `/api/me` | Returns the logged-in user object from the session cookie, or `null` (200) |
+| `GET` | `/auth/google` | No `code` param → redirects to Google consent; with `code` param → handles callback |
 | `POST` | `/api/profile` | Saves questionnaire answers (school, age, referral) for the current user |
-| `POST` | `/api/scores` | Saves a completed run (path, score, axes, ending) to D1 |
-| `GET` | `/api/scores` | Returns scores for the current user |
-| `GET` | `/api/logout` | Clears the JWT cookie |
+| `POST` | `/api/scores` | Saves a completed run (path, score, ending, users_remaining) to D1 |
+| `POST` | `/api/logout` | Clears the session cookie |
 
 ---
 
 ## Auth Flow
 
-1. User clicks "Sign in with Google" → browser hits `GET /api/auth/google`
-2. Worker redirects to `https://accounts.google.com/o/oauth2/v2/auth` with `client_id`, `redirect_uri`, `scope=openid email profile`
-3. Google redirects back to `GET /api/auth/google/callback?code=...`
-4. Worker exchanges code for tokens via `https://oauth2.googleapis.com/token`
-5. Worker decodes the `id_token` JWT to get `sub`, `email`, `name`, `picture`
-6. Worker upserts the user row in D1 (`users` table, keyed on `google_id`)
-7. Worker issues a signed JWT cookie (`ld_session`) containing `{id, email, name, picture, filled}`
-8. All subsequent API calls verify this cookie via Hono's JWT middleware
+1. User clicks "Sign in with Google" → browser hits `GET /auth/google` (no `code` param)
+2. Worker generates a random CSRF nonce, stores it in a short-lived `ld_state` cookie, and redirects to Google's consent screen with `scope=openid email profile`
+3. Google redirects back to `GET /auth/google?code=...&state=...`
+4. Worker validates the `state` param against the `ld_state` cookie, then exchanges `code` for tokens via `https://oauth2.googleapis.com/token`
+5. Worker fetches the user's profile from `https://www.googleapis.com/oauth2/v3/userinfo` using the access token
+6. Worker upserts the user row in D1 (`users` table, `id` = Google `sub`)
+7. Worker issues a signed HS256 JWT cookie (`ld_sess`) containing `{sub, email, name, exp}`
+8. Subsequent API calls verify this cookie via `getSession()` (calls Hono's `verify()`)
 
-Credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `JWT_SECRET`) are set as Worker secrets in the Cloudflare dashboard — never in `wrangler.toml`.
+Credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `SESSION_SECRET`) are set as Worker secrets in the Cloudflare dashboard — never in `wrangler.toml`.
 
 ---
 
@@ -116,29 +114,27 @@ Credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `JWT_SECRET`) are set a
 
 ```sql
 CREATE TABLE IF NOT EXISTS users (
-  id          INTEGER PRIMARY KEY AUTOINCREMENT,
-  google_id   TEXT UNIQUE NOT NULL,
-  email       TEXT,
-  name        TEXT,
-  picture     TEXT,
-  school      TEXT,
-  age         INTEGER,
-  referral    TEXT,
-  filled      INTEGER DEFAULT 0,
-  created_at  TEXT DEFAULT (datetime('now'))
+  id         TEXT    PRIMARY KEY,          -- Google sub
+  email      TEXT    UNIQUE NOT NULL,
+  name       TEXT,
+  school     TEXT,
+  age        INTEGER,
+  referral   TEXT,
+  created_at INTEGER DEFAULT (unixepoch())
 );
 
 CREATE TABLE IF NOT EXISTS scores (
-  id         INTEGER PRIMARY KEY AUTOINCREMENT,
-  user_id    INTEGER REFERENCES users(id),
-  path_id    TEXT,
-  score      INTEGER,
-  ending     TEXT,
-  axes       TEXT,   -- JSON blob
-  lang       TEXT,
-  created_at TEXT DEFAULT (datetime('now'))
+  id              INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id         TEXT    NOT NULL REFERENCES users(id),
+  path_id         TEXT    NOT NULL,
+  score           INTEGER NOT NULL,
+  ending          TEXT,
+  users_remaining INTEGER,
+  created_at      INTEGER DEFAULT (unixepoch())
 );
 ```
+
+A user is considered to have completed their profile when `school`, `age`, and `referral` are all non-null — there is no separate `filled` flag.
 
 Run migrations against production with:
 ```bash
@@ -386,7 +382,7 @@ Push to `main`. Cloudflare automatically:
 2. Uploads static assets, excluding `js/paths/**/*.json` (via `.assetsignore`)
 3. Deploys the Worker (`worker.js`) alongside the assets
 
-The D1 database binding, OAuth credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`), and `JWT_SECRET` are configured in the Cloudflare dashboard — not in `wrangler.toml`.
+The D1 database binding, OAuth credentials (`GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`), and `SESSION_SECRET` are configured in the Cloudflare dashboard — not in `wrangler.toml`.
 
 ---
 
