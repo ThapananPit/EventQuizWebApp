@@ -12,8 +12,8 @@ function t(k,v={}){
 }
 function changeLang(l){
   LANG=l;localStorage.setItem('ld.lang',l);
-  if(UI.screen==='play'||UI.screen==='ending'||UI.screen==='result'){
-    S=null;loadPath(CURRENT_PATH_ID).then(()=>toStart());
+  if(CURRENT_PATH_ID&&(UI.screen==='play'||UI.screen==='ending'||UI.screen==='result'||UI.screen==='start')){
+    loadPath(CURRENT_PATH_ID).then(()=>render());
   }else render();
 }
 
