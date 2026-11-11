@@ -10,6 +10,7 @@
    "best": "a",
    "bestWhy": "ปิดร้านสั้นๆ เพื่อกักกันก่อน แล้วหาต้นเหตุจากหลักฐาน จะเสียลูกค้าน้อยกว่าการแก้มั่วหรือเขียนใหม่ทั้งหมด",
    "text": "เช้านี้คุณเปิดหลังร้านของร้านค้าออนไลน์ที่เขียนเอง แล้วพบ 38 ออเดอร์ที่ราคารวมแค่ 1 บาท ทั้งที่สินค้าราคาหลักร้อยถึงหลักพัน ทั้งหมดมาจากบัญชีใหม่ไม่กี่บัญชีภายใน 20 นาที ขณะที่ลูกค้าปกติยังสั่งของอยู่ คุณจะทำอะไรก่อน?",
+   "evidence": {"label": "ORDER LOG  —  today, 09:14–09:34", "body": " #4821  09:14  user_8841  Hoodie ×2        ฿1\n #4822  09:15  user_8842  Sneakers ×3      ฿1\n #4823  09:16  user_8843  Backpack ×1      ฿1\n         ... 35 more entries ...\n #4858  09:34  user_8876  Jacket ×4        ฿1\n\n 38 orders  ·  all new accounts  ·  ฿12,400 lost"},
    "source": "NIST SP 800-61 (คู่มือรับมือเหตุ: กักกัน → กำจัดต้นเหตุ → กู้คืน)",
    "choices": [
     {
@@ -103,6 +104,7 @@
    "best": "a",
    "bestWhy": "ต้นเหตุมีสองจุดพร้อมกัน ต้องปิดทั้งสอง จึงจะไม่ถูกโจมตีซ้ำผ่านช่องที่เหลือ",
    "text": "จาก log (บันทึกการใช้งานของระบบ) คุณพบว่าผู้โจมตีไม่ได้เดารหัสผ่านใครเลย เขาใช้เครื่องมือสำหรับนักพัฒนาที่มีอยู่ในทุกเบราว์เซอร์ (DevTools) ส่งคำสั่งสร้างออเดอร์เข้าฐานข้อมูลตรงๆ แล้วใส่ราคาเอง ต้นเหตุมีสองจุดพร้อมกัน (1) กฎสิทธิ์ของฐานข้อมูล (Rules) ยอมให้ทุกคนที่ล็อกอินแก้ข้อมูลออเดอร์ได้ทุกช่อง และ (2) ราคารวมถูกคำนวณในเบราว์เซอร์ของลูกค้า (ฝั่ง client) แล้วระบบหลังร้าน (Server) เชื่อตามนั้นโดยไม่ตรวจ คุณจะแก้อย่างไร?",
+   "evidence": {"label": "REQUEST CAPTURED  —  DevTools", "body": " POST /api/checkout  HTTP/1.1\n\n { items: [{id:42, qty:2}],\n   total: 1 }          ← set by attacker\n\n Server: 200 OK  (accepted price without checking)\n\n Flaw 1: Rules allow any user to write any field\n Flaw 2: Server trusts price sent by browser"},
    "source": "OWASP Top 10: Broken Access Control, Insecure Design",
    "choices": [
     {
@@ -417,6 +419,7 @@
    "best": "a",
    "bestWhy": "ปิดช่องแอดมินก่อนเปิดตัวจริง หลายชั้น (จำกัดการลองรหัส + ด่านที่สอง) ปลอดภัยกว่ารอให้เกิดเหตุ",
    "text": "สองสัปดาห์ต่อมา ร้านใหม่เปิดตัว ระบบคิดราคาที่ Server แล้ว และ Rules รัดกุมกว่าเดิมมาก ลูกค้าบางส่วนกลับมาตามข่าวเปิดตัว แต่ตอนเร่งทำ คุณลืมเปลี่ยนรหัสผ่านเริ่มต้นของหน้าแอดมิน และไม่ได้จำกัดจำนวนครั้งที่ล็อกอินผิด ตอนนี้มีบอท (โปรแกรมอัตโนมัติ) ลองรหัสผ่านหน้าแอดมินราว 3,000 ครั้งต่อชั่วโมง",
+   "evidence": {"label": "AUTH LOG  —  admin panel, 02:11", "body": " FAIL  admin  203.0.113.7  02:11:04\n FAIL  admin  203.0.113.7  02:11:04\n FAIL  admin  203.0.113.7  02:11:04\n       ... ~3,000 attempts/hour ...\n\n no rate limit  ·  no 2FA  ·  default password active"},
    "enter": {
     "u": [
      [
@@ -503,6 +506,7 @@
    "bestWhy": "ตรวจจากช่องทางที่คุณเข้าเอง ไม่ใช่ลิงก์ในอีเมล และเพิ่มด่านที่สองให้บัญชีสำคัญ",
    "text": "ผ่านไปราวหนึ่งสัปดาห์ ช่องโหว่ที่เคยถูกใช้ถูกอุดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี คุณได้รับอีเมลที่อ้างว่ามาจากผู้ให้บริการโฮสติ้ง แจ้งว่าบัญชีของคุณจะถูกระงับใน 24 ชั่วโมงหากไม่กดลิงก์ยืนยัน โลโก้และสำนวนดูเหมือนจริงมาก",
    "source": "CISA Secure Our World (ฟิชชิ่งและ 2-step); Verizon DBIR",
+   "evidence": {"label": "INCOMING EMAIL  —  11:03", "body": " From:    support@hosting-secure-verify.net\n Subject: ⚠ Your account will be suspended\n\n \"Verify your identity or your account will\n  be suspended within 24 hours.\"\n  [click here to verify]\n\n Real provider domain: yourhostingco.com"},
    "choices": [
     {
      "id": "a",
@@ -582,6 +586,7 @@
     "damage": 40
    },
    "source": "OWASP Session Management Cheat Sheet; NIST SP 800-61",
+   "evidence": {"label": "ADMIN AUDIT LOG", "body": " 14:22  UPDATE products  SET price = 1\n 14:23  UPDATE settings  SET bank_acct = '...'\n 14:31  SELECT * FROM customers  — 2,847 rows\n 14:35  INSERT INTO admins  user = 'ghost_7x'\n\n all actions logged under legitimate admin session"},
    "choices": [
     {
      "id": "a",

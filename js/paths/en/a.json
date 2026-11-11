@@ -10,6 +10,7 @@
    "best": "a",
    "bestWhy": "Briefly closing the store to contain the situation first, then finding the root cause from evidence, will cost fewer customers than guessing your way through fixes or rewriting everything from scratch.",
    "text": "This morning you open the admin panel of your self-built online store and find 38 orders totaling just 1 baht — despite products priced in the hundreds to thousands. All of them came from a handful of new accounts within 20 minutes, while regular customers are still shopping normally. What do you do first?",
+   "evidence": {"label": "ORDER LOG  —  today, 09:14–09:34", "body": " #4821  09:14  user_8841  Hoodie ×2        ฿1\n #4822  09:15  user_8842  Sneakers ×3      ฿1\n #4823  09:16  user_8843  Backpack ×1      ฿1\n         ... 35 more entries ...\n #4858  09:34  user_8876  Jacket ×4        ฿1\n\n 38 orders  ·  all new accounts  ·  ฿12,400 lost"},
    "source": "NIST SP 800-61 (Incident Response Guide: containment → root cause elimination → recovery)",
    "choices": [
     {
@@ -103,6 +104,7 @@
    "best": "a",
    "bestWhy": "There are two root causes happening simultaneously — both must be closed, otherwise the remaining one can still be exploited.",
    "text": "From the logs (system activity records) you find that the attacker never guessed anyone's password. Using developer tools built into every browser (DevTools), they sent order-creation commands directly to the database and inserted their own prices. There are two simultaneous root causes: (1) the database permission rules (Rules) allow any logged-in user to edit any field of any order, and (2) the total price is calculated in the customer's browser (client-side) and the backend server (Server) trusts that value without verifying it. How do you fix this?",
+   "evidence": {"label": "REQUEST CAPTURED  —  DevTools", "body": " POST /api/checkout  HTTP/1.1\n\n { items: [{id:42, qty:2}],\n   total: 1 }          ← set by attacker\n\n Server: 200 OK  (accepted price without checking)\n\n Flaw 1: Rules allow any user to write any field\n Flaw 2: Server trusts price sent by browser"},
    "source": "OWASP Top 10: Broken Access Control, Insecure Design",
    "choices": [
     {
@@ -417,6 +419,7 @@
    "best": "a",
    "bestWhy": "Close the admin panel vulnerabilities before going live — multiple layers (login rate limiting + a second factor) are safer than waiting for something to go wrong.",
    "text": "Two weeks later the new store launches. Prices are now calculated server-side and the Rules are far tighter. Some customers come back on the news of the launch — but in the rush, you forgot to change the admin panel's default password and didn't limit failed login attempts. A bot (automated program) is now trying to guess the admin password about 3,000 times per hour.",
+   "evidence": {"label": "AUTH LOG  —  admin panel, 02:11", "body": " FAIL  admin  203.0.113.7  02:11:04\n FAIL  admin  203.0.113.7  02:11:04\n FAIL  admin  203.0.113.7  02:11:04\n       ... ~3,000 attempts/hour ...\n\n no rate limit  ·  no 2FA  ·  default password active"},
    "enter": {
     "u": [
      [
@@ -502,6 +505,7 @@
    "best": "a",
    "bestWhy": "Check through a channel you navigate yourself — not a link in the email — and add a second factor to important accounts.",
    "text": "About a week passes. The previously exploited vulnerabilities are closed, but the attacker changes tactics. You receive an email claiming to be from your hosting provider, saying your account will be suspended in 24 hours if you don't click a verification link. The logo and wording look completely genuine.",
+   "evidence": {"label": "INCOMING EMAIL  —  11:03", "body": " From:    support@hosting-secure-verify.net\n Subject: ⚠ Your account will be suspended\n\n \"Verify your identity or your account will\n  be suspended within 24 hours.\"\n  [click here to verify]\n\n Real provider domain: yourhostingco.com"},
    "source": "CISA Secure Our World (phishing and 2-step); Verizon DBIR",
    "choices": [
     {
@@ -571,6 +575,7 @@
    "best": "a",
    "bestWhy": "You need to cut the attacker off from every access point — sessions, tokens, everything — not just change the password. Then audit what they changed.",
    "text": "The attacker is inside the admin panel using a legitimate admin account. They modified product prices, changed the payment receiving account to their own, and viewed customer data — all without exploiting a single line of code.",
+   "evidence": {"label": "ADMIN AUDIT LOG", "body": " 14:22  UPDATE products  SET price = 1\n 14:23  UPDATE settings  SET bank_acct = '...'\n 14:31  SELECT * FROM customers  — 2,847 rows\n 14:35  INSERT INTO admins  user = 'ghost_7x'\n\n all actions logged under legitimate admin session"},
    "enter": {
     "u": [
      [

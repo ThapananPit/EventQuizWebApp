@@ -346,6 +346,20 @@ input[type=number].field::-webkit-inner-spin-button{-webkit-appearance:none;}
 @keyframes chipIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .chip{animation:chipIn .32s ease both}
 
+/* evidence panel */
+.evidence-panel{margin-top:14px;border:1px solid var(--line);background:var(--bg);overflow:hidden}
+.evidence-hdr{
+  display:flex;align-items:center;gap:8px;
+  padding:4px 10px;background:var(--surface2);border-bottom:1px solid var(--line);
+  font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:.1em;
+}
+.evidence-hdr::before{content:"●";color:var(--pink);font-size:8px;line-height:1}
+.evidence-body{
+  margin:0;padding:10px 14px;overflow-x:auto;
+  white-space:pre;font-family:'Space Mono',monospace;
+  font-size:12px;line-height:1.65;color:var(--cyan);
+}
+
 /* status flag bar */
 .flag-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
 .flag{font-size:11px;padding:2px 8px;border:1px solid var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.07em;border-radius:0}
