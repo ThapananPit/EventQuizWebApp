@@ -12,7 +12,7 @@ function t(k,v={}){
 }
 function changeLang(l){
   LANG=l;localStorage.setItem('ld.lang',l);
-  if(UI.screen==='play'||UI.screen==='result'){
+  if(UI.screen==='play'||UI.screen==='ending'||UI.screen==='result'){
     S=null;loadPath(CURRENT_PATH_ID).then(()=>toStart());
   }else render();
 }
@@ -21,6 +21,17 @@ const NODE_ENTER={
  repeat:S=>S.rulesFixed
   ?{u:[[-90,'สินค้าถูกซื้อในราคาถูกอีกครั้ง ลูกค้าเสียความเชื่อมั่น']],trust:-10,damage:10}
   :{u:[[-180,'ออเดอร์ปลอมและข้อมูลลูกค้าถูกอ่าน ลูกค้าจำนวนมากเลิกใช้']],trust:-15,damage:30}
+};
+const ENDING_VERDICT={
+  root:'verdictRoot',rebuilder:'verdictRebuilder',survivor:'verdictSurvivor',
+  honest:'verdictHonest',nomfa:'verdictNomfa',scarred:'verdictScarred',
+  cover:'verdictCover',collapse:'verdictCollapse',
+  perfect:'verdictPerfect',postmortem:'verdictPostmortem',exposed:'verdictExposed',
+};
+const SECRET_ENDINGS={
+  perfect:    {tone:'secret',titleKey:'secretPerfectTitle',   descKey:'secretPerfectDesc'},
+  postmortem: {tone:'secret',titleKey:'secretPostmortemTitle',descKey:'secretPostmortemDesc'},
+  exposed:    {tone:'bad',   titleKey:'secretExposedTitle',   descKey:'secretExposedDesc'},
 };
 const NODE_TEXT={
  repeat:S=>S.rulesFixed
@@ -70,6 +81,11 @@ function nextOf(S){
 function endingOf(S){
   if(S.forcedEnding)return S.forcedEnding;
   const fixed=S.rulesFixed&&S.serverMoney;
+  // secret endings — checked first, require specific combinations
+  if(fixed&&S.mfa&&S.rewrote&&S.disclosed==='yes'&&S.damage<=10&&S.users>=900&&!S.covered)return 'perfect';
+  if(S.disclosed==='yes'&&S.mfa&&S.damage>=30&&!fixed&&!S.covered)return 'postmortem';
+  if(S.covered&&S.damage>=50)return 'exposed';
+  // regular endings
   if(fixed&&S.mfa&&S.damage<=10&&S.users>=900&&!S.covered)return 'root';
   if(S.rewrote&&fixed&&S.mfa&&S.damage<30&&!S.covered)return 'rebuilder';
   if(S.covered)return 'cover';
@@ -115,7 +131,7 @@ function remember(kind,val){if(STORE[kind].indexOf(val)<0){STORE[kind].push(val)
 
 function chips(list){
   if(!list||!list.length)return '';
-  return '<ul class="chips">'+list.map(p=>`<li class="chip ${p[0]>0?'pos':p[0]<0?'neg':'zero'}"><b>${sgn(p[0])}</b><span>${p[1]}</span></li>`).join('')+'</ul>';
+  return '<ul class="chips">'+list.map((p,i)=>`<li class="chip ${p[0]>0?'pos':p[0]<0?'neg':'zero'}" style="animation-delay:${i*90}ms"><b>${sgn(p[0])}</b><span>${p[1]}</span></li>`).join('')+'</ul>';
 }
 function meterHTML(){
   const u=S.users;const cls=u<400?'bar risk':'bar';
@@ -136,6 +152,40 @@ function animateMeter(){
   requestAnimationFrame(()=>{fill.style.width=w(to);});
   const t0=performance.now(),dur=900;
   (function step(ts){const p=Math.min(1,(ts-t0)/dur);const e=1-Math.pow(1-p,3);num.textContent=fmtN(from+(to-from)*e);if(p<1)requestAnimationFrame(step);})(t0);
+  if(to<from){
+    const bar=app.querySelector('.bar');
+    if(bar){bar.classList.add('dropping');bar.addEventListener('animationend',()=>bar.classList.remove('dropping'),{once:true});}
+    num.classList.add('shaking');num.addEventListener('animationend',()=>num.classList.remove('shaking'),{once:true});
+  }
+}
+let _typewriteIv=null;
+function typewrite(el,text,speed=16){
+  if(_typewriteIv)clearInterval(_typewriteIv);
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){el.textContent=text;return;}
+  el.textContent='';let i=0;
+  _typewriteIv=setInterval(()=>{
+    if(i<text.length){el.textContent+=text[i];i++;}
+    else{clearInterval(_typewriteIv);_typewriteIv=null;}
+  },speed);
+}
+function flagBar(){
+  if(!S)return '';
+  const flags=[];
+  if(S.mfa)flags.push(`<span class="flag on">${t('flagMfa')}</span>`);
+  if(S.rulesFixed&&S.serverMoney)flags.push(`<span class="flag on">${t('flagFixed')}</span>`);
+  if(S.rewrote)flags.push(`<span class="flag on">${t('flagRewrote')}</span>`);
+  if(S.covered)flags.push(`<span class="flag warn">${t('flagCovered')}</span>`);
+  if(S.disclosed==='yes')flags.push(`<span class="flag on">${t('flagDisclosed')}</span>`);
+  if(!flags.length)return '';
+  return `<div class="flag-bar">${flags.join('')}</div>`;
+}
+function flashQuality(q){
+  const el=document.getElementById('choiceFlash');if(!el)return;
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce)return;
+  el.className='flash-'+q;
+  el.addEventListener('animationend',()=>{el.className='';},{once:true});
 }
 function staticTop(step=''){
   return `<div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step">${step}</span><button class="ghost" id="btnLang">${t('langToggle')}</button></div>`;
@@ -257,6 +307,7 @@ function render(){
   else if(UI.screen==='select')renderPathSelect();
   else if(UI.screen==='start')renderStart();
   else if(UI.screen==='play')renderPlay();
+  else if(UI.screen==='ending')renderEnding();
   else renderResult();
   go();
 }
@@ -301,9 +352,10 @@ function renderChoose(n){
     body=`<div class="choices" role="group" aria-label="${t('choiceGroup')}">`+n.choices.map((c,i)=>
       `<button class="choice" data-id="${c.id}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${c.label}</span></button>`).join('')+`</div>`;
   }
-  app.innerHTML=topBar()+meterHTML()+`
+  app.innerHTML=topBar()+meterHTML()+flagBar()+`
    <section class="card"><span class="tag">${n.tag}</span><h2 data-focus tabindex="-1">${n.title}</h2>
-    <p>${text}</p>${ev}</section>`+body;
+    <p id="nodeText"></p>${ev}</section>`+body;
+  typewrite(document.getElementById('nodeText'),text);
   if(S.dead){$('#btnEnd').onclick=finish;}
   else app.querySelectorAll('.choice').forEach(b=>{b.onclick=()=>choose(b.dataset.id);});
 }
@@ -314,22 +366,24 @@ function choose(cid){
   UI.from=S.users;
   UI.last=pick(S,cid);
   remember('choices',S.nodeId+':'+cid);
+  flashQuality(UI.last.choice.q);
   UI.phase='result';render();
 }
 function renderConsequence(n){
   const {choice}=UI.last;
   const qt={good:['good',t('qualGood')],mid:['mid',t('qualMid')],bad:['bad',t('qualBad')]}[choice.q];
   const btn=S.dead?t('btnSummary'):t('btnNext');
-  app.innerHTML=topBar()+meterHTML()+`
+  app.innerHTML=topBar()+meterHTML()+flagBar()+`
    <section class="card">
     <p class="chosen">${t('youChose')} <b>${choice.label}</b></p>
     <span class="quality ${qt[0]}">${qt[1]}</span>
     <h2 data-focus tabindex="-1">${t('happened')}</h2>
-    <p>${choice.out}</p>
+    <p id="consText"></p>
     <div class="sub">${t('effectLabel')}</div>${chips(choice.u)}
     <div class="know"><strong>${t('knowLabel')}</strong>${choice.lesson}</div>
    </section>
    <button class="primary" id="btnNext">${btn}</button>`;
+  typewrite(document.getElementById('consText'),choice.out);
   $('#btnNext').onclick=advance;
 }
 function advance(){
@@ -347,7 +401,38 @@ function finish(){
       body:JSON.stringify({path_id:CURRENT_PATH_ID,score:sc.total,ending:S.endId,users_remaining:S.users})
     }).catch(()=>{});
   }
-  UI.screen='result';render();
+  UI.screen='ending';render();
+}
+
+/* ---------- ending ---------- */
+function renderEnding(){
+  const endId=S.endId;
+  const isSecret=endId in SECRET_ENDINGS;
+  let title,desc,tone;
+  if(isSecret){
+    title=t(SECRET_ENDINGS[endId].titleKey);
+    desc=t(SECRET_ENDINGS[endId].descKey);
+    tone=SECRET_ENDINGS[endId].tone;
+  }else{
+    const e=ENDINGS[endId]||{};
+    title=e.title||endId;desc=e.desc||'';tone=e.tone||'mid';
+  }
+  const verdict=t(ENDING_VERDICT[endId]||endId);
+  const secretBadge=isSecret?`<div class="secret-badge">${t('secretLabel')}</div>`:'';
+  app.innerHTML=
+    staticTop(t('endingStep'))+
+    `<section class="card ending-reveal ${tone}" data-focus tabindex="-1">
+      ${secretBadge}
+      <div class="verdict-label">${t('caseStatus')}</div>
+      <div class="verdict">${verdict}</div>
+    </section>
+    <section class="card">
+      <h2>${title}</h2>
+      <p id="endDesc"></p>
+    </section>
+    <button class="primary" id="btnDebrief">${t('btnDebrief')}</button>`;
+  typewrite(document.getElementById('endDesc'),desc);
+  document.getElementById('btnDebrief').onclick=()=>{UI.screen='result';render();};
 }
 
 /* ---------- result ---------- */
@@ -419,7 +504,12 @@ function renderResult(){
   const R=54,C=2*Math.PI*R;
   const ax=axesHTML(),sl=summaryLists();
   const totalCh=choiceTotal();
-  const coll=Object.keys(ENDINGS).map(k=>STORE.endings.indexOf(k)>=0?`<div class="got">✓ ${ENDINGS[k].title}</div>`:`<div>${t('unknown')}</div>`).join('');
+  const secretEndingData=Object.fromEntries(Object.keys(SECRET_ENDINGS).map(k=>[k,{title:t(SECRET_ENDINGS[k].titleKey)}]));
+  const allEndingsMap={...ENDINGS,...secretEndingData};
+  const coll=Object.keys(allEndingsMap).map(k=>{
+    const found=STORE.endings.indexOf(k)>=0;const isSec=k in SECRET_ENDINGS;
+    return found?`<div class="got">${isSec?'★':'✓'} ${allEndingsMap[k].title}</div>`:`<div>${t('unknown')}</div>`;
+  }).join('');
   app.innerHTML=
   staticTop(t('resultStep'))+
   `<section class="card ending ${e.tone}">

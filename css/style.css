@@ -297,6 +297,75 @@ input[type=number].field::-webkit-inner-spin-button{-webkit-appearance:none;}
 .boot-line .bgr{color:var(--purple);font-weight:700;letter-spacing:.2em;}
 .boot-foot{margin-top:auto;padding-top:14px;font-size:11px;color:var(--muted);letter-spacing:.07em;flex-shrink:0;}
 
+/* ---- visual feedback ---- */
+
+/* screen-edge quality flash */
+#choiceFlash{position:fixed;inset:0;pointer-events:none;z-index:500}
+.flash-good{animation:flashGood .65s ease-out forwards}
+.flash-mid {animation:flashMid  .65s ease-out forwards}
+.flash-bad {animation:flashBad  .8s  ease-out forwards}
+@keyframes flashGood{
+  0%  {box-shadow:inset 0 0 0 5px var(--green);opacity:1}
+  100%{box-shadow:inset 0 0 0 5px transparent;opacity:0}
+}
+@keyframes flashMid{
+  0%  {box-shadow:inset 0 0 0 4px var(--amber);opacity:1}
+  100%{box-shadow:inset 0 0 0 4px transparent;opacity:0}
+}
+@keyframes flashBad{
+  0%,20%,40%{box-shadow:inset 0 0 0 5px var(--pink);opacity:1}
+  10%,30%   {box-shadow:inset 0 0 0 3px var(--pink);opacity:.7}
+  100%       {box-shadow:inset 0 0 0 5px transparent;opacity:0}
+}
+
+/* meter drop flash + number shake */
+@keyframes meterBarFlash{
+  0%,100%{background:var(--surface2)}
+  25%,65%{background:rgba(223,34,37,.2)}
+}
+.bar.dropping{animation:meterBarFlash .55s ease}
+@keyframes numShake{
+  0%,100%{transform:translateX(0)}
+  15%{transform:translateX(-5px)}30%{transform:translateX(5px)}
+  45%{transform:translateX(-4px)}60%{transform:translateX(4px)}
+  75%{transform:translateX(-2px)}90%{transform:translateX(2px)}
+}
+.shaking{display:inline-block;animation:numShake .45s ease}
+
+/* chip stagger entrance */
+@keyframes chipIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.chip{animation:chipIn .28s ease both}
+
+/* status flag bar */
+.flag-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.flag{font-size:11px;padding:2px 8px;border:1px solid var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.07em;border-radius:0}
+.flag.on {border-color:var(--green);color:var(--green);background:rgba(129,178,146,.08)}
+.flag.warn{border-color:var(--pink); color:var(--pink); background:rgba(223,34,37,.08)}
+
+/* ---- ending reveal screen ---- */
+.ending-reveal{padding:28px 24px}
+.ending-reveal.good  {border-color:var(--green)}
+.ending-reveal.mid   {border-color:var(--amber)}
+.ending-reveal.bad   {border-color:var(--pink);box-shadow:0 0 28px rgba(223,34,37,.18)}
+.ending-reveal.secret{border-color:#c8900a;box-shadow:0 0 28px rgba(200,144,10,.2)}
+.verdict-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.12em;margin-bottom:10px}
+.verdict{
+  font-family:'Orbitron',monospace;font-weight:800;
+  font-size:clamp(16px,4.5vw,26px);line-height:1.25;
+  letter-spacing:.06em;text-transform:uppercase;
+}
+.ending-reveal.good   .verdict{color:var(--green)}
+.ending-reveal.mid    .verdict{color:var(--amber)}
+.ending-reveal.bad    .verdict{color:var(--pink)}
+.ending-reveal.secret .verdict{color:#c8900a}
+.secret-badge{
+  display:inline-block;font-size:10px;padding:2px 10px;
+  border:1px solid #c8900a;color:#c8900a;border-radius:0;
+  margin-bottom:14px;text-transform:uppercase;letter-spacing:.12em;
+  animation:secretPulse 1.8s ease-in-out infinite;
+}
+@keyframes secretPulse{0%,100%{opacity:1}50%{opacity:.35}}
+
 @media (max-width:420px){
   body{font-size:15px}
   .card h2{font-size:19px}
