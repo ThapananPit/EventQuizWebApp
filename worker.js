@@ -111,4 +111,30 @@ app.post('/api/scores', async (c) => {
   return c.json({ ok: true })
 })
 
+app.get('/api/leaderboard', async (c) => {
+  const path_id = c.req.query('path')
+  const topSql = (limit) => `
+    WITH best AS (
+      SELECT user_id, MAX(score) AS top_score
+      FROM scores WHERE path_id = ? GROUP BY user_id
+    )
+    SELECT u.name, s.score, s.ending, s.users_remaining
+    FROM best b
+    JOIN scores s ON s.user_id = b.user_id AND s.score = b.top_score AND s.path_id = ?
+    JOIN users u ON u.id = s.user_id
+    ORDER BY s.score DESC LIMIT ${limit}
+  `
+  if (path_id) {
+    const { results } = await c.env.DB.prepare(topSql(10)).bind(path_id, path_id).all()
+    return c.json(results ?? [])
+  }
+  const paths = ['a', 'b', 'c', 'd']
+  const all = await Promise.all(paths.map(p =>
+    c.env.DB.prepare(topSql(3)).bind(p, p).all()
+  ))
+  const out = {}
+  paths.forEach((p, i) => { out[p] = all[i].results ?? [] })
+  return c.json(out)
+})
+
 export default app

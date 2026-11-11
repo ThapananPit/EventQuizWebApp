@@ -145,7 +145,20 @@
     "flagFixed":     "แก้ต้นเหตุแล้ว",
     "flagRewrote":   "สร้างระบบใหม่",
     "flagCovered":   "⚠ ปิดบังอยู่",
-    "flagDisclosed": "เปิดเผยแล้ว"
+    "flagDisclosed": "เปิดเผยแล้ว",
+    "lbTitle":       "ตารางคะแนน",
+    "lbRank":        "#",
+    "lbName":        "ชื่อ",
+    "lbEnding":      "ผลลัพธ์",
+    "lbScore":       "คะแนน",
+    "lbUsers":       "ผู้ใช้คงเหลือ",
+    "lbEmpty":       "ยังไม่มีคะแนน — มาเป็นคนแรก!",
+    "lbLoading":     "กำลังโหลด...",
+    "lbYou":         "(คุณ)",
+    "lbLoginHint":   "ล็อกอินเพื่อปรากฏในตารางคะแนน",
+    "lbFormula":     "คะแนน = ผู้ใช้คงเหลือ + โบนัสผลลัพธ์   Perfect +500 · Postmortem +300 · ผลดี +200–250 · ผลกลาง +80–150 · ผลแย่ 0–50",
+    "lbMiniTop":     "สูงสุด",
+    "lbMiniPts":     "คะแนน"
   },
   "en": {
     "tagline": "Build smart. Choose wisely. Defend your system.",
@@ -288,6 +301,19 @@
     "flagFixed":     "ROOT FIXED",
     "flagRewrote":   "REBUILT",
     "flagCovered":   "⚠ COVER-UP",
-    "flagDisclosed": "DISCLOSED"
+    "flagDisclosed": "DISCLOSED",
+    "lbTitle":       "Leaderboard",
+    "lbRank":        "#",
+    "lbName":        "Name",
+    "lbEnding":      "Ending",
+    "lbScore":       "Score",
+    "lbUsers":       "Users left",
+    "lbEmpty":       "No scores yet — be the first!",
+    "lbLoading":     "Loading...",
+    "lbYou":         "(you)",
+    "lbLoginHint":   "Log in to appear on the leaderboard",
+    "lbFormula":     "Score = users remaining + ending bonus   Perfect +500 · Postmortem +300 · Good +200–250 · Mid +80–150 · Bad 0–50",
+    "lbMiniTop":     "Top",
+    "lbMiniPts":     "pts"
   }
 }

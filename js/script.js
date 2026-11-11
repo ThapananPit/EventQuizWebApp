@@ -33,6 +33,12 @@ const SECRET_ENDINGS={
   postmortem: {tone:'secret',titleKey:'secretPostmortemTitle',descKey:'secretPostmortemDesc'},
   exposed:    {tone:'bad',   titleKey:'secretExposedTitle',   descKey:'secretExposedDesc'},
 };
+const ENDING_BONUS={
+  perfect:500,postmortem:300,
+  root:250,rebuilder:200,
+  survivor:150,honest:100,nomfa:80,
+  exposed:50,cover:30,scarred:20,bleeding:10,collapse:0
+};
 const NODE_TEXT={
  repeat:S=>S.rulesFixed
   ?'เช้าวันถัดมา ผู้โจมตีส่งคำขอชำระเงินตรงเข้า API ข้ามการตรวจฝั่งเบราว์เซอร์ที่คุณเพิ่ม และได้สินค้าในราคาถูกอีกครั้ง'
@@ -323,8 +329,23 @@ function renderPathSelect(){
     <p class="tagline">${t('tagline')}</p>
   </header>
   <section class="card scn"><span class="tag">${t('selectTag')}</span><h2>${t('selectTitle')}</h2></section>
-  <div class="choices">`+PATHS.map((p,i)=>`<button class="choice" data-path="${p.id}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${titleOf(p)}</span></button>`).join('')+`</div>`;
+  <div class="choices">`+PATHS.map((p,i)=>
+    `<button class="choice" data-path="${p.id}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${titleOf(p)}</span></button>`+
+    `<div class="lb-mini" id="lb-mini-${p.id}"></div>`
+  ).join('')+`</div>`;
   app.querySelectorAll('.choice').forEach(b=>{b.onclick=()=>selectPath(b.dataset.path);});
+  fetch('/api/leaderboard').then(r=>r.json()).then(all=>{
+    PATHS.forEach(p=>{
+      const el=document.getElementById(`lb-mini-${p.id}`);
+      if(!el)return;
+      const rows=all[p.id]||[];
+      if(!rows.length){el.textContent='';return;}
+      const firstName=n=>(n||'?').split(' ')[0];
+      el.innerHTML=rows.map((r,i)=>
+        `<div class="lb-mini-row"><span class="lb-mini-rank">${i+1}</span><span class="lb-mini-name">${firstName(r.name)}</span><span class="lb-mini-score">${r.score.toLocaleString()} ${t('lbMiniPts')}</span></div>`
+      ).join('');
+    });
+  }).catch(()=>{});
 }
 function toStart(){S=null;UI.screen='start';UI.phase='choose';render();}
 function begin(){
@@ -429,9 +450,9 @@ function finish(){
   S.endId=endingOf(S);remember('endings',S.endId);
   STORE=loadStore();
   if(USER&&CURRENT_PATH_ID){
-    const sc=scoreOf(S,S.endId);
+    const lbScore=S.users+(ENDING_BONUS[S.endId]||0);
     fetch('/api/scores',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({path_id:CURRENT_PATH_ID,score:sc.total,ending:S.endId,users_remaining:S.users})
+      body:JSON.stringify({path_id:CURRENT_PATH_ID,score:lbScore,ending:S.endId,users_remaining:S.users})
     }).catch(()=>{});
   }
   UI.screen='ending';render();
@@ -576,10 +597,51 @@ function renderResult(){
   <section class="card"><h2>${t('tryAgainTitle')}</h2>
     <p>${t('tryAgainDesc',{got:STORE.endings.length,tot:Object.keys(ENDINGS).length,choices:STORE.choices.length,total:totalCh})}</p>
     <div class="coll">${coll}</div></section>
+  <section class="card" id="lbSection">
+    <h2>${t('lbTitle')}</h2>
+    <div id="lbBody"><p class="lb-loading">${t('lbLoading')}</p></div>
+    <p class="lb-formula">${t('lbFormula')}</p>
+    ${!USER?`<p class="lb-hint">${t('lbLoginHint')}</p>`:''}
+  </section>
   <div class="row"><button class="primary" id="btnAgain">${t('btnAgain')}</button><button class="secondary" id="btnHome">${t('btnHome')}</button></div>
   <p class="foot">${t('disclaimer')}</p>`;
   $('#btnAgain').onclick=begin;$('#btnHome').onclick=toStart;
+  if(CURRENT_PATH_ID){
+    const myScore=S.users+(ENDING_BONUS[S.endId]||0);
+    fetch(`/api/leaderboard?path=${CURRENT_PATH_ID}`)
+      .then(r=>r.json()).then(rows=>renderLeaderboard(rows,myScore))
+      .catch(()=>{const b=document.getElementById('lbBody');if(b)b.innerHTML=`<p class="lb-empty">${t('lbEmpty')}</p>`;});
+  }
   $('#live').textContent=t('liveResult',{score:sc.total});
+}
+
+function renderLeaderboard(rows,myScore){
+  const el=document.getElementById('lbBody');
+  if(!el)return;
+  if(!rows||!rows.length){el.innerHTML=`<p class="lb-empty">${t('lbEmpty')}</p>`;return;}
+  const rankClass=i=>i===0?'lb-rank lb-rank-1':i===1?'lb-rank lb-rank-2':i===2?'lb-rank lb-rank-3':'lb-rank';
+  const firstName=name=>(name||'?').split(' ')[0];
+  const endingName=eid=>{
+    if(ENDINGS[eid])return ENDINGS[eid].title;
+    if(SECRET_ENDINGS[eid])return t(SECRET_ENDINGS[eid].titleKey);
+    return eid;
+  };
+  const rows_html=rows.map((r,i)=>{
+    const isMe=USER&&r.score===myScore&&firstName(r.name)===firstName(USER.name);
+    return `<tr class="${isMe?'lb-me':''}">
+      <td class="${rankClass(i)}">${i+1}</td>
+      <td>${firstName(r.name)}${isMe?`<span class="lb-you-tag">${t('lbYou')}</span>`:''}</td>
+      <td>${endingName(r.ending)}</td>
+      <td>${r.score.toLocaleString()}</td>
+    </tr>`;
+  }).join('');
+  el.innerHTML=`<table class="lb-table">
+    <thead><tr>
+      <th>${t('lbRank')}</th><th>${t('lbName')}</th>
+      <th>${t('lbEnding')}</th><th style="text-align:right">${t('lbScore')}</th>
+    </tr></thead>
+    <tbody>${rows_html}</tbody>
+  </table>`;
 }
 
 /* ---------- kiosk idle reset ---------- */
