@@ -152,10 +152,14 @@ function animateMeter(){
   requestAnimationFrame(()=>{fill.style.width=w(to);});
   const t0=performance.now(),dur=900;
   (function step(ts){const p=Math.min(1,(ts-t0)/dur);const e=1-Math.pow(1-p,3);num.textContent=fmtN(from+(to-from)*e);if(p<1)requestAnimationFrame(step);})(t0);
+  const fillEl=document.getElementById('usersFill');
+  const meter=app.querySelector('.meter');
   if(to<from){
-    const bar=app.querySelector('.bar');
-    if(bar){bar.classList.add('dropping');bar.addEventListener('animationend',()=>bar.classList.remove('dropping'),{once:true});}
+    if(fillEl){fillEl.classList.add('flash');fillEl.addEventListener('animationend',()=>fillEl.classList.remove('flash'),{once:true});}
+    if(meter){meter.classList.add('alarming');meter.addEventListener('animationend',()=>meter.classList.remove('alarming'),{once:true});}
     num.classList.add('shaking');num.addEventListener('animationend',()=>num.classList.remove('shaking'),{once:true});
+  }else if(to>from){
+    if(fillEl){fillEl.classList.add('gain');fillEl.addEventListener('animationend',()=>fillEl.classList.remove('gain'),{once:true});}
   }
 }
 let _typewriteIv=null;
@@ -168,6 +172,24 @@ function typewrite(el,text,speed=16){
     if(i<text.length){el.textContent+=text[i];i++;}
     else{clearInterval(_typewriteIv);_typewriteIv=null;}
   },speed);
+}
+const _SCRAMBLE_CHARS='ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#!?*-+';
+let _scrambleIv=null;
+function scrambleText(el,text,duration=1000){
+  if(_scrambleIv)clearInterval(_scrambleIv);
+  const reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce){el.textContent=text;return;}
+  const steps=36;let frame=0;
+  el.textContent=text.split('').map(c=>c===' '?' ':_SCRAMBLE_CHARS[Math.floor(Math.random()*_SCRAMBLE_CHARS.length)]).join('');
+  _scrambleIv=setInterval(()=>{
+    frame++;
+    const resolved=Math.floor((frame/steps)*text.length);
+    el.textContent=text.split('').map((c,i)=>{
+      if(i<resolved||c===' '||c==='—')return c;
+      return _SCRAMBLE_CHARS[Math.floor(Math.random()*_SCRAMBLE_CHARS.length)];
+    }).join('');
+    if(resolved>=text.length){clearInterval(_scrambleIv);_scrambleIv=null;el.textContent=text;}
+  },duration/steps);
 }
 function flagBar(){
   if(!S)return '';
@@ -302,6 +324,8 @@ function begin(){
   enterNode(S,'start');render();
 }
 function render(){
+  if(_typewriteIv){clearInterval(_typewriteIv);_typewriteIv=null;}
+  if(_scrambleIv){clearInterval(_scrambleIv);_scrambleIv=null;}
   if(UI.screen==='login')renderLogin();
   else if(UI.screen==='questionnaire')renderQuestionnaire();
   else if(UI.screen==='select')renderPathSelect();
@@ -422,16 +446,18 @@ function renderEnding(){
   app.innerHTML=
     staticTop(t('endingStep'))+
     `<section class="card ending-reveal ${tone}" data-focus tabindex="-1">
+      <div class="scan-sweep" aria-hidden="true"></div>
       ${secretBadge}
       <div class="verdict-label">${t('caseStatus')}</div>
-      <div class="verdict">${verdict}</div>
+      <div class="verdict" id="verdictText"></div>
     </section>
     <section class="card">
       <h2>${title}</h2>
       <p id="endDesc"></p>
     </section>
     <button class="primary" id="btnDebrief">${t('btnDebrief')}</button>`;
-  typewrite(document.getElementById('endDesc'),desc);
+  scrambleText(document.getElementById('verdictText'),verdict,1100);
+  setTimeout(()=>typewrite(document.getElementById('endDesc'),desc,18),1300);
   document.getElementById('btnDebrief').onclick=()=>{UI.screen='result';render();};
 }
 
