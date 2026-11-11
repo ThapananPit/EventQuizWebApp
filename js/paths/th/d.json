@@ -11,6 +11,7 @@
    "bestWhy": "หยุดการลองล็อกอินที่ผิดปกติและสั่งออกจากระบบบัญชีที่โดนก่อน แล้วหาต้นเหตุจากหลักฐาน",
    "text": "คุณทำแอปแชตสำหรับนักเรียนที่มีผู้ใช้ 1,000 คน เช้านี้มีคนแจ้งเข้ามาเพียบว่า \"มีคนเข้าบัญชีเรา แล้วส่งลิงก์หลอกลวงให้เพื่อนทุกคน\" คุณพบว่าเมื่อคืนมีการลองล็อกอิน 50,000 ครั้งในชั่วโมงเดียว ส่วนใหญ่ไม่สำเร็จ แต่ 300 บัญชีถูกเข้าได้ คุณจะทำอะไรก่อน?",
    "source": "NIST SP 800-61 (การรับมือเหตุ); Have I Been Pwned (รหัสผ่านที่หลุดจากเว็บต่างๆ)",
+   "evidence": {"label": "LOGIN LOG  —  last night, 23:14–00:11", "body": " 23:14  FAIL  user001@uni.ac.th    183.90.xx.xx\n 23:14  FAIL  user002@uni.ac.th    183.90.xx.xx   50,000 attempts\n 23:14  FAIL  user003@uni.ac.th    183.90.xx.xx   in 57 minutes\n ...\n 23:51  PASS  nuttapong@uni.ac.th  183.90.xx.xx  ← compromised\n 23:52  PASS  siriporn@uni.ac.th   183.90.xx.xx  ← compromised\n ...\n 300 accounts accessed · scam links sent to all friends\n rate limit: none · 2-step: none"},
    "choices": [
     {
      "id": "a",
@@ -104,6 +105,7 @@
    "bestWhy": "ต้นเหตุมีสองจุด ต้องปิดทั้งสอง: ป้องกันการลองล็อกอิน และเก็บรหัสผ่านอย่างปลอดภัย",
    "text": "จาก log คุณพบว่าผู้โจมตีไม่ได้เจาะระบบ เขาใช้รายการอีเมลและรหัสผ่านที่เคยหลุดจากเว็บอื่น มาลองล็อกอินแอปของคุณทีละบัญชี (credential stuffing) ผู้ใช้ที่ใช้รหัสเดียวกันหลายที่จึงโดน และระหว่างตรวจ คุณพบอีกเรื่องที่น่ากลัวกว่า ฐานข้อมูลของคุณเก็บรหัสผ่านทุกคนเป็นตัวอักษรธรรมดาที่อ่านได้ทันที ต้นเหตุมีสองจุด (1) ไม่จำกัดการลองล็อกอินและไม่มี 2-step และ (2) รหัสผ่านไม่ได้ถูกแปลงให้อ่านไม่ออก (hash) คุณจะแก้อย่างไร?",
    "source": "NIST SP 800-63B (จำกัดการลองรหัส, บล็อกรหัสที่หลุด, เก็บรหัสแบบ hash); OWASP Password Storage Cheat Sheet",
+   "evidence": {"label": "DATABASE  —  users table (sample)", "body": " id │ email                    │ password\n ───┼──────────────────────────┼──────────────────\n 1  │ nuttapong@uni.ac.th      │ football123\n 2  │ siriporn@uni.ac.th       │ si1234!\n 3  │ kanokwan@uni.ac.th       │ 081xxxxxxxx\n 4  │ prasert@uni.ac.th        │ prasert2548\n ...\n all 1,000 passwords stored in plain readable text\n 847 rows matched in public breach database"},
    "choices": [
     {
      "id": "a",
@@ -431,6 +433,7 @@
     }
    },
    "source": "Google Safety Center (https และรูปแม่กุญแจ); CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น)",
+   "evidence": {"label": "RELAUNCH AUDIT  —  today", "body": " ✓  login rate limit   : enabled  (5 / 15 min)\n ✓  password hashing   : bcrypt  (cost 12)\n ✓  2-step for users   : optional\n\n ✗  HTTPS              : NOT enabled\n    login page sends passwords in plain text\n ✗  admin password     : \"admin / 1234\"  (unchanged)\n ✗  admin rate limit   : none\n\n bot attempts on /admin: ~3,000 / hr  (ongoing)"},
    "choices": [
     {
      "id": "a",
@@ -503,6 +506,7 @@
    "bestWhy": "เตือนผู้ใช้ทันที แจ้งลบหน้าปลอม และให้บัญชีสำคัญมีด่านที่สอง",
    "text": "ผ่านไปราวหนึ่งสัปดาห์ ช่องเดิมถูกปิดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี มีโพสต์ในโซเชียลว่า \"รับฟีเจอร์พรีเมียมฟรี แค่ล็อกอินผ่านลิงก์นี้\" ลิงก์พาไปหน้าล็อกอินปลอมที่หน้าตาเหมือนแอปของคุณทุกอย่าง และผู้ช่วยดูแลแอป (moderator) คนหนึ่งในทีมก็เพิ่งแชร์ลิงก์นี้ต่อ",
    "source": "CISA Secure Our World: Recognize and Report Phishing; UK NCSC: Phishing attacks",
+   "evidence": {"label": "SOCIAL MEDIA POST  —  today, 09:31 · 847 shares", "body": " Account: @chatapp_promo  (created today)\n\n \"FREE PREMIUM — just log in here to claim:\n  → http://chatapp-login.pages.dev\"\n\n Page captures username + password on submit.\n Moderator mod_beam shared link to 3 group chats.\n\n Real app domain: chatapp.school.ac.th"},
    "choices": [
     {
      "id": "a",
@@ -582,6 +586,7 @@
     "damage": 40
    },
    "source": "NIST SP 800-61 (การรับมือเหตุ); OWASP Session Management Cheat Sheet",
+   "evidence": {"label": "ACTION LOG  —  today, 11:22–11:58", "body": " 11:22  LOGIN   mod_beam  116.228.xx.xx (attacker)\n 11:25  POST    /api/broadcast  \"Click here...\" → all users\n 11:31  POST    /api/ban  user_id: [1–47]  — 47 real users banned\n 11:44  GET     /api/users/export  — 1,000 rows (name, phone, email)\n 11:58  POST    /api/team/create  username: 'mod_support2'\n\n official account used to send scam · 47 users banned"},
    "choices": [
     {
      "id": "a",

@@ -11,6 +11,7 @@
    "bestWhy": "ตัดเครื่องที่ติดออกจากเครือข่ายก่อน เพื่อไม่ให้ลามไปไฟล์อื่น แล้วหาต้นเหตุจากหลักฐาน ไม่จ่ายค่าไถ่",
    "text": "เช้าวันจันทร์ คุณเปิดเว็บลงทะเบียนกิจกรรมของชมรมที่คุณดูแล แล้วพบว่าไฟล์ทั้งหมดในเครื่องเซิร์ฟเวอร์ของชมรมเปิดไม่ได้ รายชื่อสมาชิก 1,000 คนและแบบฟอร์มสมัครค่ายถูกเข้ารหัสล็อกไว้ หน้าจอมีข้อความเรียกค่าไถ่ 50,000 บาทภายใน 48 ชั่วโมงเพื่อแลกกับกุญแจปลดล็อก และค่ายของชมรมจะเริ่มในอีกสามวัน คุณจะทำอะไรก่อน?",
    "source": "CISA #StopRansomware Guide; UK NCSC: Mitigating malware and ransomware attacks",
+   "evidence": {"label": "ENCRYPTED FILES  —  today, 09:00 · server: clubreg-01", "body": " members_2024.xlsx       → members_2024.xlsx.r4nk\n camp_applications.xlsx  → camp_applications.xlsx.r4nk\n committee_contacts.xlsx → committee_contacts.xlsx.r4nk\n backups/db_2024.sql     → db_2024.sql.r4nk\n\n 1,247 files encrypted · key held by attacker\n demand: ฿50,000 · deadline: 48 hrs"},
    "choices": [
     {
      "id": "a",
@@ -104,6 +105,7 @@
    "bestWhy": "ต้นเหตุมีสองจุด ต้องปิดทั้งสอง: ปิดบัญชีที่ไม่ใช้แล้ว และทำสำรองข้อมูลแยกไว้ต่างหาก",
    "text": "จาก log (บันทึกการใช้งานของระบบ) คุณพบว่าผู้โจมตีล็อกอินด้วยบัญชีของรุ่นพี่ที่จบไปแล้วเมื่อปีก่อน บัญชีนี้ยังเปิดอยู่และใช้รหัสผ่านเดียวกับที่เคยหลุดจากเว็บอื่น ต้นเหตุมีสองจุด (1) บัญชีเก่าไม่เคยถูกปิด และทุกบัญชีมีสิทธิ์แอดมินเต็ม และ (2) ไฟล์สำรองข้อมูล (backup) เก็บไว้ในเครื่องเดียวกัน จึงถูกล็อกไปด้วย เหลือแค่สำเนาเก่าสองสัปดาห์ในฮาร์ดดิสก์ที่ถอดเก็บไว้ คุณจะแก้อย่างไร?",
    "source": "NIST Cybersecurity Framework (Protect: จัดการสิทธิ์และบัญชี); CISA: 3-2-1 backup",
+   "evidence": {"label": "AUTH LOG  —  server: clubreg-01, last 7 days", "body": " PASS  committee_2022_peerawat  61.90.112.4   03:14:07  ← graduated\n PASS  committee_2022_peerawat  61.90.112.4   03:14:11\n\n account active since: 2022-08-01\n last legitimate use:  2022-12-15\n password in breach list: YES (found 2023-07-14)\n\n backup path: /var/www/backups/ ← same machine as main site"},
    "choices": [
     {
      "id": "a",
@@ -431,6 +433,7 @@
     }
    },
    "source": "CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น); NIST SP 800-63B (จำกัดการลองรหัส)",
+   "evidence": {"label": "AUTH LOG  —  admin panel · today", "body": " FAIL  admin  198.51.100.9   08:00:00\n FAIL  admin  198.51.100.9   08:00:01  ×3,000 / hr\n FAIL  admin  198.51.100.11  08:00:04\n FAIL  admin  198.51.100.14  08:00:06\n ...\n no rate limit · default credentials unchanged\n admin panel: /admin/login  (no IP restriction)"},
    "choices": [
     {
      "id": "a",
@@ -503,6 +506,7 @@
    "bestWhy": "ยืนยันจากช่องทางที่คุณรู้จักเอง ไม่ใช่ลิงก์ในข้อความ และเพิ่มด่านที่สองให้บัญชีสำคัญ",
    "text": "ผ่านไปราวหนึ่งสัปดาห์ ทางเข้าเดิมถูกปิดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี คุณได้รับข้อความในแชตจากบัญชีที่ใช้รูปและชื่อครูที่ปรึกษา บอกว่า \"ครูต้องอนุมัติงบค่ายด่วนภายในวันนี้ ช่วยล็อกอินผ่านลิงก์นี้ให้หน่อย\" ลิงก์หน้าตาเหมือนหน้าล็อกอินของเว็บชมรมทุกอย่าง",
    "source": "CISA Secure Our World: Recognize and Report Phishing; UK NCSC: Phishing attacks",
+   "evidence": {"label": "CHAT MESSAGE  —  today, 14:52", "body": " From:    Aj. Wanchai Srisombut  [copied profile photo]\n Account: created 2026-11-11  ← today\n\n \"Hi — I need to approve the camp budget urgently\n  today. Can you log in through this link for me?\n  → http://club-reg-login.vercel.app\"\n\n Real club website domain: clubreg.school.ac.th"},
    "choices": [
     {
      "id": "a",
@@ -582,6 +586,7 @@
     "damage": 40
    },
    "source": "NIST SP 800-61 (การรับมือเหตุ); OWASP Session Management Cheat Sheet",
+   "evidence": {"label": "ADMIN AUDIT LOG  —  today, 16:11–16:38", "body": " 16:11  LOGIN   committee_2024_nam  203.0.113.44 (attacker)\n 16:14  UPDATE  payments SET bank_acct = '...'\n 16:19  UPDATE  camp_registrations SET fee_paid = 1  — 847 rows\n 16:23  SELECT  members  — 1,000 rows exported\n 16:38  INSERT  admins  user = 'backup_acc'\n\n all actions logged under legitimate admin session"},
    "choices": [
     {
      "id": "a",

@@ -11,6 +11,7 @@
    "bestWhy": "เปิดตัวกรองทราฟฟิกเพื่อหยุดการถล่มก่อน แล้วเลื่อนเวลาขายอย่างโปร่งใส จะเสียแฟนน้อยกว่าการเดาแก้",
    "text": "คุณทำเว็บขายบัตรคอนเสิร์ตให้วงดนตรีของมหาวิทยาลัย การขายเปิด 10:00 น. แต่ตอน 9:58 น. ทราฟฟิก (จำนวนคำขอที่เข้ามาที่เว็บ) พุ่งขึ้น 50 เท่า มาจากเครื่องหลายพันเครื่องทั่วโลก เว็บล่ม แฟนตัวจริง 1,000 คนที่รออยู่เข้าไม่ได้ คุณจะทำอะไรก่อน?",
    "source": "Cloudflare Learning Center: What is a DDoS attack?; CISA: Understanding and Responding to DDoS Attacks",
+   "evidence": {"label": "TRAFFIC MONITOR  —  today, 09:55–10:02", "body": " 09:55  req/min:    1,200  (normal)\n 09:57  req/min:    8,400\n 09:58  req/min:   61,000  ← sale opens\n 09:59  req/min:  220,000  ← server unresponsive\n 10:00  HTTP 503  (all requests failing)\n 10:02  server OOM · process killed\n\n sources: 14,800 unique IPs · 23 countries\n real fan IPs: ~1,000  (< 0.5% of traffic)"},
    "choices": [
     {
      "id": "a",
@@ -104,6 +105,7 @@
    "bestWhy": "ต้นเหตุมีสองจุดพร้อมกัน ต้องปิดทั้งสอง: กรองทราฟฟิกปลอม และจำกัดบอทซื้อบัตรที่ฝั่ง Server",
    "text": "จาก log คุณพบว่าการถล่มเว็บเป็นแค่ฉากบังหน้า ระหว่างที่แฟนตัวจริงเข้าไม่ได้ บอท (โปรแกรมอัตโนมัติ) ของนักเก็งกำไรบัตรยิงคำสั่งซื้อตรงเข้าระบบ ได้บัตรไป 40% ของทั้งหมด และเริ่มขายต่อในราคา 5 เท่า ต้นเหตุมีสองจุด (1) ยังไม่มีการกรองทราฟฟิกปลอม และ (2) ระบบไม่จำกัดจำนวนบัตรต่อคน และไม่มีการตรวจว่าผู้ซื้อเป็นคนจริงหรือบอท คุณจะแก้อย่างไร?",
    "source": "OWASP Automated Threats to Web Applications (Scalping); CISA: Understanding and Responding to DDoS Attacks",
+   "evidence": {"label": "PURCHASE LOG  —  today, 09:58–10:03", "body": " 09:58:12  POST /api/buy  user: bot_acct_0041  qty:4 → 200 OK\n 09:58:12  POST /api/buy  user: bot_acct_0042  qty:4 → 200 OK\n 09:58:13  POST /api/buy  user: bot_acct_0043  qty:4 → 200 OK\n ...\n 1,600 tickets in 48 seconds · 40% of total stock\n buyer accounts: all created yesterday\n no per-person limit · no bot check · no queue"},
    "choices": [
     {
      "id": "a",
@@ -431,6 +433,7 @@
     }
    },
    "source": "CISA Secure by Design (ห้ามใช้รหัสผ่านเริ่มต้น); NIST SP 800-63B (จำกัดการลองรหัส)",
+   "evidence": {"label": "AUTH LOG  —  admin panel · today", "body": " FAIL  admin  198.51.100.9   08:00:00\n FAIL  admin  198.51.100.9   08:00:01  ×3,000 / hr\n FAIL  admin  198.51.100.11  08:00:04\n FAIL  admin  198.51.100.14  08:00:06\n ...\n no rate limit · default credentials unchanged\n admin panel: /admin  (exposed to public internet)"},
    "choices": [
     {
      "id": "a",
@@ -503,6 +506,7 @@
    "bestWhy": "ตรวจจากช่องทางที่คุณเข้าเอง ไม่ใช่ลิงก์ในอีเมล และเพิ่มด่านที่สองให้บัญชีสำคัญ",
    "text": "ผ่านไปราวหนึ่งสัปดาห์ ช่องเดิมถูกปิดแล้ว แต่ผู้โจมตีเปลี่ยนวิธี คุณได้รับอีเมลที่อ้างว่ามาจากบริษัทรับชำระเงินที่เว็บใช้อยู่ แจ้งว่า \"พบรายการผิดปกติ บัญชีรับเงินของคุณจะถูกระงับใน 24 ชั่วโมงหากไม่ยืนยันตัวตน\" โลโก้และสำนวนดูเหมือนจริงมาก",
    "source": "CISA Secure Our World: Recognize and Report Phishing; Verizon DBIR",
+   "evidence": {"label": "INCOMING EMAIL  —  today, 11:47", "body": " From:    noreply@payment-secure-verify.net\n Subject: ⚠ Suspicious activity — verify now\n\n \"We detected unusual activity on your merchant\n  account. Payments will be suspended in 24 hrs\n  if you don't verify your identity.\"\n  [Verify account]\n\n Real provider domain: payment.example.co.th\n Sender domain registered: yesterday"},
    "choices": [
     {
      "id": "a",
@@ -582,6 +586,7 @@
     "damage": 40
    },
    "source": "NIST SP 800-61 (การรับมือเหตุ); OWASP Session Management Cheat Sheet",
+   "evidence": {"label": "ADMIN AUDIT LOG  —  today, 14:08–14:41", "body": " 14:08  LOGIN   admin_main  61.90.118.22 (attacker)\n 14:11  UPDATE  settings SET payout_acct = '...'\n 14:15  INSERT  tickets  type='VIP_FREE'  qty=200\n 14:22  SELECT  buyers  — 1,000 rows  (name, phone, email)\n 14:41  INSERT  admins   user = 'support_bk'\n\n payout redirected · 200 free VIP tickets issued"},
    "choices": [
     {
      "id": "a",

@@ -11,6 +11,7 @@
    "bestWhy": "Disconnect the infected machine from the network immediately to stop the spread, then find the root cause from evidence. Do not pay the ransom.",
    "text": "Monday morning. You open the club activity registration website you manage, and find that every file on the club's server is inaccessible. The member list of 1,000 people and the camp application forms are all encrypted and locked. A ransom note on screen demands 50,000 baht within 48 hours in exchange for the decryption key. The club camp starts in three days. What do you do first?",
    "source": "CISA #StopRansomware Guide; UK NCSC: Mitigating malware and ransomware attacks",
+   "evidence": {"label": "ENCRYPTED FILES  —  today, 09:00 · server: clubreg-01", "body": " members_2024.xlsx       → members_2024.xlsx.r4nk\n camp_applications.xlsx  → camp_applications.xlsx.r4nk\n committee_contacts.xlsx → committee_contacts.xlsx.r4nk\n backups/db_2024.sql     → db_2024.sql.r4nk\n\n 1,247 files encrypted · key held by attacker\n demand: ฿50,000 · deadline: 48 hrs"},
    "choices": [
     {
      "id": "a",
@@ -104,6 +105,7 @@
    "bestWhy": "There are two root causes — both must be closed: disable unused accounts, and keep backups on a separate system.",
    "text": "From the logs (system activity records) you find that the attacker logged in using an account belonging to a senior member who graduated the previous year. That account was still active and used the same password as one leaked from another website. There are two root causes: (1) old accounts were never disabled, and every account had full admin privileges; and (2) the backup files were stored on the same machine, so they were encrypted too. Only a copy from two weeks ago survives on a disconnected external drive. How do you fix this?",
    "source": "NIST Cybersecurity Framework (Protect: access and account management); CISA: 3-2-1 backup",
+   "evidence": {"label": "AUTH LOG  —  server: clubreg-01, last 7 days", "body": " PASS  committee_2022_peerawat  61.90.112.4   03:14:07  ← graduated\n PASS  committee_2022_peerawat  61.90.112.4   03:14:11\n\n account active since: 2022-08-01\n last legitimate use:  2022-12-15\n password in breach list: YES (found 2023-07-14)\n\n backup path: /var/www/backups/ ← same machine as main site"},
    "choices": [
     {
      "id": "a",
@@ -431,6 +433,7 @@
     }
    },
    "source": "CISA Secure by Design (no default passwords); NIST SP 800-63B (limit login attempts)",
+   "evidence": {"label": "AUTH LOG  —  admin panel · today", "body": " FAIL  admin  198.51.100.9   08:00:00\n FAIL  admin  198.51.100.9   08:00:01  ×3,000 / hr\n FAIL  admin  198.51.100.11  08:00:04\n FAIL  admin  198.51.100.14  08:00:06\n ...\n no rate limit · default credentials unchanged\n admin panel: /admin/login  (no IP restriction)"},
    "choices": [
     {
      "id": "a",
@@ -503,6 +506,7 @@
    "bestWhy": "Verify through a channel you know yourself — not a link in the message — and add a second factor to important accounts.",
    "text": "About a week passes. The previous entry points are closed, but the attacker changes tactics. You receive a chat message from an account using the faculty advisor's photo and name, saying: \"I need to approve the camp budget urgently today — can you log in through this link for me?\" The link looks exactly like the club website's login page.",
    "source": "CISA Secure Our World: Recognize and Report Phishing; UK NCSC: Phishing attacks",
+   "evidence": {"label": "CHAT MESSAGE  —  today, 14:52", "body": " From:    Aj. Wanchai Srisombut  [copied profile photo]\n Account: created 2026-11-11  ← today\n\n \"Hi — I need to approve the camp budget urgently\n  today. Can you log in through this link for me?\n  → http://club-reg-login.vercel.app\"\n\n Real club website domain: clubreg.school.ac.th"},
    "choices": [
     {
      "id": "a",
@@ -582,6 +586,7 @@
     "damage": 40
    },
    "source": "NIST SP 800-61 (incident response); OWASP Session Management Cheat Sheet",
+   "evidence": {"label": "ADMIN AUDIT LOG  —  today, 16:11–16:38", "body": " 16:11  LOGIN   committee_2024_nam  203.0.113.44 (attacker)\n 16:14  UPDATE  payments SET bank_acct = '...'\n 16:19  UPDATE  camp_registrations SET fee_paid = 1  — 847 rows\n 16:23  SELECT  members  — 1,000 rows exported\n 16:38  INSERT  admins  user = 'backup_acc'\n\n all actions logged under legitimate admin session"},
    "choices": [
     {
      "id": "a",

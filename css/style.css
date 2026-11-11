@@ -347,7 +347,11 @@ input[type=number].field::-webkit-inner-spin-button{-webkit-appearance:none;}
 .chip{animation:chipIn .32s ease both}
 
 /* evidence panel */
-.evidence-panel{margin-top:14px;border:1px solid var(--line);background:var(--bg);overflow:hidden}
+@keyframes evidenceIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@keyframes logLineIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+@keyframes evidenceScan{0%{top:0;opacity:.7}100%{top:100%;opacity:0}}
+.evidence-panel{margin-top:14px;border:1px solid var(--line);background:var(--bg);overflow:hidden;position:relative;animation:evidenceIn .35s ease both}
+.evidence-scan{position:absolute;left:0;right:0;top:0;height:2px;background:var(--cyan);box-shadow:0 0 8px var(--cyan);opacity:0;pointer-events:none;animation:evidenceScan .55s ease-out .35s forwards}
 .evidence-hdr{
   display:flex;align-items:center;gap:8px;
   padding:4px 10px;background:var(--surface2);border-bottom:1px solid var(--line);
@@ -359,6 +363,7 @@ input[type=number].field::-webkit-inner-spin-button{-webkit-appearance:none;}
   white-space:pre;font-family:'Space Mono',monospace;
   font-size:12px;line-height:1.65;color:var(--cyan);
 }
+.evidence-line{display:block;opacity:0;animation:logLineIn .22s ease both}
 
 /* status flag bar */
 .flag-bar{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}

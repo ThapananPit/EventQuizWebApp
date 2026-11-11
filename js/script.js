@@ -209,6 +209,14 @@ function flashQuality(q){
   el.className='flash-'+q;
   el.addEventListener('animationend',()=>{el.className='';},{once:true});
 }
+function buildEvidence(ev,baseDelay=350){
+  if(!ev)return '';
+  const lines=ev.body.split('\n').map((line,i)=>{
+    const esc=line.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')||' ';
+    return `<span class="evidence-line" style="animation-delay:${baseDelay+i*55}ms">${esc}</span>`;
+  }).join('\n');
+  return `<div class="evidence-panel"><div class="evidence-scan" aria-hidden="true"></div><div class="evidence-hdr">${ev.label}</div><pre class="evidence-body">${lines}</pre></div>`;
+}
 function staticTop(step=''){
   return `<div class="top"><span class="brand">LAUNCH <b>&amp;</b> DEFEND</span><span class="step">${step}</span><button class="ghost" id="btnLang">${t('langToggle')}</button></div>`;
 }
@@ -376,9 +384,7 @@ function renderChoose(n){
     body=`<div class="choices" role="group" aria-label="${t('choiceGroup')}">`+n.choices.map((c,i)=>
       `<button class="choice" data-id="${c.id}"><span class="key">${String.fromCharCode(65+i)}</span><span class="ct">${c.label}</span></button>`).join('')+`</div>`;
   }
-  const evidenceHTML=n.evidence
-    ?`<div class="evidence-panel"><div class="evidence-hdr">${n.evidence.label}</div><pre class="evidence-body">${n.evidence.body.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}</pre></div>`
-    :'';
+  const evidenceHTML=buildEvidence(n.evidence);
   app.innerHTML=topBar()+meterHTML()+flagBar()+`
    <section class="card"><span class="tag">${n.tag}</span><h2 data-focus tabindex="-1">${n.title}</h2>
     <p id="nodeText"></p>${evidenceHTML}${ev}</section>`+body;

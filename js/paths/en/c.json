@@ -11,6 +11,7 @@
    "bestWhy": "Activate traffic filtering to stop the flood first, then delay the sale opening transparently. That loses fewer fans than guessing your way through fixes.",
    "text": "You run the ticket sales website for a university band. Sales open at 10:00 AM, but at 9:58 AM traffic (the number of requests hitting the site) spikes 50x, coming from thousands of machines worldwide. The site crashes. 1,000 genuine fans waiting to buy can't get in. What do you do first?",
    "source": "Cloudflare Learning Center: What is a DDoS attack?; CISA: Understanding and Responding to DDoS Attacks",
+   "evidence": {"label": "TRAFFIC MONITOR  —  today, 09:55–10:02", "body": " 09:55  req/min:    1,200  (normal)\n 09:57  req/min:    8,400\n 09:58  req/min:   61,000  ← sale opens\n 09:59  req/min:  220,000  ← server unresponsive\n 10:00  HTTP 503  (all requests failing)\n 10:02  server OOM · process killed\n\n sources: 14,800 unique IPs · 23 countries\n real fan IPs: ~1,000  (< 0.5% of traffic)"},
    "choices": [
     {
      "id": "a",
@@ -104,6 +105,7 @@
    "bestWhy": "There are two simultaneous root causes — both must be closed: filter fake traffic and enforce purchase limits server-side.",
    "text": "From the logs you find that the crash was just a cover. While real fans were locked out, bots (automated programs) run by ticket scalpers fired purchase commands directly at the system and grabbed 40% of all tickets, which are now being resold on social media at 5x the original price. There are two root causes: (1) there was no traffic filtering in place, and (2) the system has no per-person ticket limit and no way to tell whether a buyer is human or a bot. How do you fix this?",
    "source": "OWASP Automated Threats to Web Applications (Scalping); CISA: Understanding and Responding to DDoS Attacks",
+   "evidence": {"label": "PURCHASE LOG  —  today, 09:58–10:03", "body": " 09:58:12  POST /api/buy  user: bot_acct_0041  qty:4 → 200 OK\n 09:58:12  POST /api/buy  user: bot_acct_0042  qty:4 → 200 OK\n 09:58:13  POST /api/buy  user: bot_acct_0043  qty:4 → 200 OK\n ...\n 1,600 tickets in 48 seconds · 40% of total stock\n buyer accounts: all created yesterday\n no per-person limit · no bot check · no queue"},
    "choices": [
     {
      "id": "a",
@@ -431,6 +433,7 @@
     }
    },
    "source": "CISA Secure by Design (no default passwords); NIST SP 800-63B (limit login attempts)",
+   "evidence": {"label": "AUTH LOG  —  admin panel · today", "body": " FAIL  admin  198.51.100.9   08:00:00\n FAIL  admin  198.51.100.9   08:00:01  ×3,000 / hr\n FAIL  admin  198.51.100.11  08:00:04\n FAIL  admin  198.51.100.14  08:00:06\n ...\n no rate limit · default credentials unchanged\n admin panel: /admin  (exposed to public internet)"},
    "choices": [
     {
      "id": "a",
@@ -503,6 +506,7 @@
    "bestWhy": "Check through a channel you navigate yourself — not a link in the email — and add a second factor to important accounts.",
    "text": "About a week passes. The previous holes are closed, but the attacker changes tactics. You receive an email claiming to be from the payment company the website uses, saying: \"Suspicious activity detected — your payment account will be suspended in 24 hours if you don't verify your identity.\" The logo and wording look completely genuine.",
    "source": "CISA Secure Our World: Recognize and Report Phishing; Verizon DBIR",
+   "evidence": {"label": "INCOMING EMAIL  —  today, 11:47", "body": " From:    noreply@payment-secure-verify.net\n Subject: ⚠ Suspicious activity — verify now\n\n \"We detected unusual activity on your merchant\n  account. Payments will be suspended in 24 hrs\n  if you don't verify your identity.\"\n  [Verify account]\n\n Real provider domain: payment.example.co.th\n Sender domain registered: yesterday"},
    "choices": [
     {
      "id": "a",
@@ -582,6 +586,7 @@
     "damage": 40
    },
    "source": "NIST SP 800-61 (incident response); OWASP Session Management Cheat Sheet",
+   "evidence": {"label": "ADMIN AUDIT LOG  —  today, 14:08–14:41", "body": " 14:08  LOGIN   admin_main  61.90.118.22 (attacker)\n 14:11  UPDATE  settings SET payout_acct = '...'\n 14:15  INSERT  tickets  type='VIP_FREE'  qty=200\n 14:22  SELECT  buyers  — 1,000 rows  (name, phone, email)\n 14:41  INSERT  admins   user = 'support_bk'\n\n payout redirected · 200 free VIP tickets issued"},
    "choices": [
     {
      "id": "a",
