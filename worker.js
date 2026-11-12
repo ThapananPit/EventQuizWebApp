@@ -73,7 +73,7 @@ app.get('/auth/google', async (c) => {
     'HS256'
   )
   setCookie(c, COOKIE, token, { httpOnly: true, secure: true, sameSite: 'Lax', maxAge: TTL, path: '/' })
-  return c.redirect('/')
+  return c.redirect('/game')
 })
 
 app.get('/api/me', async (c) => {

@@ -1,29 +1,856 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="th">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Launch &amp; Defend — ออเดอร์ 1 บาท</title>
+<title>Cybersecurity Engineering — International Programs, SWU</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@600;800&family=Noto+Sans+Thai:wght@400;500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css">
-</head>
-<body>
-<div id="bgfx" aria-hidden="true"></div>
-<div id="boot" aria-hidden="true">
-  <div class="boot-hdr">
-    <span class="boot-brand">LAUNCH <b>&amp;</b> DEFEND <b>//</b> SYSTEM BOOT</span>
-    <span class="cursor-blink">_</span>
-  </div>
-  <div class="boot-log" id="bootLog"></div>
-  <div class="boot-foot"><span id="bootTimer">[SYS] INITIALIZING</span></div>
-</div>
-<div class="wrap" id="app"></div>
-<div class="idle" id="idle" role="alert"><div class="in"><span id="idleMsg"></span><button class="secondary" style="width:auto" id="idleBtn">ยังเล่นอยู่</button></div></div>
-<div class="sr" aria-live="polite" id="live"></div>
-<div id="choiceFlash" aria-hidden="true"></div>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Orbitron:wght@600;800;900&family=Noto+Sans+Thai:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0a0d;
+  --bg2:#0f0f13;
+  --bg3:#13131a;
+  --line:rgba(255,255,255,.08);
+  --green:#81b292;
+  --cyan:#5ec4c8;
+  --amber:#c8a85e;
+  --red:#c85e5e;
+  --text:#d4d4c8;
+  --muted:#666;
+  --muted2:#444;
+  --white:#f0f0e8;
+  --font-mono:'Space Mono',monospace;
+  --font-title:'Orbitron',sans-serif;
+  --font-thai:'Noto Sans Thai',sans-serif;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--font-mono);line-height:1.6;min-height:100vh;overflow-x:hidden}
+body.lang-en .th{display:none}
+body.lang-th .en{display:none}
+a{color:inherit;text-decoration:none}
 
-<script src="js/script.js"></script>
+/* scrollbar */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--muted2)}
+
+/* grid noise overlay */
+body::before{content:'';position:fixed;inset:0;background-image:repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,.025) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,.025) 40px);pointer-events:none;z-index:0}
+
+/* ─── HEADER ─────────────────────────────────── */
+.site-header{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 24px;
+  background:rgba(10,10,13,.92);
+  backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--line);
+}
+.site-logo{
+  font-family:var(--font-title);font-size:11px;font-weight:800;
+  letter-spacing:.12em;color:var(--green);
+  display:flex;align-items:center;gap:8px;
+}
+.site-logo::before{content:'[ ';color:var(--muted)}
+.site-logo::after{content:' ]';color:var(--muted)}
+.header-right{display:flex;align-items:center;gap:16px}
+.lang-toggle{display:flex;gap:4px}
+.lang-btn{
+  font-family:var(--font-mono);font-size:11px;padding:4px 10px;
+  background:transparent;border:1px solid var(--muted2);color:var(--muted);
+  cursor:pointer;letter-spacing:.08em;transition:all .15s;
+}
+.lang-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+.lang-btn.active{border-color:var(--green);color:var(--green);background:rgba(129,178,146,.08)}
+.header-cta{
+  font-family:var(--font-mono);font-size:11px;padding:5px 14px;
+  background:transparent;border:1px solid var(--green);color:var(--green);
+  cursor:pointer;letter-spacing:.06em;transition:all .15s;
+}
+.header-cta:hover{background:rgba(129,178,146,.12)}
+
+/* ─── HERO ───────────────────────────────────── */
+.hero{
+  position:relative;z-index:1;
+  min-height:92vh;display:flex;flex-direction:column;justify-content:center;
+  padding:60px 24px 60px;
+  max-width:900px;margin:0 auto;
+}
+.hero-pre{
+  font-size:10px;letter-spacing:.18em;color:var(--muted);
+  margin-bottom:28px;display:flex;align-items:center;gap:8px;
+}
+.hero-pre::before{content:'';flex:0 0 24px;height:1px;background:var(--muted)}
+.hero-title{
+  font-family:var(--font-title);font-weight:900;
+  font-size:clamp(32px,7vw,76px);line-height:1;
+  letter-spacing:-.02em;color:var(--white);
+  margin-bottom:8px;
+}
+.hero-title span{color:var(--green)}
+.hero-subtitle{
+  font-family:var(--font-title);font-size:clamp(13px,2.5vw,20px);font-weight:600;
+  color:var(--cyan);letter-spacing:.06em;margin-bottom:32px;
+}
+.hero-desc{font-size:14px;color:var(--text);max-width:560px;margin-bottom:40px;line-height:1.8}
+.hero-desc.th-txt{font-family:var(--font-thai);font-size:15px}
+.hero-actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.btn-primary{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:13px;font-weight:700;letter-spacing:.06em;
+  padding:14px 28px;
+  background:var(--green);color:#0a0a0d;
+  border:none;cursor:pointer;transition:all .2s;
+}
+.btn-primary:hover{background:#97c8a8;transform:translateY(-1px)}
+.btn-secondary{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;
+  padding:13px 20px;
+  background:transparent;color:var(--muted);
+  border:1px solid var(--muted2);cursor:pointer;transition:all .2s;
+}
+.btn-secondary:hover{color:var(--text);border-color:var(--text)}
+.hero-stats{
+  display:flex;gap:32px;margin-top:56px;
+  padding-top:32px;border-top:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.hero-stat-num{
+  font-family:var(--font-title);font-size:28px;font-weight:800;
+  color:var(--amber);display:block;
+}
+.hero-stat-lbl{font-size:10px;color:var(--muted);letter-spacing:.1em;display:block;margin-top:2px}
+.hero-stat-lbl.th-txt{font-family:var(--font-thai);font-size:11px}
+
+/* ─── SECTION SHARED ─────────────────────────── */
+.section{
+  position:relative;z-index:1;
+  padding:72px 24px;border-top:1px solid var(--line);
+}
+.section-inner{max-width:900px;margin:0 auto}
+.section-label{
+  font-size:10px;letter-spacing:.2em;color:var(--muted);
+  margin-bottom:12px;display:flex;align-items:center;gap:8px;
+}
+.section-label::after{content:'';flex:1;height:1px;background:var(--line)}
+.section-title{
+  font-family:var(--font-title);font-size:clamp(18px,3.5vw,28px);
+  font-weight:800;color:var(--white);letter-spacing:.04em;margin-bottom:36px;
+}
+.section-title span{color:var(--green)}
+
+/* ─── TRACKS ─────────────────────────────────── */
+.tracks-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:620px){.tracks-grid{grid-template-columns:1fr}}
+.track-card{
+  border:1px solid var(--line);background:var(--bg2);padding:28px;
+  position:relative;overflow:hidden;transition:border-color .2s;
+}
+.track-card:hover{border-color:rgba(255,255,255,.18)}
+.track-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+}
+.track-card.swu::before{background:var(--green)}
+.track-card.dual::before{background:var(--cyan)}
+.track-num{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.18em;
+  color:var(--muted);margin-bottom:8px;
+}
+.track-name{
+  font-family:var(--font-title);font-size:16px;font-weight:800;
+  color:var(--white);margin-bottom:4px;letter-spacing:.04em;
+}
+.track-degree{font-size:11px;color:var(--cyan);letter-spacing:.06em;margin-bottom:20px}
+.track-rows{display:flex;flex-direction:column;gap:10px}
+.track-row{display:flex;justify-content:space-between;align-items:baseline;gap:8px;font-size:12px}
+.track-row-lbl{color:var(--muted);flex-shrink:0}
+.track-row-lbl.th-txt{font-family:var(--font-thai);font-size:12px}
+.track-row-val{color:var(--text);text-align:right}
+.track-row-val.th-txt{font-family:var(--font-thai);font-size:12px}
+.track-row-val.highlight{color:var(--amber);font-weight:700}
+.track-badge{
+  display:inline-block;margin-top:16px;padding:4px 10px;
+  font-size:10px;letter-spacing:.1em;border:1px solid;
+}
+.track-card.swu .track-badge{border-color:var(--green);color:var(--green)}
+.track-card.dual .track-badge{border-color:var(--cyan);color:var(--cyan)}
+.track-divider{
+  margin:12px 0;border:none;border-top:1px solid var(--line);
+}
+.dmu-note{
+  font-size:11px;color:var(--muted);margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--line);line-height:1.7;
+}
+.dmu-note .th-txt{font-family:var(--font-thai);font-size:11px}
+
+/* ─── CAREERS ────────────────────────────────── */
+.careers-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;
+}
+@media(max-width:720px){.careers-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.careers-grid{grid-template-columns:1fr}}
+.career-card{
+  border:1px solid var(--line);background:var(--bg2);
+  padding:18px 16px;transition:all .2s;cursor:default;
+}
+.career-card:hover{border-color:var(--cyan);background:rgba(94,196,200,.04)}
+.career-icon{
+  font-size:18px;margin-bottom:10px;display:block;
+  font-style:normal;line-height:1;
+}
+.career-title{
+  font-family:var(--font-title);font-size:10px;font-weight:700;
+  color:var(--white);letter-spacing:.06em;margin-bottom:6px;line-height:1.4;
+}
+.career-title-th{font-family:var(--font-thai);font-size:12px;font-weight:600;color:var(--white);margin-bottom:6px;line-height:1.4;display:block}
+.career-desc{font-size:10px;color:var(--muted);line-height:1.6}
+.career-desc.th-txt{font-family:var(--font-thai);font-size:11px}
+
+/* ─── CURRICULUM ─────────────────────────────── */
+.curriculum-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+@media(max-width:720px){.curriculum-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.curriculum-grid{grid-template-columns:1fr}}
+.year-card{border:1px solid var(--line);background:var(--bg2);padding:20px 16px}
+.year-num{
+  font-family:var(--font-title);font-size:28px;font-weight:900;
+  color:var(--muted2);line-height:1;margin-bottom:4px;
+}
+.year-label{font-size:10px;color:var(--muted);letter-spacing:.12em;margin-bottom:16px}
+.year-label.th-txt{font-family:var(--font-thai);font-size:11px}
+.year-courses{list-style:none;display:flex;flex-direction:column;gap:6px}
+.year-courses li{
+  font-size:11px;color:var(--text);padding-left:12px;position:relative;line-height:1.5;
+}
+.year-courses li.th-txt{font-family:var(--font-thai);font-size:11.5px}
+.year-courses li::before{content:'—';position:absolute;left:0;color:var(--muted)}
+.year-tag{
+  display:inline-block;margin-top:14px;
+  font-size:9px;letter-spacing:.12em;padding:3px 8px;border:1px solid var(--line);color:var(--muted);
+}
+
+/* ─── GAME CTA ───────────────────────────────── */
+.game-cta-section{
+  background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+}
+.game-cta-inner{
+  max-width:900px;margin:0 auto;padding:72px 24px;
+  display:flex;align-items:center;justify-content:space-between;gap:40px;flex-wrap:wrap;
+}
+.game-cta-text{}
+.game-cta-pre{font-size:10px;letter-spacing:.2em;color:var(--red);margin-bottom:12px}
+.game-cta-title{
+  font-family:var(--font-title);font-size:clamp(20px,4vw,32px);
+  font-weight:800;color:var(--white);letter-spacing:.04em;margin-bottom:12px;
+}
+.game-cta-desc{font-size:13px;color:var(--muted);max-width:440px;line-height:1.8}
+.game-cta-desc.th-txt{font-family:var(--font-thai);font-size:14px}
+.game-terminal{
+  flex:0 0 auto;border:1px solid var(--line);background:var(--bg);
+  padding:20px;min-width:220px;font-size:11px;line-height:1.9;color:var(--muted);
+}
+.game-terminal .cmd{color:var(--green)}
+.game-terminal .out{color:var(--text)}
+.game-terminal .err{color:var(--red)}
+.game-terminal .cursor{animation:blink 1s step-end infinite}
+@keyframes blink{50%{opacity:0}}
+
+/* ─── DOWNLOADS ──────────────────────────────── */
+.downloads-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:500px){.downloads-grid{grid-template-columns:1fr}}
+.dl-card{
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  border:1px solid var(--line);background:var(--bg2);
+  padding:20px 24px;transition:all .2s;
+}
+.dl-card:hover{border-color:var(--amber);background:rgba(200,168,94,.04)}
+.dl-info{}
+.dl-name{font-size:13px;color:var(--white);font-weight:700;margin-bottom:4px}
+.dl-name.th-txt{font-family:var(--font-thai);font-size:14px}
+.dl-meta{font-size:10px;color:var(--muted);letter-spacing:.06em}
+.dl-btn{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+  padding:8px 16px;border:1px solid var(--amber);color:var(--amber);
+  background:transparent;cursor:pointer;white-space:nowrap;
+  transition:all .15s;flex-shrink:0;
+}
+.dl-btn:hover{background:rgba(200,168,94,.12)}
+
+/* ─── FOOTER ─────────────────────────────────── */
+.site-footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--line);padding:40px 24px 32px;
+  background:var(--bg2);
+}
+.footer-inner{
+  max-width:900px;margin:0 auto;
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:32px;flex-wrap:wrap;
+}
+.footer-brand{
+  font-family:var(--font-title);font-size:12px;font-weight:800;
+  color:var(--white);letter-spacing:.06em;margin-bottom:8px;
+}
+.footer-program{font-size:11px;color:var(--muted);line-height:1.7;max-width:280px}
+.footer-program.th-txt{font-family:var(--font-thai);font-size:12px}
+.footer-contact{}
+.footer-contact-label{
+  font-size:9px;letter-spacing:.18em;color:var(--muted);margin-bottom:12px;
+}
+.footer-links{display:flex;flex-direction:column;gap:7px}
+.footer-link{
+  display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);
+  transition:color .15s;
+}
+.footer-link:hover{color:var(--cyan)}
+.footer-link-icon{font-style:normal;font-size:12px;width:16px;text-align:center}
+.footer-bottom{
+  max-width:900px;margin:28px auto 0;padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;
+}
+.footer-copy{font-size:10px;color:var(--muted2);letter-spacing:.06em}
+.footer-game-link{
+  font-size:10px;color:var(--muted);letter-spacing:.06em;
+  transition:color .15s;
+}
+.footer-game-link:hover{color:var(--green)}
+</style>
+</head>
+<body class="lang-th">
+
+<!-- ═══════════════════════════════════════════
+     HEADER
+══════════════════════════════════════════════ -->
+<header class="site-header">
+  <div class="site-logo">IPE · SWU</div>
+  <div class="header-right">
+    <div class="lang-toggle">
+      <button class="lang-btn active" id="btn-th" onclick="setLang('th')">TH</button>
+      <button class="lang-btn" id="btn-en" onclick="setLang('en')">EN</button>
+    </div>
+    <a href="/game" class="header-cta">
+      <span class="th">▶ เล่นเกม</span>
+      <span class="en">▶ PLAY GAME</span>
+    </a>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════ -->
+<section class="hero">
+  <p class="hero-pre">
+    <span class="th">หลักสูตรนานาชาติด้านวิศวกรรมศาสตร์ · มหาวิทยาลัยศรีนครินทรวิโรฒ ประสานมิตร</span>
+    <span class="en">INTERNATIONAL PROGRAMS IN ENGINEERING · SRINAKHARINWIROT UNIVERSITY</span>
+  </p>
+  <h1 class="hero-title">
+    CYBERSECURITY<br><span>ENGINEERING</span>
+  </h1>
+  <p class="hero-subtitle">
+    <span class="th">วิศวกรรมความมั่นคงปลอดภัยไซเบอร์</span>
+    <span class="en">B.Eng. in Cybersecurity Engineering</span>
+  </p>
+  <p class="hero-desc th th-txt">
+    เรียนรู้การป้องกันระบบ วิเคราะห์ภัยคุกคาม และตอบสนองต่อการโจมตีในสภาพแวดล้อมจริง
+    กับหลักสูตรที่ออกแบบมาสำหรับยุคดิจิทัล พร้อมตัวเลือกปริญญาคู่กับมหาวิทยาลัยชั้นนำในสหราชอาณาจักร
+  </p>
+  <p class="hero-desc en">
+    Learn to defend systems, analyze threats, and respond to real-world attacks.
+    A program built for the digital era — with a dual-degree option at a leading UK university.
+  </p>
+  <div class="hero-actions">
+    <a href="/game" class="btn-primary">
+      <span class="th">▶ ลองเล่นเกม</span>
+      <span class="en">▶ TRY THE GAME</span>
+    </a>
+    <a href="#tracks" class="btn-secondary">
+      <span class="th">[ ดูหลักสูตร ]</span>
+      <span class="en">[ VIEW TRACKS ]</span>
+    </a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <span class="hero-stat-num">4</span>
+      <span class="hero-stat-lbl th th-txt">ปีการศึกษา</span>
+      <span class="hero-stat-lbl en">YEAR PROGRAM</span>
+    </div>
+    <div>
+      <span class="hero-stat-num">2</span>
+      <span class="hero-stat-lbl th th-txt">แทร็กการศึกษา</span>
+      <span class="hero-stat-lbl en">DEGREE TRACKS</span>
+    </div>
+    <div>
+      <span class="hero-stat-num">8</span>
+      <span class="hero-stat-lbl th th-txt">สายงานอาชีพ</span>
+      <span class="hero-stat-lbl en">CAREER PATHS</span>
+    </div>
+    <div>
+      <span class="hero-stat-num">UK</span>
+      <span class="hero-stat-lbl th th-txt">ตัวเลือกปริญญาคู่</span>
+      <span class="hero-stat-lbl en">DUAL DEGREE OPTION</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DEGREE TRACKS
+══════════════════════════════════════════════ -->
+<section class="section" id="tracks">
+  <div class="section-inner">
+    <p class="section-label">
+      <span class="th">แทร็กการศึกษา</span>
+      <span class="en">DEGREE TRACKS</span>
+    </p>
+    <h2 class="section-title">
+      <span class="th">เลือกเส้นทางของคุณ</span>
+      <span class="en">CHOOSE YOUR <span>PATH</span></span>
+    </h2>
+    <div class="tracks-grid">
+
+      <!-- TRACK 01: SWU -->
+      <div class="track-card swu">
+        <p class="track-num">TRACK 01</p>
+        <p class="track-name">SWU</p>
+        <p class="track-degree">
+          <span class="th">วท.บ. วิศวกรรมความมั่นคงปลอดภัยไซเบอร์</span>
+          <span class="en">B.Eng. · Cybersecurity Engineering</span>
+        </p>
+        <div class="track-rows">
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">สถาบัน</span>
+            <span class="track-row-lbl en">Institution</span>
+            <span class="track-row-val">SWU Prasanmit</span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ค่าเล่าเรียน</span>
+            <span class="track-row-lbl en">Tuition</span>
+            <span class="track-row-val highlight">55,000 ฿/เทอม</span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ระยะเวลา</span>
+            <span class="track-row-lbl en">Duration</span>
+            <span class="track-row-val">
+              <span class="th">4 ปี</span>
+              <span class="en">4 Years</span>
+            </span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ภาษาสอน</span>
+            <span class="track-row-lbl en">Language</span>
+            <span class="track-row-val">
+              <span class="th">ภาษาอังกฤษ</span>
+              <span class="en">English</span>
+            </span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ปริญญา</span>
+            <span class="track-row-lbl en">Degree</span>
+            <span class="track-row-val">B.Eng.</span>
+          </div>
+        </div>
+        <span class="track-badge">
+          <span class="th">หลักสูตรนานาชาติ</span>
+          <span class="en">INTERNATIONAL</span>
+        </span>
+      </div>
+
+      <!-- TRACK 02: DUAL -->
+      <div class="track-card dual">
+        <p class="track-num">TRACK 02</p>
+        <p class="track-name">SWU × DMU</p>
+        <p class="track-degree">
+          <span class="th">ปริญญาคู่ (ไทย + สหราชอาณาจักร)</span>
+          <span class="en">Dual Degree · Thailand + UK</span>
+        </p>
+        <div class="track-rows">
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">สถาบัน</span>
+            <span class="track-row-lbl en">Institution</span>
+            <span class="track-row-val">SWU + De Montfort University</span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ค่าเล่าเรียน (UK)</span>
+            <span class="track-row-lbl en">Tuition (UK)</span>
+            <span class="track-row-val highlight">£17,300/year</span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">เมืองเลสเตอร์</span>
+            <span class="track-row-lbl en">Location</span>
+            <span class="track-row-val">Leicester, UK</span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ทุนการศึกษา</span>
+            <span class="track-row-lbl en">Scholarship</span>
+            <span class="track-row-val highlight">£6,000</span>
+          </div>
+          <div class="track-row">
+            <span class="track-row-lbl th th-txt">ปริญญา</span>
+            <span class="track-row-lbl en">Degrees</span>
+            <span class="track-row-val">B.Eng. + B.Sc.</span>
+          </div>
+        </div>
+        <span class="track-badge">
+          <span class="th">ปริญญาคู่</span>
+          <span class="en">DUAL DEGREE</span>
+        </span>
+        <div class="dmu-note">
+          <span class="th th-txt">รวมทั้งการสนับสนุนวีซ่า ที่พัก และค่าครองชีพที่เลสเตอร์ ประมาณ 1.1–1.3 ล้านบาท</span>
+          <span class="en">Includes visa support. Estimated living costs Leicester: 1.1–1.3M THB.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CAREER PATHS
+══════════════════════════════════════════════ -->
+<section class="section" id="careers">
+  <div class="section-inner">
+    <p class="section-label">
+      <span class="th">สายงานอาชีพ</span>
+      <span class="en">CAREER PATHS</span>
+    </p>
+    <h2 class="section-title">
+      <span class="th">คุณจะกลายเป็น<span>...</span></span>
+      <span class="en">YOU WILL <span>BECOME</span></span>
+    </h2>
+    <div class="careers-grid">
+
+      <div class="career-card">
+        <i class="career-icon">🛡</i>
+        <div class="th">
+          <span class="career-title-th">Cybersecurity Analyst</span>
+          <p class="career-desc th-txt">ตรวจสอบและวิเคราะห์ภัยคุกคามในระบบองค์กร</p>
+        </div>
+        <div class="en">
+          <p class="career-title">CYBERSECURITY ANALYST</p>
+          <p class="career-desc">Monitor and analyze security threats in enterprise systems.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">⚔</i>
+        <div class="th">
+          <span class="career-title-th">Penetration Tester</span>
+          <p class="career-desc th-txt">ทดสอบเจาะระบบเพื่อค้นหาช่องโหว่ก่อนผู้โจมตีจริง</p>
+        </div>
+        <div class="en">
+          <p class="career-title">PENETRATION TESTER</p>
+          <p class="career-desc">Find vulnerabilities before attackers do — ethically.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">🔬</i>
+        <div class="th">
+          <span class="career-title-th">Digital Forensics Analyst</span>
+          <p class="career-desc th-txt">สืบสวนหาหลักฐานดิจิทัลหลังเกิดเหตุโจมตี</p>
+        </div>
+        <div class="en">
+          <p class="career-title">DIGITAL FORENSICS ANALYST</p>
+          <p class="career-desc">Investigate digital evidence after security incidents.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">🖥</i>
+        <div class="th">
+          <span class="career-title-th">SOC Analyst</span>
+          <p class="career-desc th-txt">ประจำศูนย์ปฏิบัติการด้านความมั่นคง ตอบสนองต่อเหตุการณ์แบบเรียลไทม์</p>
+        </div>
+        <div class="en">
+          <p class="career-title">SOC ANALYST</p>
+          <p class="career-desc">Operate security operations centers and respond to incidents in real time.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">☁</i>
+        <div class="th">
+          <span class="career-title-th">Cloud Security Engineer</span>
+          <p class="career-desc th-txt">ออกแบบและรักษาความปลอดภัยของระบบคลาวด์</p>
+        </div>
+        <div class="en">
+          <p class="career-title">CLOUD SECURITY ENGINEER</p>
+          <p class="career-desc">Design and secure cloud infrastructure at scale.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">🧬</i>
+        <div class="th">
+          <span class="career-title-th">Malware Analyst</span>
+          <p class="career-desc th-txt">วิเคราะห์โค้ดอันตรายเพื่อทำความเข้าใจและป้องกัน</p>
+        </div>
+        <div class="en">
+          <p class="career-title">MALWARE ANALYST</p>
+          <p class="career-desc">Reverse-engineer malicious code to understand and neutralize threats.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">💼</i>
+        <div class="th">
+          <span class="career-title-th">Security Consultant</span>
+          <p class="career-desc th-txt">ให้คำปรึกษาองค์กรด้านกลยุทธ์ความมั่นคงปลอดภัย</p>
+        </div>
+        <div class="en">
+          <p class="career-title">SECURITY CONSULTANT</p>
+          <p class="career-desc">Advise organizations on security strategy and compliance.</p>
+        </div>
+      </div>
+
+      <div class="career-card">
+        <i class="career-icon">👔</i>
+        <div class="th">
+          <span class="career-title-th">CISO / ผู้บริหารด้านความมั่นคง</span>
+          <p class="career-desc th-txt">บริหารนโยบายและกลยุทธ์ด้านความมั่นคงสารสนเทศทั้งองค์กร</p>
+        </div>
+        <div class="en">
+          <p class="career-title">CISO / SECURITY MANAGER</p>
+          <p class="career-desc">Lead organization-wide information security policy and strategy.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     CURRICULUM
+══════════════════════════════════════════════ -->
+<section class="section" id="curriculum">
+  <div class="section-inner">
+    <p class="section-label">
+      <span class="th">หลักสูตร 4 ปี</span>
+      <span class="en">4-YEAR CURRICULUM</span>
+    </p>
+    <h2 class="section-title">
+      <span class="th">เรียนอะไรบ้าง<span>?</span></span>
+      <span class="en">WHAT YOU WILL <span>LEARN</span></span>
+    </h2>
+    <div class="curriculum-grid">
+
+      <div class="year-card">
+        <p class="year-num">01</p>
+        <p class="year-label th th-txt">ปีที่ 1 — พื้นฐาน</p>
+        <p class="year-label en">YEAR 1 — FOUNDATIONS</p>
+        <ul class="year-courses">
+          <li class="th th-txt">คณิตศาสตร์และสถิติ</li>
+          <li class="th th-txt">ฟิสิกส์ประยุกต์</li>
+          <li class="th th-txt">พื้นฐานคอมพิวเตอร์</li>
+          <li class="th th-txt">การเขียนโปรแกรมเบื้องต้น</li>
+          <li class="en">Mathematics & Statistics</li>
+          <li class="en">Applied Physics</li>
+          <li class="en">Computer Fundamentals</li>
+          <li class="en">Intro to Programming</li>
+        </ul>
+        <span class="year-tag">
+          <span class="th">วิทย์-คณิต</span>
+          <span class="en">SCI · MATH</span>
+        </span>
+      </div>
+
+      <div class="year-card">
+        <p class="year-num">02</p>
+        <p class="year-label th th-txt">ปีที่ 2 — วิทยาการคอมพิวเตอร์</p>
+        <p class="year-label en">YEAR 2 — COMPUTER SCIENCE</p>
+        <ul class="year-courses">
+          <li class="th th-txt">โครงสร้างข้อมูลและอัลกอริทึม</li>
+          <li class="th th-txt">สถาปัตยกรรมคอมพิวเตอร์</li>
+          <li class="th th-txt">ระบบเครือข่าย</li>
+          <li class="th th-txt">ระบบปฏิบัติการ</li>
+          <li class="en">Data Structures & Algorithms</li>
+          <li class="en">Computer Architecture</li>
+          <li class="en">Computer Networks</li>
+          <li class="en">Operating Systems</li>
+        </ul>
+        <span class="year-tag">
+          <span class="th">CS หลัก</span>
+          <span class="en">CORE CS</span>
+        </span>
+      </div>
+
+      <div class="year-card">
+        <p class="year-num">03</p>
+        <p class="year-label th th-txt">ปีที่ 3 — ความมั่นคงไซเบอร์</p>
+        <p class="year-label en">YEAR 3 — CYBERSECURITY</p>
+        <ul class="year-courses">
+          <li class="th th-txt">การทดสอบเจาะระบบ</li>
+          <li class="th th-txt">นิติดิจิทัล</li>
+          <li class="th th-txt">วิเคราะห์มัลแวร์</li>
+          <li class="th th-txt">การเข้ารหัสและคริปโตกราฟี</li>
+          <li class="th th-txt">ความมั่นคงคลาวด์</li>
+          <li class="en">Penetration Testing</li>
+          <li class="en">Digital Forensics</li>
+          <li class="en">Malware Analysis</li>
+          <li class="en">Cryptography</li>
+          <li class="en">Cloud Security</li>
+        </ul>
+        <span class="year-tag">
+          <span class="th">ความมั่นคงไซเบอร์</span>
+          <span class="en">CYBER CORE</span>
+        </span>
+      </div>
+
+      <div class="year-card">
+        <p class="year-num">04</p>
+        <p class="year-label th th-txt">ปีที่ 4 — โครงงานและฝึกงาน</p>
+        <p class="year-label en">YEAR 4 — PROJECT & INTERNSHIP</p>
+        <ul class="year-courses">
+          <li class="th th-txt">โครงงานอาวุโส (Senior Project)</li>
+          <li class="th th-txt">สหกิจศึกษา (ฝึกงานอุตสาหกรรม)</li>
+          <li class="th th-txt">หัวข้อขั้นสูงด้านความมั่นคง</li>
+          <li class="en">Senior Project</li>
+          <li class="en">Cooperative Education</li>
+          <li class="en">Advanced Security Topics</li>
+        </ul>
+        <span class="year-tag">
+          <span class="th">อุตสาหกรรม</span>
+          <span class="en">INDUSTRY</span>
+        </span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     GAME CTA
+══════════════════════════════════════════════ -->
+<section class="game-cta-section" id="play">
+  <div class="game-cta-inner">
+    <div class="game-cta-text">
+      <p class="game-cta-pre">
+        <span class="th">// ทดลองสถานการณ์จริง</span>
+        <span class="en">// SIMULATE THE REAL THING</span>
+      </p>
+      <h2 class="game-cta-title">
+        <span class="th">LAUNCH &amp; DEFEND<br>เกมจำลองสถานการณ์</span>
+        <span class="en">LAUNCH &amp; DEFEND<br>INCIDENT SIMULATOR</span>
+      </h2>
+      <p class="game-cta-desc th th-txt">
+        คุณเป็น DBA ที่เจอเหตุการณ์ไซเบอร์กระทบกิจการของคุณ ทดสอบการตัดสินใจของคุณในสถานการณ์จริง
+        ดูว่าคุณจะรักษาฐานผู้ใช้ไว้ได้กี่คน
+      </p>
+      <p class="game-cta-desc en">
+        You're a DBA facing a live cyber incident at your business. Make decisions under pressure.
+        See how many users you can protect.
+      </p>
+      <a href="/game" class="btn-primary" style="margin-top:24px;display:inline-flex">
+        <span class="th">▶ เริ่มเล่นเลย</span>
+        <span class="en">▶ PLAY NOW</span>
+      </a>
+    </div>
+    <div class="game-terminal" aria-hidden="true">
+      <div class="cmd">$ sudo ./launch-defend --mode=live</div>
+      <div class="out">[BOOT] Loading scenario...</div>
+      <div class="out">[BOOT] Users online: 2,340</div>
+      <div class="err">[ALERT] Anomaly detected</div>
+      <div class="out">[SYS] Awaiting response...</div>
+      <div class="cmd">$ <span class="cursor">_</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     DOWNLOADS
+══════════════════════════════════════════════ -->
+<section class="section" id="downloads">
+  <div class="section-inner">
+    <p class="section-label">
+      <span class="th">ดาวน์โหลด</span>
+      <span class="en">DOWNLOADS</span>
+    </p>
+    <h2 class="section-title">
+      <span class="th"><span>ไฟล์</span>ข้อมูลหลักสูตร</span>
+      <span class="en">PROGRAM <span>MATERIALS</span></span>
+    </h2>
+    <div class="downloads-grid">
+      <a href="/downloads/poster.zip" download class="dl-card">
+        <div class="dl-info">
+          <p class="dl-name th th-txt">โปสเตอร์โปรแกรม</p>
+          <p class="dl-name en">Program Poster</p>
+          <p class="dl-meta">ZIP · CYBERSECURITY ENGINEERING</p>
+        </div>
+        <span class="dl-btn">
+          <span class="th">↓ ดาวน์โหลด</span>
+          <span class="en">↓ DOWNLOAD</span>
+        </span>
+      </a>
+      <a href="/downloads/infographic.zip" download class="dl-card">
+        <div class="dl-info">
+          <p class="dl-name th th-txt">อินโฟกราฟิกหลักสูตร</p>
+          <p class="dl-name en">Curriculum Infographic</p>
+          <p class="dl-meta">ZIP · CAREER PATHS · CURRICULUM</p>
+        </div>
+        <span class="dl-btn">
+          <span class="th">↓ ดาวน์โหลด</span>
+          <span class="en">↓ DOWNLOAD</span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════ -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div>
+      <p class="footer-brand">CYBERSECURITY ENGINEERING</p>
+      <p class="footer-program th th-txt">
+        หลักสูตรวิศวกรรมศาสตรบัณฑิต สาขาวิชาวิศวกรรมความมั่นคงปลอดภัยไซเบอร์<br>
+        คณะวิศวกรรมศาสตร์ มหาวิทยาลัยศรีนครินทรวิโรฒ ประสานมิตร
+      </p>
+      <p class="footer-program en">
+        Bachelor of Engineering in Cybersecurity Engineering<br>
+        Faculty of Engineering · Srinakharinwirot University Prasanmit
+      </p>
+    </div>
+    <div class="footer-contact">
+      <p class="footer-contact-label">CONTACT</p>
+      <div class="footer-links">
+        <a href="mailto:intereng@g.swu.ac.th" class="footer-link">
+          <i class="footer-link-icon">✉</i>intereng@g.swu.ac.th
+        </a>
+        <a href="tel:+6626495000" class="footer-link">
+          <i class="footer-link-icon">☎</i>02-649-5000 ext.27056
+        </a>
+        <a href="https://inter.eng.swu.ac.th" target="_blank" rel="noopener" class="footer-link">
+          <i class="footer-link-icon">🌐</i>inter.eng.swu.ac.th
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 IPE · SWU PRASANMIT</span>
+    <a href="/game" class="footer-game-link">
+      <span class="th">▶ เข้าสู่เกม LAUNCH &amp; DEFEND</span>
+      <span class="en">▶ PLAY LAUNCH &amp; DEFEND</span>
+    </a>
+  </div>
+</footer>
+
+<script>
+function setLang(l){
+  document.body.className='lang-'+l;
+  document.getElementById('btn-th').classList.toggle('active',l==='th');
+  document.getElementById('btn-en').classList.toggle('active',l==='en');
+  localStorage.setItem('ld.lang',l);
+}
+(function(){
+  const saved=localStorage.getItem('ld.lang');
+  if(saved==='en')setLang('en');
+})();
+</script>
+
 </body>
 </html>
